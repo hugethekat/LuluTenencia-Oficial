@@ -15,12 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author xeron
  */
 @Entity
+@Table(name = "Personas")
 public class Persona implements Serializable {
 
     @Id
@@ -95,6 +97,22 @@ public class Persona implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public List<Tramite> getTramites() {
+        return tramites;
+    }
+
+    public void setTramites(List<Tramite> tramites) {
+        this.tramites = tramites;
+    }
+
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
     }
 
     @Override

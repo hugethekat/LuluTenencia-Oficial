@@ -5,19 +5,27 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author xeron
  */
 @Entity
+@Table(name = "Vehiculos")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_vehiculo")
 public class Vehiculo implements Serializable {
 
     @Id
@@ -39,6 +47,9 @@ public class Vehiculo implements Serializable {
     @ManyToOne
     @JoinColumn(name = "rfc_persona", referencedColumnName = "RFC", nullable = false)
     private Persona persona;
+
+    @OneToMany(mappedBy = "vehiculo")
+    private List<Placa> placas;
 
     public String getNoSerie() {
         return noSerie;
@@ -88,8 +99,53 @@ public class Vehiculo implements Serializable {
         this.persona = persona;
     }
 
+    public List<Placa> getPlacas() {
+        return placas;
+    }
 
+    public void setPlacas(List<Placa> placas) {
+        this.placas = placas;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.noSerie);
+        return hash;
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehiculo other = (Vehiculo) obj;
+        return Objects.equals(this.noSerie, other.noSerie);
+    }
 
+    public Vehiculo(String noSerie, String color, String linea, String marca, String modelo, Persona persona) {
+        this.noSerie = noSerie;
+        this.color = color;
+        this.linea = linea;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.persona = persona;
+    }
+
+    public Vehiculo(String color, String linea, String marca, String modelo, Persona persona) {
+        this.color = color;
+        this.linea = linea;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.persona = persona;
+    }
+
+    public Vehiculo() {
+    }
 }
