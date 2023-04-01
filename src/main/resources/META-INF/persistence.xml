@@ -3,6 +3,8 @@
   <persistence-unit name="com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.itson.dominio.Persona</class>
+    <class>org.itson.dominio.Tramite</class>
+    <class>org.itson.dominio.Vehiculo</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lulutenencia?serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

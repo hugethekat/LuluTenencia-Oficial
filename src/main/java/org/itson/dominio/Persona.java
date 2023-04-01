@@ -6,12 +6,15 @@ package org.itson.dominio;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -20,27 +23,32 @@ import javax.persistence.Column;
 @Entity
 public class Persona implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RFC")
     private String rfc;
 
-    @Column(name = "Fecha_nacimiento")
+    @Column(name = "Fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
 
-    @Column(name = "Nombres")
+    @Column(name = "Nombres", nullable = false)
     private String nombres;
 
-    @Column(name = "Apellido_paterno")
+    @Column(name = "Apellido_paterno", nullable = false)
     private String apellidoPaterno;
 
-    @Column(name = "Apellido_materno")
+    @Column(name = "Apellido_materno", nullable = false)
     private String apellidoMaterno;
 
-    @Column(name = "Telefono")
+    @Column(name = "Telefono", nullable = false)
     private String telefono;
 
+    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private List<Tramite> tramites;
+    
+    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private List<Vehiculo> vehiculos;
+    
     public String getRfc() {
         return rfc;
     }
