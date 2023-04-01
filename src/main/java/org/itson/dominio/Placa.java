@@ -28,13 +28,13 @@ public class Placa extends Tramite implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "Estado")
+    @Column(name = "Estado", nullable = false)
     private boolean estado;
 
-    @Column(name = "Numero")
+    @Column(name = "Numero", nullable = false)
     private String numero;
 
-    @Column(name = "Fecha_recepcion")
+    @Column(name = "Fecha_recepcion", nullable = false)
     private Date fechaRecepcion;
 
     @ManyToOne

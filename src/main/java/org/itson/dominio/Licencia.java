@@ -25,13 +25,13 @@ public class Licencia extends Tramite implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "Estado")
+    @Column(name = "Estado", nullable = false)
     private boolean estado;
 
-    @Column(name = "Discapacitado")
+    @Column(name = "Discapacitado", nullable = false)
     private boolean discapacitado;
 
-    @Column(name = "Vigencia")
+    @Column(name = "Vigencia", nullable = false)
     private int vigencia;
 
     public Long getId() {
