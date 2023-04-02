@@ -8,12 +8,12 @@ package org.itson.presentacion;
  *
  * @author JORGE
  */
-public class Licencia extends javax.swing.JFrame {
+public class LicenciaForm extends javax.swing.JFrame {
 
     /**
      * Creates new form Licencia
      */
-    public Licencia() {
+    public LicenciaForm() {
         initComponents();
     }
 

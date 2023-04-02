@@ -11,12 +11,12 @@ import org.itson.interfaces.IPersonaDAO;
  *
  * @author JORGE
  */
-public class MenuPrincipal extends javax.swing.JFrame {
+public class MenuForm extends javax.swing.JFrame {
 
     /**
      * Creates new form MenuPrincipal
      */
-    public MenuPrincipal() {
+    public MenuForm() {
         initComponents();
     }
 

@@ -4,7 +4,7 @@
 
 package com.itson.lulutenencia;
 
-import org.itson.presentacion.MenuPrincipal;
+import org.itson.presentacion.MenuForm;
 
 /**
  *
@@ -13,7 +13,6 @@ import org.itson.presentacion.MenuPrincipal;
 public class LuluTenencia {
 
     public static void main(String[] args) {
-      new MenuPrincipal().setVisible(true);
-        System.out.println("lulu");
+      new MenuForm().setVisible(true);
     }
 }
