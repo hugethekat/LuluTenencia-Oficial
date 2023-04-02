@@ -5,19 +5,26 @@
 package org.itson.daos;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
 import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
  *
  * @author JORGE
  */
-public class PersonasDAO implements IPersonaDAO {
+public class PersonaDAO implements IPersonaDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
@@ -122,6 +129,15 @@ public class PersonasDAO implements IPersonaDAO {
             em.close();
             emf.close();
         }
+    }
 
+    @Override
+    public Persona consultar(String RFC) throws PersistenciaException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery consulta = cb.createQuery(Persona.class);
+        Root<Persona> root = consulta.from(Persona.class);
+        consulta.where(cb.equal(root.get("rfc"), RFC));
+        TypedQuery<Persona> query = em.createQuery(consulta);
+        return query.getSingleResult();
     }
 }

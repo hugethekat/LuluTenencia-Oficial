@@ -5,6 +5,7 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Tramite implements Serializable {
     private Long id;
 
     @Column(name = "Fecha_expedicion", nullable = false)
-    private Date fechaExpedicion;
+    private LocalDate fechaExpedicion;
 
     @Column(name = "Costo", nullable = false)
     private double costo;
@@ -69,6 +70,22 @@ public class Tramite implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Tramite(Long id, LocalDate fechaExpedicion, double costo, Persona persona) {
+        this.id = id;
+        this.fechaExpedicion = fechaExpedicion;
+        this.costo = costo;
+        this.persona = persona;
+    }
+
+    public Tramite(LocalDate fechaExpedicion, double costo, Persona persona) {
+        this.fechaExpedicion = fechaExpedicion;
+        this.costo = costo;
+        this.persona = persona;
+    }
+
+    public Tramite() {
     }
 
     @Override

@@ -5,6 +5,7 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +48,26 @@ public class Placa extends Tramite implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Placa(Long id, boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, Long TramiteId, LocalDate fechaExpedicion, double costo, Persona persona) {
+        super(TramiteId, fechaExpedicion, costo, persona);
+        this.id = id;
+        this.estado = estado;
+        this.numero = numero;
+        this.fechaRecepcion = fechaRecepcion;
+        this.vehiculo = vehiculo;
+    }
+
+    public Placa(boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, LocalDate fechaExpedicion, double costo, Persona persona) {
+        super(fechaExpedicion, costo, persona);
+        this.estado = estado;
+        this.numero = numero;
+        this.fechaRecepcion = fechaRecepcion;
+        this.vehiculo = vehiculo;
+    }
+
+    public Placa() {
     }
 
     @Override

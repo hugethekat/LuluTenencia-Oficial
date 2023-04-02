@@ -4,7 +4,7 @@
  */
 package org.itson.presentacion;
 
-import org.itson.daos.PersonasDAO;
+import org.itson.daos.PersonaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
@@ -152,11 +152,13 @@ public class MenuForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTramiteLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramiteLicenciaActionPerformed
-        // TODO add your handling code here:
+        LicenciaForm lf = new LicenciaForm();
+        lf.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnTramiteLicenciaActionPerformed
 
     private void btnInsercionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionActionPerformed
-        IPersonaDAO ip = new PersonasDAO();
+        IPersonaDAO ip = new PersonaDAO();
         ip.insertarPersonas();
     }//GEN-LAST:event_btnInsercionActionPerformed
 
