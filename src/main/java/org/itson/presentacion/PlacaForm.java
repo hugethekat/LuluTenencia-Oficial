@@ -4,6 +4,14 @@
  */
 package org.itson.presentacion;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.itson.daos.PersonaDAO;
+import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.IPersonaDAO;
+
 /**
  *
  * @author JORGE
@@ -98,6 +106,11 @@ public class PlacaForm extends javax.swing.JFrame {
         btnRfc.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btnRfc.setForeground(new java.awt.Color(0, 0, 0));
         btnRfc.setText("Buscar");
+        btnRfc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRfcActionPerformed(evt);
+            }
+        });
 
         btnSerie.setBackground(new java.awt.Color(255, 255, 255));
         btnSerie.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
@@ -245,6 +258,22 @@ public class PlacaForm extends javax.swing.JFrame {
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void btnRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRfcActionPerformed
+        String rfc = this.txtfRfc.getText();
+        IPersonaDAO dao = new PersonaDAO();
+         Persona persona = new Persona();
+        try{
+            if(dao.consultarLicencia(rfc)){
+                persona = dao.consultar(rfc);
+                this.txtfNombre.setText(persona.getNombres() + " " +persona.getApellidoPaterno() + " "+persona.getApellidoMaterno());
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRfcActionPerformed
 
  
 

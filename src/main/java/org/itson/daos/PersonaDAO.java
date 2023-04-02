@@ -13,10 +13,14 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
+import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
+import org.itson.dominio.Tramite;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
 
@@ -131,6 +135,12 @@ public class PersonaDAO implements IPersonaDAO {
         }
     }
 
+    /**
+     * Método que consulta la existencia de una persona mediante su rfc
+     * @param RFC cadena de caracteres identificadores de la persona
+     * @return regresa un objeto de tipo persona a la que le corresonde ese rfc
+     * @throws PersistenciaException 
+     */
     @Override
     public Persona consultar(String RFC) throws PersistenciaException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -138,6 +148,28 @@ public class PersonaDAO implements IPersonaDAO {
         Root<Persona> root = consulta.from(Persona.class);
         consulta.where(cb.equal(root.get("rfc"), RFC));
         TypedQuery<Persona> query = em.createQuery(consulta);
+        return query.getSingleResult();
+    }
+
+    /**
+     * Método que consulta si una persona tiene una licencia valida mediante su rfc
+     * @param RFC cadena de caracteres identificadores de la persona
+     * @return regresa un boleano, verdadero si la persona tiene una licencia vigente, falso si no tiene una
+     * @throws PersistenciaException 
+     */
+    @Override
+    public boolean consultarLicencia(String RFC) throws PersistenciaException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Boolean> consulta = cb.createQuery(Boolean.class);
+        Root<Persona> root = consulta.from(Persona.class);
+
+        Join<Persona, Tramite> joinTramitePersona = root.join("tramites");
+        Join<Tramite, Licencia> joinLicenciaTramite = cb.treat(joinTramitePersona, Licencia.class).join("licencia", JoinType.INNER);
+
+        consulta.select(cb.literal(true)).where(cb.and(cb.equal(root.get("rfc"), RFC),
+                cb.equal(joinLicenciaTramite.get("estado"), true))).distinct(true);
+        
+        TypedQuery<Boolean> query = em.createQuery(consulta);
         return query.getSingleResult();
     }
 }

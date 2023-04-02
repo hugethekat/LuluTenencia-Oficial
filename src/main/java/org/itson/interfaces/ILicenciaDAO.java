@@ -4,6 +4,7 @@
  */
 package org.itson.interfaces;
 
+import org.itson.dominio.Licencia;
 import org.itson.excepciones.PersistenciaException;
 
 /**

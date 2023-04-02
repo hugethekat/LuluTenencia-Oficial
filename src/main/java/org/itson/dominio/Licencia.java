@@ -36,13 +36,6 @@ public class Licencia extends Tramite implements Serializable {
     @Column(name = "Vigencia", nullable = false)
     private int vigencia;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public boolean isEstado() {
         return estado;

@@ -4,17 +4,15 @@
  */
 package org.itson.interfaces;
 
-import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
-import org.itson.dominio.Tramite;
+import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 
 /**
  *
- * @author xeron
+ * @author JORGE
  */
-public interface IPersonaDAO {
-    public void insertarPersonas();
-    public Persona consultar(String RFC) throws PersistenciaException;
-    public boolean consultarLicencia(String RFC) throws PersistenciaException;
+public interface IVehiculoDAO {
+    public Vehiculo consultar(String no_serie) throws PersistenciaException;
+    public void insertarVehiculo(String no_serie, String color, String linea, String marca, String modelo,  Persona persona) throws PersistenciaException;
 }
