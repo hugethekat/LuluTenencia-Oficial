@@ -14,5 +14,6 @@ public class LuluTenencia {
 
     public static void main(String[] args) {
       new MenuPrincipal().setVisible(true);
+        System.out.println("lulu");
     }
 }
