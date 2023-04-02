@@ -4,6 +4,8 @@
 
 package com.itson.lulutenencia;
 
+import org.itson.presentacion.MenuPrincipal;
+
 /**
  *
  * @author xeron
@@ -11,6 +13,6 @@ package com.itson.lulutenencia;
 public class LuluTenencia {
 
     public static void main(String[] args) {
-        System.out.println("qu onda lulu!");
+      new MenuPrincipal().setVisible(true);
     }
 }

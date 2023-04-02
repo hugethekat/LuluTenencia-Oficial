@@ -4,6 +4,9 @@
  */
 package org.itson.presentacion;
 
+import org.itson.daos.PersonasDAO;
+import org.itson.interfaces.IPersonaDAO;
+
 /**
  *
  * @author JORGE
@@ -32,7 +35,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         btnTramitePlacas = new javax.swing.JButton();
         btnReporteTramites = new javax.swing.JButton();
         btnConsutaTramites = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnInsercion = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,12 +45,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(0, 153, 255));
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Lulutenencia");
 
-        btnTramiteLicencia.setBackground(new java.awt.Color(255, 255, 255));
         btnTramiteLicencia.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnTramiteLicencia.setForeground(new java.awt.Color(0, 0, 0));
         btnTramiteLicencia.setText("Tramitar licencia");
         btnTramiteLicencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,30 +55,35 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnTramitePlacas.setBackground(new java.awt.Color(255, 255, 255));
         btnTramitePlacas.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnTramitePlacas.setForeground(new java.awt.Color(0, 0, 0));
         btnTramitePlacas.setText("Tramitar placa");
 
-        btnReporteTramites.setBackground(new java.awt.Color(255, 255, 255));
         btnReporteTramites.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnReporteTramites.setForeground(new java.awt.Color(0, 0, 0));
         btnReporteTramites.setText("Reporte de tramites");
 
-        btnConsutaTramites.setBackground(new java.awt.Color(255, 255, 255));
         btnConsutaTramites.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnConsutaTramites.setForeground(new java.awt.Color(0, 0, 0));
         btnConsutaTramites.setText("Consultar tramites");
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Inserción masiva de personas");
+        btnInsercion.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnInsercion.setText("Inserción masiva de personas");
+        btnInsercion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInsercionMouseClicked(evt);
+            }
+        });
+        btnInsercion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsercionActionPerformed(evt);
+            }
+        });
 
-        btnSalir.setBackground(new java.awt.Color(255, 255, 255));
         btnSalir.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,7 +93,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(jButton1))
+                        .addComponent(btnInsercion))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(128, 128, 128)
                         .addComponent(btnTramiteLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -126,7 +131,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(btnConsutaTramites, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnInsercion)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
         );
@@ -150,15 +155,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTramiteLicenciaActionPerformed
 
+    private void btnInsercionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionActionPerformed
+        IPersonaDAO ip = new PersonasDAO();
+        ip.insertarPersonas();
+    }//GEN-LAST:event_btnInsercionActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnInsercionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsercionMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInsercionMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsutaTramites;
+    private javax.swing.JButton btnInsercion;
     private javax.swing.JButton btnReporteTramites;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnTramiteLicencia;
     private javax.swing.JButton btnTramitePlacas;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

@@ -5,13 +5,11 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
@@ -19,19 +17,15 @@ import javax.persistence.Table;
 
 /**
  *
- * @author xeron
+ * @author xeron 
  */
 @Entity
 @Table(name = "Personas")
 public class Persona implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RFC")
     private String rfc;
-
-    @Column(name = "Fecha_nacimiento", nullable = false)
-    private Date fechaNacimiento;
 
     @Column(name = "Nombres", nullable = false)
     private String nombres;
@@ -45,12 +39,15 @@ public class Persona implements Serializable {
     @Column(name = "Telefono", nullable = false)
     private String telefono;
 
-    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @Column(name = "Fecha_nacimiento", nullable = false)
+    private LocalDate fechaNacimiento;
+
+    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE})
     private List<Tramite> tramites;
-    
-    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+
+    @OneToMany(mappedBy = "persona", cascade = {CascadeType.REMOVE})
     private List<Vehiculo> vehiculos;
-    
+
     public String getRfc() {
         return rfc;
     }
@@ -59,11 +56,11 @@ public class Persona implements Serializable {
         this.rfc = rfc;
     }
 
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -137,7 +134,7 @@ public class Persona implements Serializable {
         return Objects.equals(this.rfc, other.rfc);
     }
 
-    public Persona(String rfc, Date fechaNacimiento, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono) {
+    public Persona(String rfc, LocalDate fechaNacimiento, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono) {
         this.rfc = rfc;
         this.fechaNacimiento = fechaNacimiento;
         this.nombres = nombres;
