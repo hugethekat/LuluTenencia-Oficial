@@ -39,15 +39,19 @@ public class MenuForm extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu principal");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setForeground(new java.awt.Color(0, 153, 255));
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Lulutenencia");
 
+        btnTramiteLicencia.setBackground(new java.awt.Color(255, 255, 255));
         btnTramiteLicencia.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnTramiteLicencia.setForeground(new java.awt.Color(0, 0, 0));
         btnTramiteLicencia.setText("Tramitar licencia");
         btnTramiteLicencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,16 +59,39 @@ public class MenuForm extends javax.swing.JFrame {
             }
         });
 
+        btnTramitePlacas.setBackground(new java.awt.Color(255, 255, 255));
         btnTramitePlacas.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnTramitePlacas.setForeground(new java.awt.Color(0, 0, 0));
         btnTramitePlacas.setText("Tramitar placa");
+        btnTramitePlacas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTramitePlacasActionPerformed(evt);
+            }
+        });
 
+        btnReporteTramites.setBackground(new java.awt.Color(255, 255, 255));
         btnReporteTramites.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnReporteTramites.setForeground(new java.awt.Color(0, 0, 0));
         btnReporteTramites.setText("Reporte de tramites");
+        btnReporteTramites.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteTramitesActionPerformed(evt);
+            }
+        });
 
+        btnConsutaTramites.setBackground(new java.awt.Color(255, 255, 255));
         btnConsutaTramites.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnConsutaTramites.setForeground(new java.awt.Color(0, 0, 0));
         btnConsutaTramites.setText("Consultar tramites");
+        btnConsutaTramites.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsutaTramitesActionPerformed(evt);
+            }
+        });
 
+        btnInsercion.setBackground(new java.awt.Color(255, 255, 255));
         btnInsercion.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnInsercion.setForeground(new java.awt.Color(0, 0, 0));
         btnInsercion.setText("Inserción masiva de personas");
         btnInsercion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -77,7 +104,9 @@ public class MenuForm extends javax.swing.JFrame {
             }
         });
 
+        btnSalir.setBackground(new java.awt.Color(255, 255, 255));
         btnSalir.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +198,22 @@ public class MenuForm extends javax.swing.JFrame {
     private void btnInsercionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsercionMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnInsercionMouseClicked
+
+    private void btnTramitePlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitePlacasActionPerformed
+        PlacaForm pf = new PlacaForm();
+        pf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnTramitePlacasActionPerformed
+
+    private void btnConsutaTramitesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsutaTramitesActionPerformed
+        ConsultaTramites1Form ct1 = new ConsultaTramites1Form();
+        ct1.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnConsutaTramitesActionPerformed
+
+    private void btnReporteTramitesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteTramitesActionPerformed
+        
+    }//GEN-LAST:event_btnReporteTramitesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
