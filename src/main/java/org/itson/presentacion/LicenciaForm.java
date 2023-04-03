@@ -75,12 +75,9 @@ public class LicenciaForm extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Tramitar licencias");
 
-        btnTramitar.setBackground(new java.awt.Color(255, 255, 255));
         btnTramitar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnTramitar.setForeground(new java.awt.Color(0, 0, 0));
         btnTramitar.setText("Tramitar Licencia");
         btnTramitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,18 +86,14 @@ public class LicenciaForm extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("RFC");
 
         txtNombre.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Nombres");
 
-        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscar.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,23 +102,19 @@ public class LicenciaForm extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Fecha nacimiento");
 
         txtFechaNac.setEditable(false);
 
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Teléfono");
 
         txtTelefono.setEditable(false);
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Discapacidad");
 
         jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Vigencia en años");
 
         cbxVigencia.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -140,27 +129,22 @@ public class LicenciaForm extends javax.swing.JFrame {
         checkDiscapacidad.setMargin(new java.awt.Insets(6, 6, 6, 6));
 
         jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Costo");
 
         txtCosto.setEditable(false);
         txtCosto.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Apellido Materno");
 
         jLabel10.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Apellido Paterno");
 
         txtAMaterno.setEditable(false);
 
         txtAPaterno.setEditable(false);
 
-        btnMenu.setBackground(new java.awt.Color(255, 255, 255));
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Regresar al menú");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

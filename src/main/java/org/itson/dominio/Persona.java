@@ -25,7 +25,7 @@ public class Persona implements Serializable {
 
     @Id
     @Column(name = "RFC")
-    private String rfc;
+    public String rfc;
 
     @Column(name = "Nombres", nullable = false)
     private String nombres;

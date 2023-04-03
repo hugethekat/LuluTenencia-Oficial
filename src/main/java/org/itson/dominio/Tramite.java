@@ -42,6 +42,31 @@ public class Tramite implements Serializable {
     @JoinColumn(name = "rfc_persona", referencedColumnName = "RFC", nullable = false)
     private Persona persona;
 
+    public LocalDate getFechaExpedicion() {
+        return fechaExpedicion;
+    }
+
+    public void setFechaExpedicion(LocalDate fechaExpedicion) {
+        this.fechaExpedicion = fechaExpedicion;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    
     
     public Long getId() {
         return id;

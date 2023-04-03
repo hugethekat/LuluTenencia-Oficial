@@ -7,9 +7,11 @@ package org.itson.presentacion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
 import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
@@ -18,6 +20,8 @@ import org.itson.interfaces.IPersonaDAO;
  */
 public class PlacaForm extends javax.swing.JFrame {
 
+    IPersonaDAO dao = new PersonaDAO();
+    ILicenciaDAO daoL = new LicenciaDAO();
     /**
      * Creates new form PlacaForm
      */
@@ -71,40 +75,32 @@ public class PlacaForm extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Tramitar placas");
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("RFC");
 
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("No. Serie");
 
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Marca");
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Línea");
 
         jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Color");
 
         jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Modelo");
 
         jLabel9.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Nombre");
 
-        btnRfc.setBackground(new java.awt.Color(255, 255, 255));
+        txtfNombre.setEditable(false);
+
         btnRfc.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        btnRfc.setForeground(new java.awt.Color(0, 0, 0));
         btnRfc.setText("Buscar");
         btnRfc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,27 +108,19 @@ public class PlacaForm extends javax.swing.JFrame {
             }
         });
 
-        btnSerie.setBackground(new java.awt.Color(255, 255, 255));
         btnSerie.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        btnSerie.setForeground(new java.awt.Color(0, 0, 0));
         btnSerie.setText("Buscar");
 
         jLabel10.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Tipo");
 
         jLabel11.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Costo");
 
-        btnTramitarPlaca.setBackground(new java.awt.Color(255, 255, 255));
         btnTramitarPlaca.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnTramitarPlaca.setForeground(new java.awt.Color(0, 0, 0));
         btnTramitarPlaca.setText("Tramitar placa");
 
-        btnMenu.setBackground(new java.awt.Color(255, 255, 255));
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Regresar al menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,13 +249,12 @@ public class PlacaForm extends javax.swing.JFrame {
 
     private void btnRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRfcActionPerformed
         String rfc = this.txtfRfc.getText();
-        IPersonaDAO dao = new PersonaDAO();
-         Persona persona = new Persona();
-        try{
-            if(dao.consultarLicencia(rfc)){
+        Persona persona = new Persona();
+        try {
+            if (daoL.consultarLicencia(rfc)) {
                 persona = dao.consultar(rfc);
-                this.txtfNombre.setText(persona.getNombres() + " " +persona.getApellidoPaterno() + " "+persona.getApellidoMaterno());
-            }else{
+                this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+            } else {
                 JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
             }
         } catch (PersistenciaException ex) {
@@ -275,7 +262,6 @@ public class PlacaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRfcActionPerformed
 
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMenu;

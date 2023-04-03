@@ -5,11 +5,21 @@
 package org.itson.daos;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
 import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
+import org.itson.dominio.Tramite;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.ILicenciaDAO;
 
@@ -23,7 +33,8 @@ public class LicenciaDAO implements ILicenciaDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
-@Override
+
+    @Override
     public void insertarLicencia(String RFC, String nombres, String APaterno, String AMaterno, String FechaNac, String Telefono, boolean discapacidad, double costo, int vigencia) throws PersistenciaException {
 
         try {
@@ -35,6 +46,7 @@ public class LicenciaDAO implements ILicenciaDAO {
             em.persist(licencia);
 
             em.getTransaction().commit();
+            JOptionPane.showMessageDialog(null, "Se insertó correctamente la licencia.");
         } catch (Exception ex) {
             em.getTransaction().rollback();
             throw new PersistenciaException("Hubo un error al insertar la licencia");
@@ -44,6 +56,28 @@ public class LicenciaDAO implements ILicenciaDAO {
 
     }
 
-  
+    public void actualizarEstadoLicencia(Long idLicencia) {
+        Licencia licencia = em.find(Licencia.class, idLicencia);
+        if (licencia != null && licencia.isEstado()) {
+            em.getTransaction().begin();
+            licencia.setEstado(false);
+            em.merge(licencia);
+            em.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public boolean consultarLicencia(String RFC) throws PersistenciaException {
+        List<Licencia> licencias = (List<Licencia>) em.createQuery("SELECT l FROM Licencia l  WHERE l.persona.rfc = :rfc", Licencia.class).setParameter("rfc", RFC).getResultList();
+
+        for (Licencia licencia : licencias) {
+            if (licencia.getFechaExpedicion().plusYears(licencia.getVigencia()).isAfter(now)) {
+                return true;
+            } else {
+                actualizarEstadoLicencia(licencia.getId());
+            }
+        }
+        return false;
+    }
 
 }
