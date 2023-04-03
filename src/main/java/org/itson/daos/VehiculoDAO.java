@@ -31,7 +31,7 @@ public class VehiculoDAO implements IVehiculoDAO{
      * Método que consulta la existencia de un vehículo mediante su número de serie
      * @param no_serie cadena de caracteres identificadores del vehículo
      * @return regresa un objeto de tipo vehículo al que le corresponde ese número de serie
-     * @throws PersistenciaException 
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
      */
     @Override
     public Vehiculo consultar(String no_serie) throws PersistenciaException {
@@ -51,7 +51,7 @@ public class VehiculoDAO implements IVehiculoDAO{
      * @param marca marca representativa del vehículo
      * @param modelo modelo representativo del vehículo
      * @param persona persona a la que le pertenece el vehículo
-     * @throws PersistenciaException 
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
      */
     @Override
     public void insertarVehiculo(String no_serie, String color, String linea, String marca, String modelo, Persona persona) throws PersistenciaException {

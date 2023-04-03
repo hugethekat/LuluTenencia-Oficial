@@ -50,6 +50,39 @@ public class Placa extends Tramite implements Serializable {
         this.id = id;
     }
 
+    public boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    
     public Placa(Long id, boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, Long TramiteId, LocalDate fechaExpedicion, double costo, Persona persona) {
         super(TramiteId, fechaExpedicion, costo, persona);
         this.id = id;

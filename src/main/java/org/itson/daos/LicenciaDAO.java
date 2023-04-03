@@ -34,6 +34,19 @@ public class LicenciaDAO implements ILicenciaDAO {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
 
+    /**
+     * Método que registra una licencia a una persona
+     * @param RFC cadena de caracteres identificadores de la persona 
+     * @param nombres nombre de la persona
+     * @param APaterno apellido paterno de la persona
+     * @param AMaterno apellido materno de la persona
+     * @param FechaNac fecha de nacimiento de la persona
+     * @param Telefono teléfono de la persona
+     * @param discapacidad boleano que representa si la persona tiene alguna discapacidad o no
+     * @param costo costo de la licencia
+     * @param vigencia vigencia en años de la licencia
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     */
     @Override
     public void insertarLicencia(String RFC, String nombres, String APaterno, String AMaterno, String FechaNac, String Telefono, boolean discapacidad, double costo, int vigencia) throws PersistenciaException {
 
@@ -56,6 +69,10 @@ public class LicenciaDAO implements ILicenciaDAO {
 
     }
 
+    /**
+     * Método que actualiza el estado de la licencia a una sin vigencia
+     * @param idLicencia Identificador de la licencia  a la que se le cambiara el estado
+     */
     public void actualizarEstadoLicencia(Long idLicencia) {
         Licencia licencia = em.find(Licencia.class, idLicencia);
         if (licencia != null && licencia.isEstado()) {
@@ -66,6 +83,13 @@ public class LicenciaDAO implements ILicenciaDAO {
         }
     }
 
+    
+    /**
+     * Método que consulta una licencia vigente metiande el rfc de la persona a la que le pertenece la licencia
+     * @param RFC Identificador de la persona a la que se le consultarán las licencias
+     * @return Regresa un boleano, true si encuentra una licencia vigente, false si no hay una vigente
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     */
     @Override
     public boolean consultarLicencia(String RFC) throws PersistenciaException {
         List<Licencia> licencias = (List<Licencia>) em.createQuery("SELECT l FROM Licencia l  WHERE l.persona.rfc = :rfc", Licencia.class).setParameter("rfc", RFC).getResultList();
