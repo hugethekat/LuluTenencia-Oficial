@@ -9,10 +9,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
+import org.itson.daos.PlacaDAO;
+import org.itson.daos.VehiculoDAO;
 import org.itson.dominio.Persona;
+import org.itson.dominio.Placa;
+import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
+import org.itson.interfaces.IPlacaDAO;
+import org.itson.interfaces.IVehiculoDAO;
 
 /**
  *
@@ -22,6 +28,8 @@ public class PlacaForm extends javax.swing.JFrame {
 
     IPersonaDAO dao = new PersonaDAO();
     ILicenciaDAO daoL = new LicenciaDAO();
+    IVehiculoDAO daoV = new VehiculoDAO();
+    IPlacaDAO daoP = new PlacaDAO();
     /**
      * Creates new form PlacaForm
      */
@@ -100,6 +108,14 @@ public class PlacaForm extends javax.swing.JFrame {
 
         txtfNombre.setEditable(false);
 
+        txtfMarca.setEditable(false);
+
+        txtfLinea.setEditable(false);
+
+        txtfColor.setEditable(false);
+
+        txtfModelo.setEditable(false);
+
         btnRfc.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btnRfc.setText("Buscar");
         btnRfc.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +126,11 @@ public class PlacaForm extends javax.swing.JFrame {
 
         btnSerie.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btnSerie.setText("Buscar");
+        btnSerie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSerieActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel10.setText("Tipo");
@@ -117,8 +138,18 @@ public class PlacaForm extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel11.setText("Costo");
 
+        txtfTipo.setEditable(false);
+
+        txtfCosto.setEditable(false);
+
         btnTramitarPlaca.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnTramitarPlaca.setText("Tramitar placa");
+        btnTramitarPlaca.setEnabled(false);
+        btnTramitarPlaca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTramitarPlacaActionPerformed(evt);
+            }
+        });
 
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         btnMenu.setText("Regresar al menu");
@@ -262,6 +293,46 @@ public class PlacaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRfcActionPerformed
 
+    private void btnSerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSerieActionPerformed
+        String no_serie = this.txtfSerie.getText();
+        try{
+            Vehiculo vehiculo = daoV.consultar(no_serie);
+            this.txtfMarca.setText(vehiculo.getMarca());
+            this.txtfLinea.setText(vehiculo.getLinea());
+            this.txtfColor.setText(vehiculo.getColor());
+            this.txtfModelo.setText(vehiculo.getModelo());  
+            this.btnTramitarPlaca.setEnabled(true);
+        }catch(PersistenciaException ex){
+            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE,null,ex);
+        }
+    }//GEN-LAST:event_btnSerieActionPerformed
+
+    private void btnTramitarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarPlacaActionPerformed
+
+        //Hacer clase costo para las placas
+        double costo = Double.parseDouble(this.txtfCosto.getText());
+        
+        try{
+            Vehiculo vehiculo = daoV.consultar(this.txtfSerie.getText());
+            Persona persona = dao.consultar(this.txtfRfc.getText());
+            Placa placa = daoP.consultarPlacaActiva(vehiculo.getNoSerie());
+            
+            if(dao.consultarLicencia(persona.getRfc())){
+                if(placa != null){
+                    daoP.insertarPlaca(persona, vehiculo, costo);
+                }else{
+                    daoP.actualizarEstadoPlaca(placa.getId());
+                    daoP.insertarPlaca(persona, vehiculo, costo);
+                }
+            }
+        }catch(PersistenciaException ex){
+            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+    }//GEN-LAST:event_btnTramitarPlacaActionPerformed
+
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMenu;

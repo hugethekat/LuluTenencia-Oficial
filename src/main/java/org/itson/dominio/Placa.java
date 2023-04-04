@@ -100,6 +100,15 @@ public class Placa extends Tramite implements Serializable {
         this.vehiculo = vehiculo;
     }
 
+    public Placa(boolean estado, String numero, Vehiculo vehiculo, LocalDate fechaExpedicion, double costo, Persona persona) {
+        super(fechaExpedicion, costo, persona);
+        this.estado = estado;
+        this.numero = numero;
+        this.vehiculo = vehiculo;
+    }
+
+
+    
     public Placa() {
     }
 

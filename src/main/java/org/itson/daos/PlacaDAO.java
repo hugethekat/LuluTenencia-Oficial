@@ -15,17 +15,20 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
+import org.itson.dominio.Persona;
 import org.itson.dominio.Placa;
+import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPlacaDAO;
-
+import org.apache.commons.lang3.RandomStringUtils;
 /**
  *
  * @author JORGE
  */
 public class PlacaDAO implements IPlacaDAO{
 
-
+   LocalDate now = LocalDate.now();
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
     
@@ -75,6 +78,36 @@ public class PlacaDAO implements IPlacaDAO{
             em.merge(placa);
             em.getTransaction().commit();
         }
+    }
+
+    /**
+     * Método que registra una placa 
+     * @param persona persona la cual tramitó la placa
+     * @param vehiculo vehículo al que le pertenece la placa
+     * @param costo costo de la placa
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     */
+    @Override
+    public void insertarPlaca(Persona persona, Vehiculo vehiculo,  double costo) throws PersistenciaException {
+        String c = RandomStringUtils.randomAlphabetic(3).toUpperCase();
+        String b = RandomStringUtils.randomNumeric(3);
+        String numero = c + "-" + b;
+
+        try {
+            em.getTransaction().begin();
+            Placa placa = new Placa(true, numero, vehiculo, now, costo, persona);
+
+            em.persist(placa);
+
+            em.getTransaction().commit();
+            JOptionPane.showMessageDialog(null, "Se insertó correctamente la placa");
+        } catch (Exception ex) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Hubo un error al insertar la placa");
+        } finally {
+            em.close();
+        }
+        
     }
     
 }

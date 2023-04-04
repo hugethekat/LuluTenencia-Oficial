@@ -66,6 +66,5 @@ public class VehiculoDAO implements IVehiculoDAO{
             em.close();
         }
     }
-    
-    
+
 }

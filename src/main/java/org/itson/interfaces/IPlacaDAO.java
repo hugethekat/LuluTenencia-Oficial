@@ -5,7 +5,9 @@
 package org.itson.interfaces;
 
 import java.util.List;
+import org.itson.dominio.Persona;
 import org.itson.dominio.Placa;
+import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 
 /**
@@ -15,4 +17,5 @@ import org.itson.excepciones.PersistenciaException;
 public interface IPlacaDAO {
     public Placa consultarPlacaActiva(String no_serie) throws PersistenciaException;
     public void actualizarEstadoPlaca(Long idPlaca) throws PersistenciaException;
+    public void insertarPlaca(Persona persona, Vehiculo vehiculo, double costo) throws PersistenciaException;
 }
