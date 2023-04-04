@@ -8,8 +8,6 @@ import java.security.Key;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
 

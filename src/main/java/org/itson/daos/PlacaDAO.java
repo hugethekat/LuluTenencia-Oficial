@@ -4,6 +4,8 @@
  */
 package org.itson.daos;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.Date;
@@ -12,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,7 +35,9 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class PlacaDAO implements IPlacaDAO {
 
-    LocalDate now = LocalDate.now();
+    Date now = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    String formattedDate = sdf.format(now);
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
 
@@ -56,7 +61,24 @@ public class PlacaDAO implements IPlacaDAO {
             consulta.where(predicado);
             TypedQuery<Placa> query = em.createQuery(consulta);
             Placa placaActiva = query.getSingleResult();
+            System.out.println(placaActiva);
             return placaActiva;
+        } catch (NoResultException ex) {
+            return null;
+
+        }
+    }
+
+    /**
+     * Método que consulta una placa según su id;
+     *
+     * @param id
+     * @return regresa la placa
+     */
+    @Override
+    public Placa consultarPlaca(Long id) {
+        try {
+            return em.find(Placa.class, id);
         } catch (NoResultException ex) {
             return null;
         }
@@ -65,20 +87,27 @@ public class PlacaDAO implements IPlacaDAO {
     /**
      * Método que actualiza el estado de la placa de activa a inactiva
      *
-     * @param idPlaca Identificador de la placa a la que se le cambiara el
-     * estado
+     * @param num
      * @throws PersistenciaException Arroja una excepción cuando ocurre un error
      * en el método
      */
     @Override
-    public void actualizarEstadoPlaca(Long idPlaca) throws PersistenciaException {
-        Placa placa = em.find(Placa.class, idPlaca);
-        if (placa != null && placa.getEstado()) {
-            em.getTransaction().begin();
-            placa.setEstado(false);
-            placa.setFechaRecepcion(new Date());
-            em.merge(placa);
-            em.getTransaction().commit();
+    public void actualizarEstadoPlaca(String num) throws PersistenciaException {
+
+        TypedQuery<Placa> query = em.createQuery("SELECT p FROM Placa p WHERE p.numero = :numero", Placa.class);
+        query.setParameter("numero", num);
+        Placa placa = query.getSingleResult();
+        try {
+            Date fechaChila = sdf.parse(formattedDate);
+            if (placa != null && placa.getEstado()) {
+                em.getTransaction().begin();
+                placa.setEstado(false);
+                placa.setFechaRecepcion(fechaChila);
+                em.merge(placa);
+                em.getTransaction().commit();
+            }
+        }catch (ParseException ex){
+            throw new PersistenciaException("Hubo un error al actualizar la placa");
         }
     }
 
@@ -98,9 +127,9 @@ public class PlacaDAO implements IPlacaDAO {
         String numero = c + "-" + b;
 
         try {
+            Date fechaChila = sdf.parse(formattedDate);
             em.getTransaction().begin();
-            Placa placa = new Placa(true, numero, vehiculo, now, costo, persona);
-
+            Placa placa = new Placa(true, numero, fechaChila, vehiculo, fechaChila, costo, persona);
             em.persist(placa);
 
             em.getTransaction().commit();
@@ -108,8 +137,6 @@ public class PlacaDAO implements IPlacaDAO {
         } catch (Exception ex) {
             em.getTransaction().rollback();
             throw new PersistenciaException("Hubo un error al insertar la placa");
-        } finally {
-            em.close();
         }
 
     }

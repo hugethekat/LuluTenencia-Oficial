@@ -305,7 +305,7 @@ public class PlacaForm extends javax.swing.JFrame {
         Costo c = new Costo();
 
         try {
-            Placa placa = daoP.consultarPlacaActiva(automovil.getNoSerie());
+            Placa placa = daoP.consultarPlacaActiva(no_serie);
             if (daoA.automovilExistencia(no_serie)) {
                 automovil = daoA.buscarAutomovil(no_serie);
                 this.txtfMarca.setText(automovil.getMarca());
@@ -314,15 +314,16 @@ public class PlacaForm extends javax.swing.JFrame {
                 this.txtfModelo.setText(automovil.getModelo());
                 this.btnTramitarPlaca.setEnabled(true);
 
-                if(placa != null){
+                if (placa != null) {
                     this.txtfTipo.setText("Usado");
                     this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
-                    
-                }else{
+
+                } else {
                     this.txtfTipo.setText("Nuevo");
                     this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
                 }
-                
+
+            } else {
                 int opcion = JOptionPane.showOptionDialog(null, "No. Serie erróneo o vehículo inexistente."
                         + "Deseas Agregarlo?", "Error",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, null);
@@ -330,8 +331,6 @@ public class PlacaForm extends javax.swing.JFrame {
                 if (opcion == JOptionPane.YES_OPTION) {
                     VehiculoForm vf = new VehiculoForm();
                     vf.setVisible(true);
-                } else {
-
                 }
             }
         } catch (Exception ex) {
@@ -341,22 +340,29 @@ public class PlacaForm extends javax.swing.JFrame {
 
     private void btnTramitarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarPlacaActionPerformed
 
-        //Hacer clase costo para las placas
+        //Hacer clase costo para las placas. ya existe pa 💪👍
         double costo = Double.parseDouble(this.txtfCosto.getText());
 
         try {
             Automovil automovil = daoA.buscarAutomovil(this.txtfSerie.getText());
             Persona persona = dao.consultar(this.txtfRfc.getText());
-            Placa placa = daoP.consultarPlacaActiva(automovil.getNoSerie());
+            Placa placaA = daoP.consultarPlacaActiva(txtfSerie.getText());
 
             if (daoL.consultarLicencia(persona.getRfc())) {
-                if (placa != null) {
+                if (placaA == null) {
                     daoP.insertarPlaca(persona, automovil, costo);
                 } else {
-                    daoP.actualizarEstadoPlaca(placa.getId());
                     daoP.insertarPlaca(persona, automovil, costo);
+                    daoP.actualizarEstadoPlaca(placaA.getNumero());
                 }
             }
+            this.txtfColor.setText("");
+            this.txtfCosto.setText("");
+            this.txtfLinea.setText("");
+            this.txtfMarca.setText("");
+            this.txtfModelo.setText("");
+            this.txtfSerie.setText("");
+            this.txtfTipo.setText("");
         } catch (PersistenciaException ex) {
             Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE, null, ex);
         }

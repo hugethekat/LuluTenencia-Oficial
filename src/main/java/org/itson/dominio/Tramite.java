@@ -33,7 +33,7 @@ public class Tramite implements Serializable {
     private Long id;
 
     @Column(name = "Fecha_expedicion", nullable = false)
-    private LocalDate fechaExpedicion;
+    private Date fechaExpedicion;
 
     @Column(name = "Costo", nullable = false)
     private double costo;
@@ -42,11 +42,11 @@ public class Tramite implements Serializable {
     @JoinColumn(name = "rfc_persona", referencedColumnName = "RFC", nullable = false)
     private Persona persona;
 
-    public LocalDate getFechaExpedicion() {
+    public Date getFechaExpedicion() {
         return fechaExpedicion;
     }
 
-    public void setFechaExpedicion(LocalDate fechaExpedicion) {
+    public void setFechaExpedicion(Date fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
     }
 
@@ -96,14 +96,14 @@ public class Tramite implements Serializable {
         return true;
     }
 
-    public Tramite(Long id, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Tramite(Long id, Date fechaExpedicion, double costo, Persona persona) {
         this.id = id;
         this.fechaExpedicion = fechaExpedicion;
         this.costo = costo;
         this.persona = persona;
     }
 
-    public Tramite(LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Tramite(Date fechaExpedicion, double costo, Persona persona) {
         this.fechaExpedicion = fechaExpedicion;
         this.costo = costo;
         this.persona = persona;

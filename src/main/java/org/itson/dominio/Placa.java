@@ -5,7 +5,6 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,8 +81,7 @@ public class Placa extends Tramite implements Serializable {
         this.vehiculo = vehiculo;
     }
 
-    
-    public Placa(Long id, boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, Long TramiteId, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Placa(Long id, boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, Long TramiteId, Date fechaExpedicion, double costo, Persona persona) {
         super(TramiteId, fechaExpedicion, costo, persona);
         this.id = id;
         this.estado = estado;
@@ -92,7 +90,7 @@ public class Placa extends Tramite implements Serializable {
         this.vehiculo = vehiculo;
     }
 
-    public Placa(boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Placa(boolean estado, String numero, Date fechaRecepcion, Vehiculo vehiculo, Date fechaExpedicion, double costo, Persona persona) {
         super(fechaExpedicion, costo, persona);
         this.estado = estado;
         this.numero = numero;
@@ -100,15 +98,13 @@ public class Placa extends Tramite implements Serializable {
         this.vehiculo = vehiculo;
     }
 
-    public Placa(boolean estado, String numero, Vehiculo vehiculo, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Placa(boolean estado, String numero, Vehiculo vehiculo, Date fechaExpedicion, double costo, Persona persona) {
         super(fechaExpedicion, costo, persona);
         this.estado = estado;
         this.numero = numero;
         this.vehiculo = vehiculo;
     }
 
-
-    
     public Placa() {
     }
 
@@ -134,7 +130,15 @@ public class Placa extends Tramite implements Serializable {
 
     @Override
     public String toString() {
-        return "org.itson.dominio.Placa[ id=" + id + " ]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Placa{");
+        sb.append("id=").append(id);
+        sb.append(", estado=").append(estado);
+        sb.append(", numero=").append(numero);
+        sb.append(", fechaRecepcion=").append(fechaRecepcion);
+        sb.append(", vehiculo=").append(vehiculo);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

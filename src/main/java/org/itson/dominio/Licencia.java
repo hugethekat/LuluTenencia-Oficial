@@ -6,6 +6,7 @@ package org.itson.dominio;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -85,7 +86,7 @@ public class Licencia extends Tramite implements Serializable {
         return "Licencia{" + "id=" + id + ", estado=" + estado + ", discapacitado=" + discapacitado + ", vigencia=" + vigencia + '}';
     }
 
-    public Licencia(Long id, boolean estado, boolean discapacitado, int vigencia, Long TramiteId, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Licencia(Long id, boolean estado, boolean discapacitado, int vigencia, Long TramiteId, Date fechaExpedicion, double costo, Persona persona) {
         super(TramiteId, fechaExpedicion, costo, persona);
         this.id = id;
         this.estado = estado;
@@ -93,7 +94,7 @@ public class Licencia extends Tramite implements Serializable {
         this.vigencia = vigencia;
     }
 
-    public Licencia(boolean estado, boolean discapacitado, int vigencia, LocalDate fechaExpedicion, double costo, Persona persona) {
+    public Licencia(boolean estado, boolean discapacitado, int vigencia, Date fechaExpedicion, double costo, Persona persona) {
         super(fechaExpedicion, costo, persona);
         this.estado = estado;
         this.discapacitado = discapacitado;

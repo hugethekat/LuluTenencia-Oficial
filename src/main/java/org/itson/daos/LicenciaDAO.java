@@ -4,9 +4,12 @@
  */
 package org.itson.daos;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -29,7 +32,9 @@ import org.itson.interfaces.ILicenciaDAO;
  */
 public class LicenciaDAO implements ILicenciaDAO {
 
-    LocalDate now = LocalDate.now();
+    Date now = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    String formattedDate = sdf.format(now);
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
@@ -54,10 +59,11 @@ public class LicenciaDAO implements ILicenciaDAO {
     public void insertarLicencia(String RFC, String nombres, String APaterno, String AMaterno, String FechaNac, String Telefono, boolean discapacidad, double costo, int vigencia) throws PersistenciaException {
 
         try {
+            Date fechaChila = sdf.parse(formattedDate);
             em.getTransaction().begin();
             Persona persona = new Persona(RFC, LocalDate.parse(FechaNac), nombres, APaterno, AMaterno, Telefono);
 
-            Licencia licencia = new Licencia(true, discapacidad, vigencia, now, costo, persona);
+            Licencia licencia = new Licencia(true, discapacidad, vigencia, fechaChila, costo, persona);
 
             em.persist(licencia);
 
@@ -104,7 +110,7 @@ public class LicenciaDAO implements ILicenciaDAO {
         List<Licencia> licencias = (List<Licencia>) em.createQuery("SELECT l FROM Licencia l  WHERE l.persona.rfc = :rfc", Licencia.class).setParameter("rfc", RFC).getResultList();
 
         for (Licencia licencia : licencias) {
-            if (licencia.getFechaExpedicion().plusYears(licencia.getVigencia()).isAfter(now)) {
+            if (licencia.getFechaExpedicion().getTime() + TimeUnit.DAYS.toMillis(licencia.getVigencia() * 365) > now.getTime()) {
                 return true;
             } else {
                 actualizarEstadoLicencia(licencia.getId());
