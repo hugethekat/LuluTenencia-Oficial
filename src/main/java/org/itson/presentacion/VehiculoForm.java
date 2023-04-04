@@ -6,10 +6,14 @@ package org.itson.presentacion;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import org.itson.daos.PersonaDAO;
+import org.itson.daos.VehiculoDAO;
 import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
+import org.itson.interfaces.IVehiculoDAO;
 
 /**
  *
@@ -18,6 +22,7 @@ import org.itson.interfaces.IPersonaDAO;
 public class VehiculoForm extends javax.swing.JFrame {
 
      IPersonaDAO dao = new PersonaDAO();
+     IVehiculoDAO daoV = new VehiculoDAO();
     
     /**
      * Creates new form VehiculoForm
@@ -93,6 +98,11 @@ public class VehiculoForm extends javax.swing.JFrame {
 
         btnRegistrar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnRegistrar.setText("Registrar vehículo");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
 
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         btnMenu.setText("Regresar al menú");
@@ -219,7 +229,6 @@ public class VehiculoForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
         String rfc = txtfRfc.getText();      
         try {
             Persona persona = dao.consultar(rfc);
@@ -229,6 +238,25 @@ public class VehiculoForm extends javax.swing.JFrame {
             Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        String rfc = this.txtfRfc.getText();
+        String no_serie = this.txtfSerie.getText();
+        String marca = this.txtfMarca.getText();
+        String linea = this.txtfLinea.getText();
+        String color = this.txtfLinea.getText();
+        String modelo = this.txtfModelo.getText();
+       
+         try {
+             if(dao.consultarLicencia(rfc)){
+                 daoV.insertarVehiculo(no_serie, color, linea, marca, modelo, dao.consultar(rfc));
+             }else{
+                JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
+             }
+         } catch (PersistenciaException ex) {
+             Logger.getLogger(VehiculoForm.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
