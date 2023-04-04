@@ -12,12 +12,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.itson.utils.Encriptador;
 
 /**
  *
- * @author xeron 
+ * @author xeron
  */
 @Entity
 @Table(name = "Personas")
@@ -28,12 +30,15 @@ public class Persona implements Serializable {
     public String rfc;
 
     @Column(name = "Nombres", nullable = false)
+    @Convert(converter = Encriptador.class)
     private String nombres;
 
     @Column(name = "Apellido_paterno", nullable = false)
+    @Convert(converter = Encriptador.class)
     private String apellidoPaterno;
 
     @Column(name = "Apellido_materno", nullable = false)
+    @Convert(converter = Encriptador.class)
     private String apellidoMaterno;
 
     @Column(name = "Telefono", nullable = false)

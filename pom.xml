@@ -54,17 +54,24 @@
             <artifactId>jakarta.persistence</artifactId>
             <version>2.2.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.jpa.modelgen.processor -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-            <version>2.7.10</version>
-            <scope>provided</scope>
+            <version>4.0.1</version>
+            <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE170</version>
         </dependency>
     </dependencies>
 </project>

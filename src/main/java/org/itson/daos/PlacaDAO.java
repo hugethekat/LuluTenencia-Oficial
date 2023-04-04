@@ -10,10 +10,13 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
 import org.itson.dominio.Persona;
@@ -22,56 +25,55 @@ import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPlacaDAO;
 import org.apache.commons.lang3.RandomStringUtils;
+
 /**
  *
  * @author JORGE
  */
-public class PlacaDAO implements IPlacaDAO{
+public class PlacaDAO implements IPlacaDAO {
 
-   LocalDate now = LocalDate.now();
+    LocalDate now = LocalDate.now();
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
-    
-    
+
     /**
      * Método que consulta la placa activa actual del vehículo
+     *
      * @param no_serie identificador del vehículo al que se le buscará la placa
-     * @return regresa un objeto de tipo Placa que representa la placa con estado activo
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     * @return regresa un objeto de tipo Placa que representa la placa con
+     * estado activo
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
+     * en el método
      */
     @Override
     public Placa consultarPlacaActiva(String no_serie) throws PersistenciaException {
-//        List<Placa> placas = (List<Placa>)em.createQuery("SELECT P FROM Placa P WHERE p.vehiculo.noSerie=:noSerie", Placa.class).setParameter("no_serie", no_serie).getResultList();
-//        
-//        for(Placa placa : placas){
-//            if(placa.getEstado()==true){
-//                actualizarEstadoPlaca(placa.getId());
-//            }
-//        }
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Placa> consulta = cb.createQuery(Placa.class);
-        Root<Placa> root = consulta.from(Placa.class);
-        consulta = consulta.select(root).where(
-                cb.and(
-                cb.equal(root.get("estado"), true),
-                        cb.equal(root.get("no_serie"),no_serie)
-                         )              
-                );
-        TypedQuery<Placa> query = em.createQuery(consulta);
-        
-        Placa placaActiva = query.getSingleResult();
-        return placaActiva;
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Placa> consulta = cb.createQuery(Placa.class);
+            Root<Placa> root = consulta.from(Placa.class);
+            Join<Placa, Vehiculo> vehiculoJoin = root.join("vehiculo");
+            Predicate predicado = cb.and(cb.equal(root.get("estado"), true), cb.equal(vehiculoJoin.get("noSerie"), no_serie));
+            consulta.where(predicado);
+            TypedQuery<Placa> query = em.createQuery(consulta);
+            Placa placaActiva = query.getSingleResult();
+            return placaActiva;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     /**
      * Método que actualiza el estado de la placa de activa a inactiva
-     * @param idPlaca Identificador de la placa a la que se le cambiara el estado
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     *
+     * @param idPlaca Identificador de la placa a la que se le cambiara el
+     * estado
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
+     * en el método
      */
     @Override
     public void actualizarEstadoPlaca(Long idPlaca) throws PersistenciaException {
         Placa placa = em.find(Placa.class, idPlaca);
-        if(placa != null && placa.getEstado()){
+        if (placa != null && placa.getEstado()) {
             em.getTransaction().begin();
             placa.setEstado(false);
             placa.setFechaRecepcion(new Date());
@@ -81,14 +83,16 @@ public class PlacaDAO implements IPlacaDAO{
     }
 
     /**
-     * Método que registra una placa 
+     * Método que registra una placa
+     *
      * @param persona persona la cual tramitó la placa
      * @param vehiculo vehículo al que le pertenece la placa
      * @param costo costo de la placa
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error en el método
+     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
+     * en el método
      */
     @Override
-    public void insertarPlaca(Persona persona, Vehiculo vehiculo,  double costo) throws PersistenciaException {
+    public void insertarPlaca(Persona persona, Vehiculo vehiculo, double costo) throws PersistenciaException {
         String c = RandomStringUtils.randomAlphabetic(3).toUpperCase();
         String b = RandomStringUtils.randomNumeric(3);
         String numero = c + "-" + b;
@@ -107,7 +111,7 @@ public class PlacaDAO implements IPlacaDAO{
         } finally {
             em.close();
         }
-        
+
     }
-    
+
 }

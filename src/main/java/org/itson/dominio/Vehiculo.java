@@ -105,8 +105,8 @@ public class Vehiculo implements Serializable {
 
     public void setPlacas(List<Placa> placas) {
         this.placas = placas;
-    }
-
+    } 
+    
     @Override
     public int hashCode() {
         int hash = 7;

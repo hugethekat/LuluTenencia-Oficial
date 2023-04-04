@@ -7,18 +7,22 @@ package org.itson.presentacion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.itson.daos.AutomovilDAO;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
 import org.itson.daos.PlacaDAO;
 import org.itson.daos.VehiculoDAO;
+import org.itson.dominio.Automovil;
 import org.itson.dominio.Persona;
 import org.itson.dominio.Placa;
 import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.IAutomovilDAO;
 import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 import org.itson.interfaces.IPlacaDAO;
 import org.itson.interfaces.IVehiculoDAO;
+import org.itson.utils.Costo;
 
 /**
  *
@@ -28,8 +32,10 @@ public class PlacaForm extends javax.swing.JFrame {
 
     IPersonaDAO dao = new PersonaDAO();
     ILicenciaDAO daoL = new LicenciaDAO();
-    IVehiculoDAO daoV = new VehiculoDAO();
+    IAutomovilDAO daoA = new AutomovilDAO();
     IPlacaDAO daoP = new PlacaDAO();
+    IVehiculoDAO daoV = new VehiculoDAO();
+
     /**
      * Creates new form PlacaForm
      */
@@ -244,13 +250,13 @@ public class PlacaForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtfModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
                     .addComponent(txtfTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtfCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTramitarPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -295,15 +301,41 @@ public class PlacaForm extends javax.swing.JFrame {
 
     private void btnSerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSerieActionPerformed
         String no_serie = this.txtfSerie.getText();
-        try{
-            Vehiculo vehiculo = daoV.consultar(no_serie);
-            this.txtfMarca.setText(vehiculo.getMarca());
-            this.txtfLinea.setText(vehiculo.getLinea());
-            this.txtfColor.setText(vehiculo.getColor());
-            this.txtfModelo.setText(vehiculo.getModelo());  
-            this.btnTramitarPlaca.setEnabled(true);
-        }catch(PersistenciaException ex){
-            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE,null,ex);
+        Automovil automovil = new Automovil();
+        Costo c = new Costo();
+
+        try {
+            Placa placa = daoP.consultarPlacaActiva(automovil.getNoSerie());
+            if (daoA.automovilExistencia(no_serie)) {
+                automovil = daoA.buscarAutomovil(no_serie);
+                this.txtfMarca.setText(automovil.getMarca());
+                this.txtfLinea.setText(automovil.getLinea());
+                this.txtfColor.setText(automovil.getColor());
+                this.txtfModelo.setText(automovil.getModelo());
+                this.btnTramitarPlaca.setEnabled(true);
+
+                if(placa != null){
+                    this.txtfTipo.setText("Usado");
+                    this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
+                    
+                }else{
+                    this.txtfTipo.setText("Nuevo");
+                    this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
+                }
+                
+                int opcion = JOptionPane.showOptionDialog(null, "No. Serie erróneo o vehículo inexistente."
+                        + "Deseas Agregarlo?", "Error",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, null);
+
+                if (opcion == JOptionPane.YES_OPTION) {
+                    VehiculoForm vf = new VehiculoForm();
+                    vf.setVisible(true);
+                } else {
+
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSerieActionPerformed
 
@@ -311,28 +343,26 @@ public class PlacaForm extends javax.swing.JFrame {
 
         //Hacer clase costo para las placas
         double costo = Double.parseDouble(this.txtfCosto.getText());
-        
-        try{
-            Vehiculo vehiculo = daoV.consultar(this.txtfSerie.getText());
+
+        try {
+            Automovil automovil = daoA.buscarAutomovil(this.txtfSerie.getText());
             Persona persona = dao.consultar(this.txtfRfc.getText());
-            Placa placa = daoP.consultarPlacaActiva(vehiculo.getNoSerie());
-            
-            if(dao.consultarLicencia(persona.getRfc())){
-                if(placa != null){
-                    daoP.insertarPlaca(persona, vehiculo, costo);
-                }else{
+            Placa placa = daoP.consultarPlacaActiva(automovil.getNoSerie());
+
+            if (daoL.consultarLicencia(persona.getRfc())) {
+                if (placa != null) {
+                    daoP.insertarPlaca(persona, automovil, costo);
+                } else {
                     daoP.actualizarEstadoPlaca(placa.getId());
-                    daoP.insertarPlaca(persona, vehiculo, costo);
+                    daoP.insertarPlaca(persona, automovil, costo);
                 }
             }
-        }catch(PersistenciaException ex){
-            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE,null,ex);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnTramitarPlacaActionPerformed
 
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMenu;

@@ -18,4 +18,11 @@ import javax.persistence.Table;
 @DiscriminatorValue("Automovil")
 public class Automovil extends Vehiculo implements Serializable {
 
+    public Automovil() {
+    }
+
+    public Automovil(String noSerie, String color, String linea, String marca, String modelo, Persona persona) {
+        super(noSerie, color, linea, marca, modelo, persona);
+    }
+
 }

@@ -158,14 +158,14 @@
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtfModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtfTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtfCosto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="34" max="32767" attributes="0"/>
+                  <EmptySpace pref="30" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnTramitarPlaca" alignment="3" min="-2" pref="55" max="-2" attributes="0"/>
                       <Component id="btnMenu" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>

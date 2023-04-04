@@ -16,5 +16,4 @@ import org.itson.excepciones.PersistenciaException;
 public interface IPersonaDAO {
     public void insertarPersonas();
     public Persona consultar(String RFC) throws PersistenciaException;
-    public boolean consultarLicencia(String RFC) throws PersistenciaException;
 }

@@ -13,6 +13,6 @@ import org.itson.excepciones.PersistenciaException;
  * @author JORGE
  */
 public interface IVehiculoDAO {
-    public Vehiculo consultar(String no_serie) throws PersistenciaException;
-    public void insertarVehiculo(String no_serie, String color, String linea, String marca, String modelo,  Persona persona) throws PersistenciaException;
+
+    public String consultarTipo(String noSerie);
 }

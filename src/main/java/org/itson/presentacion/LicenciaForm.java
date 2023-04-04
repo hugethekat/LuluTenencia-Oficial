@@ -12,7 +12,7 @@ import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
 import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
-import org.itson.dominio.Vigencia;
+import org.itson.utils.Vigencia;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;

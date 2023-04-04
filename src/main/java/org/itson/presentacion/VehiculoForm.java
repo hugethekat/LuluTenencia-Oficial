@@ -8,10 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import org.itson.daos.AutomovilDAO;
+import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
 import org.itson.daos.VehiculoDAO;
+import org.itson.dominio.Automovil;
 import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.IAutomovilDAO;
+import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 import org.itson.interfaces.IVehiculoDAO;
 
@@ -21,9 +26,10 @@ import org.itson.interfaces.IVehiculoDAO;
  */
 public class VehiculoForm extends javax.swing.JFrame {
 
-     IPersonaDAO dao = new PersonaDAO();
-     IVehiculoDAO daoV = new VehiculoDAO();
-    
+    IPersonaDAO daoP = new PersonaDAO();
+    ILicenciaDAO daoL = new LicenciaDAO();
+    IAutomovilDAO daoA = new AutomovilDAO();
+
     /**
      * Creates new form VehiculoForm
      */
@@ -59,10 +65,12 @@ public class VehiculoForm extends javax.swing.JFrame {
         btnMenu = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
+        lblLulu = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de vehículos");
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -136,9 +144,8 @@ public class VehiculoForm extends javax.swing.JFrame {
                             .addComponent(txtfSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtfLinea, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtfModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfColor, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(226, Short.MAX_VALUE))
+                            .addComponent(txtfColor, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(237, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegistrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
@@ -147,19 +154,22 @@ public class VehiculoForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar))
-                            .addComponent(jLabel1))
-                        .addGap(145, 145, 145))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(171, 171, 171))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar))
+                    .addComponent(jLabel1))
+                .addGap(145, 145, 145))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(lblLulu, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,15 +182,14 @@ public class VehiculoForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnBuscar)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLulu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtfSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -207,16 +216,7 @@ public class VehiculoForm extends javax.swing.JFrame {
                 .addGap(42, 42, 42))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -229,11 +229,16 @@ public class VehiculoForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String rfc = txtfRfc.getText();      
+        String rfc = txtfRfc.getText();
+        Persona persona = new Persona();
         try {
-            Persona persona = dao.consultar(rfc);
-            lblNombre.setText(persona.getNombres()+" "+persona.getApellidoPaterno()+" "+persona.getApellidoMaterno());
-            lblTelefono.setText(persona.getTelefono());
+            if (daoL.consultarLicencia(rfc)) {
+                persona = daoP.consultar(rfc);
+                this.lblNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+                this.lblTelefono.setText(persona.getTelefono());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
+            }
         } catch (PersistenciaException ex) {
             Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -244,18 +249,26 @@ public class VehiculoForm extends javax.swing.JFrame {
         String no_serie = this.txtfSerie.getText();
         String marca = this.txtfMarca.getText();
         String linea = this.txtfLinea.getText();
-        String color = this.txtfLinea.getText();
+        String color = this.txtfColor.getText();
         String modelo = this.txtfModelo.getText();
-       
-         try {
-             if(dao.consultarLicencia(rfc)){
-                 daoV.insertarVehiculo(no_serie, color, linea, marca, modelo, dao.consultar(rfc));
-             }else{
+
+        try {
+            if (daoL.consultarLicencia(rfc)) {
+                Persona persona = daoP.consultar(rfc);
+                Automovil automovil = new Automovil();
+                automovil.setNoSerie(no_serie);
+                automovil.setColor(color);
+                automovil.setMarca(marca);
+                automovil.setLinea(linea);
+                automovil.setModelo(modelo);
+                automovil.setPersona(persona);
+                daoA.registrarAutomovil(automovil);
+            } else {
                 JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
-             }
-         } catch (PersistenciaException ex) {
-             Logger.getLogger(VehiculoForm.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(VehiculoForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
 
@@ -271,6 +284,7 @@ public class VehiculoForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblLulu;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JTextField txtfColor;

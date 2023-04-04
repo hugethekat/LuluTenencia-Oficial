@@ -15,7 +15,10 @@ import org.itson.excepciones.PersistenciaException;
  * @author JORGE
  */
 public interface IPlacaDAO {
+
     public Placa consultarPlacaActiva(String no_serie) throws PersistenciaException;
+
     public void actualizarEstadoPlaca(Long idPlaca) throws PersistenciaException;
+
     public void insertarPlaca(Persona persona, Vehiculo vehiculo, double costo) throws PersistenciaException;
 }
