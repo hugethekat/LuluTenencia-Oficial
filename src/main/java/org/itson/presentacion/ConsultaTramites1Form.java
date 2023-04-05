@@ -23,14 +23,14 @@ import org.itson.interfaces.IPersonaDAO;
 public class ConsultaTramites1Form extends javax.swing.JFrame {
 
     IPersonaDAO dao = new PersonaDAO();
-    DefaultTableModel modelo = (DefaultTableModel)this.tblPersonas.getModel();
+
     /**
      * Creates new form ConsultaTramites1Form
      */
     public ConsultaTramites1Form() {
         initComponents();
-         this.tblPersonas.setDefaultRenderer(Object.class, new Render());
-         
+        this.tblPersonas.setDefaultRenderer(Object.class, new Render());
+
     }
 
     /**
@@ -61,19 +61,15 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Consultar trámites");
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("RFC");
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Nombre");
 
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Año de nacimiento");
 
         tblPersonas.setModel(new javax.swing.table.DefaultTableModel(
@@ -109,9 +105,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblPersonas);
 
-        btnConsultar.setBackground(new java.awt.Color(255, 255, 255));
         btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnConsultar.setForeground(new java.awt.Color(0, 0, 0));
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,9 +113,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             }
         });
 
-        btnMenu.setBackground(new java.awt.Color(255, 255, 255));
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Regresar al menú");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,7 +138,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                     .addComponent(txtfAnioNac, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(133, Short.MAX_VALUE)
+                .addContainerGap(140, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -158,7 +150,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                         .addGap(50, 50, 50))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(115, 115, 115))))
+                        .addGap(108, 108, 108))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,9 +169,9 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtfAnioNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
+                .addGap(65, 65, 65)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMenu))
@@ -202,7 +194,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
-       MenuForm mf = new MenuForm();
+        MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
@@ -210,24 +202,30 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String rfc = this.txtfRfc.getText();
         String nombre = this.txtfNombre.getText();
-        Integer anioNac =Integer.valueOf(this.txtfAnioNac.getText());
+        Integer anioNac;
+        if (this.txtfAnioNac.getText().equals("")) {
+            anioNac = null;
+        } else {
+            anioNac = Integer.valueOf(this.txtfAnioNac.getText());
+        }
         JButton btnSeleccionar = new JButton("Seleccionar");
         btnSeleccionar.setName("select");
-        
-        ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc,nombre,anioNac);
+
+        ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc, nombre, anioNac);
         try {
+            DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
+            modelo.setRowCount(0);
             List<Persona> personasBusqueda = dao.consultarPersonas(parametros);
 
-            for(Persona personaEn: personasBusqueda){
-                Object[] fila ={personaEn.getNombres()+" "+personaEn.getApellidoPaterno()+" "+personaEn.getApellidoMaterno(),personaEn.getRfc(),btnSeleccionar};
+            for (Persona personaEn : personasBusqueda) {
+                Object[] fila = {personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getRfc(), btnSeleccionar};
                 modelo.addRow(fila);
             }
-            
+
             this.tblPersonas.setModel(modelo);
         } catch (PersistenciaException ex) {
             Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
@@ -253,7 +251,6 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tblPersonasMouseClicked
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
