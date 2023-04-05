@@ -4,17 +4,29 @@
  */
 package org.itson.presentacion;
 
+import org.itson.daos.PersonaDAO;
+import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.IPersonaDAO;
+
 /**
  *
  * @author JORGE
  */
 public class ConsultaTramites2Form extends javax.swing.JFrame {
 
+    IPersonaDAO daoP = new PersonaDAO();
     /**
      * Creates new form ConsultaTramites2Form
      */
-    public ConsultaTramites2Form() {
+    public ConsultaTramites2Form(String rfc) throws PersistenciaException {
         initComponents();
+        Persona persona = daoP.consultar(rfc);
+        this.txtfRfc.setText(persona.getRfc());
+        this.txtfNombre.setText(persona.getNombres() +" "+persona.getApellidoPaterno() +" "+persona.getApellidoMaterno()); 
+        this.txtfTelefono.setText(persona.getTelefono());
+        Integer anio = persona.getFechaNacimiento().getYear();
+        this.txtfAnioNac.setText(anio.toString());
     }
 
     /**

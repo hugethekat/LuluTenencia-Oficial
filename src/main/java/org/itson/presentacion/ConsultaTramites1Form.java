@@ -4,17 +4,32 @@
  */
 package org.itson.presentacion;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import org.itson.daos.PersonaDAO;
+import org.itson.dominio.ParametrosBusquedaPersonas;
+import org.itson.dominio.Persona;
+import org.itson.excepciones.PersistenciaException;
+import org.itson.interfaces.IPersonaDAO;
+
 /**
  *
  * @author JORGE
  */
 public class ConsultaTramites1Form extends javax.swing.JFrame {
 
+    IPersonaDAO dao = new PersonaDAO();
+    DefaultTableModel modelo = (DefaultTableModel)this.tblPersonas.getModel();
     /**
      * Creates new form ConsultaTramites1Form
      */
     public ConsultaTramites1Form() {
         initComponents();
+         this.tblPersonas.setDefaultRenderer(Object.class, new Render());
+         
     }
 
     /**
@@ -68,7 +83,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "RFC", "Botón"
+                "Nombre", "RFC", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
@@ -86,12 +101,22 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblPersonas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPersonasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPersonas);
 
         btnConsultar.setBackground(new java.awt.Color(255, 255, 255));
         btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnConsultar.setForeground(new java.awt.Color(0, 0, 0));
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnMenu.setBackground(new java.awt.Color(255, 255, 255));
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
@@ -180,6 +205,53 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        String rfc = this.txtfRfc.getText();
+        String nombre = this.txtfNombre.getText();
+        Integer anioNac =Integer.valueOf(this.txtfAnioNac.getText());
+        JButton btnSeleccionar = new JButton("Seleccionar");
+        btnSeleccionar.setName("select");
+        
+        ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc,nombre,anioNac);
+        try {
+            List<Persona> personasBusqueda = dao.consultarPersonas(parametros);
+
+            for(Persona personaEn: personasBusqueda){
+                Object[] fila ={personaEn.getNombres()+" "+personaEn.getApellidoPaterno()+" "+personaEn.getApellidoMaterno(),personaEn.getRfc(),btnSeleccionar};
+                modelo.addRow(fila);
+            }
+            
+            this.tblPersonas.setModel(modelo);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
+        int column = this.tblPersonas.getColumnModel().getColumnIndex(evt.getX());
+        int row = evt.getY() / this.tblPersonas.getRowHeight();
+
+        if (row < this.tblPersonas.getRowCount() && row >= 0 && column < this.tblPersonas.getColumnCount()
+                && column >= 0) {
+            Object value = this.tblPersonas.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;
+                if (boton.getName().equals("select")) {
+                    String rfc = (String) this.tblPersonas.getValueAt(2, column);
+                    try {
+                        ConsultaTramites2Form ctf = new ConsultaTramites2Form(rfc);
+                        ctf.setVisible(true);
+                        this.dispose();
+                    } catch (PersistenciaException ex) {
+                        Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_tblPersonasMouseClicked
 
 
 
