@@ -11,13 +11,28 @@ package org.itson.utils;
 public class Vigencia {
     private String [] vigencia = {"Seleccione Vigencia", "1_Anio", "2_Anios", "3_Anios"};
 
+    /**
+     * Constructor por defecto del objeto Vigencia
+     */
     public Vigencia() {
     }
     
+    /**
+     * Método que regresa las vigencias previamente instanciadas para llenar una combo box
+     * @return regresa un arreglo de Strings que contiene las diferentes vigencias 
+     */
     public String[] mandarVigencias(){
         return vigencia;
     }
     
+    /**
+     * Método que calcula el costo de las licencias dependiendo de la vigencia seleccionada y de si la persona 
+     * presenta una discapacidad o no
+     * @param vigencia vigencia seleccionada 
+     * @param discapacidad boleano que representa la discapacidad, true si la persona es discapacitada, false
+     * si no
+     * @return entero que representa el costo de la licencia 
+     */
     public int mandarCosto(String vigencia, boolean discapacidad){
         int costo = 0;
         if(vigencia.equals("1_Anio") && discapacidad == false){

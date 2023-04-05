@@ -21,6 +21,10 @@ public class AutomovilDAO implements IAutomovilDAO {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
 
+    /**
+     * Método que registra un automovil
+     * @param automovil automovil que será registrado
+     */
     @Override
     public void registrarAutomovil(Automovil automovil) {
 
@@ -35,9 +39,13 @@ public class AutomovilDAO implements IAutomovilDAO {
         }
     }
 
+    /**
+     * Método que busca un automovil por su número de serie
+     * @param noSerie identificador del automovil a ser buscado
+     * @return regresa un objeto de tipo automovil si lo encuentra, nulo si no
+     */
     @Override
     public Automovil buscarAutomovil(String noSerie) {
-
         try {
             return em.find(Automovil.class, noSerie);
         } catch (NoResultException ex) {
@@ -45,6 +53,11 @@ public class AutomovilDAO implements IAutomovilDAO {
         }
     }
 
+    /**
+     * Método para saber si un automovil existe
+     * @param noSerie identificador del automovil a ser buscado en existencia
+     * @return regresa un booleano, true si existe, false si no
+     */
     @Override
     public boolean automovilExistencia(String noSerie) {
         boolean existe = false;

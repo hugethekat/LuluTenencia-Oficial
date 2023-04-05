@@ -10,9 +10,17 @@ package org.itson.utils;
  */
 public class Costo {
 
+    /**
+     * Constructor por defecto del objeto Costo
+     */
     public Costo() {
     }
 
+    /**
+     * Método que regresa el costo de una placa dependiendo de si el vehículo es usado o no
+     * @param tipo representa si el vehículo es usado o es nuevo
+     * @return regresa el costo de una placa dependiendo de su tipo
+     */
     public double mandarCosto(String tipo) {
         double costo;
 

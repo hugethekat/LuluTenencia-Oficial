@@ -15,15 +15,11 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
-import org.itson.dominio.Licencia;
 import org.itson.dominio.ParametrosBusquedaPersonas;
 import org.itson.dominio.Persona;
-import org.itson.dominio.Tramite;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
 
@@ -160,7 +156,7 @@ public class PersonaDAO implements IPersonaDAO {
      */
     @Override
     public List<Persona> consultarPersonas(ParametrosBusquedaPersonas params) throws PersistenciaException {
-        
+
         CriteriaBuilder builder = em.getCriteriaBuilder();
 
         CriteriaQuery<Persona> criteria = builder.createQuery(Persona.class);
@@ -179,15 +175,18 @@ public class PersonaDAO implements IPersonaDAO {
             );
         }
         if (params.getFechaNac() != null) {
-            filtros.add(builder.equal(builder.function("year", Integer.class, root.get("fecha_nacimiento")),params.getFechaNac()));
+            filtros.add(builder.equal(builder.function("year", Integer.class, root.get("fecha_nacimiento")), params.getFechaNac()));
         }
 
-        criteria = criteria.select(root).where(builder.and(filtros.toArray(new Predicate[0])));
+        try {
+            criteria = criteria.select(root).where(builder.and(filtros.toArray(new Predicate[0])));
 
-        TypedQuery<Persona> query = em.createQuery(criteria);
-        List<Persona> personas = query.getResultList();
-
-        return personas;
+            TypedQuery<Persona> query = em.createQuery(criteria);
+            List<Persona> personas = query.getResultList();
+            return personas;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
 }

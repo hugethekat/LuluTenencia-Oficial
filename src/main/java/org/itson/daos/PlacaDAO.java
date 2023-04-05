@@ -6,15 +6,11 @@ package org.itson.daos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import static java.time.LocalDate.now;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -72,7 +68,7 @@ public class PlacaDAO implements IPlacaDAO {
     /**
      * Método que consulta una placa según su id;
      *
-     * @param id
+     * @param id identificador númerico de la placa
      * @return regresa la placa
      */
     @Override
@@ -87,7 +83,7 @@ public class PlacaDAO implements IPlacaDAO {
     /**
      * Método que actualiza el estado de la placa de activa a inactiva
      *
-     * @param num
+     * @param num número que tiene la placa
      * @throws PersistenciaException Arroja una excepción cuando ocurre un error
      * en el método
      */
