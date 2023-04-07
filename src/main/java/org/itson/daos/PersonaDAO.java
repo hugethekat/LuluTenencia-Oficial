@@ -5,6 +5,7 @@
 package org.itson.daos;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
@@ -22,6 +24,7 @@ import org.itson.dominio.ParametrosBusquedaPersonas;
 import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
+import org.itson.utils.Encriptador;
 
 /**
  *
@@ -31,6 +34,7 @@ public class PersonaDAO implements IPersonaDAO {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
+    Encriptador e = new Encriptador();
 
     int i = 0;
 
@@ -140,8 +144,10 @@ public class PersonaDAO implements IPersonaDAO {
      * persona con ese RFC
      */
     @Override
-    public Persona consultar(String RFC) throws PersistenciaException {
+    public Persona consultar(String RFC) {
         try {
+            //Aquí consulta con un dato desencriptado
+            //Y regresa toda la fila con datos desencriptados
             return em.find(Persona.class, RFC);
         } catch (NoResultException ex) {
             return null;
@@ -156,39 +162,36 @@ public class PersonaDAO implements IPersonaDAO {
      * para la busqueda
      * @return regresa una lista de personas que coincidan con la informacion
      * recibida para los filtros
-     * @throws PersistenciaException Arroja una excepción cuando ocurre algún
-     * error
+     * @throws NoResultException Arroja null por que no hubo resultados.
      */
     @Override
-    public List<Persona> consultarPersonas(ParametrosBusquedaPersonas params) throws PersistenciaException {
+    public List<Persona> consultarPersonas(ParametrosBusquedaPersonas params) throws NoResultException {
+
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+
+        CriteriaQuery<Persona> criteria = builder.createQuery(Persona.class);
+        Root<Persona> root = criteria.from(Persona.class);
+
+        List<Predicate> filtros = new LinkedList<>();
+
+        if (params.getRfc() != null && !params.getRfc().isEmpty()) {
+            filtros.add(builder.like(root.get("rfc"), "%" + params.getRfc() + "%"));
+        }
+        if (params.getNombre() != null && !params.getNombre().isEmpty()) {
+            filtros.add(builder.like(
+                    builder.concat(
+                            builder.concat(root.get("nombres"), root.get("apellidoPaterno")),
+                            root.get("apellidoMaterno")
+                    ), "%" + params.getNombre() + "%")
+            );
+        }
+        if (params.getFechaNac() != null && !params.getFechaNac().equals(0)) {
+            filtros.add(builder.equal(builder.function("year", Integer.class, root.get("fechaNacimiento")), params.getFechaNac()));
+
+        }
 
         try {
-
-            CriteriaBuilder builder = em.getCriteriaBuilder();
-
-            CriteriaQuery<Persona> criteria = builder.createQuery(Persona.class);
-            Root<Persona> root = criteria.from(Persona.class);
-
-            List<Predicate> filtros = new LinkedList<>();
-
-            if (params.getRfc() != null) {
-                filtros.add(builder.like(root.get("rfc"), "%" + params.getRfc() + "%"));
-                System.out.println(params.getRfc());
-            }
-            if (params.getNombre() != null) {
-                filtros.add(builder.or(
-                        builder.like(root.get("nombres"), "%" + params.getNombre() + "%"),
-                        builder.like(root.get("apellidoPaterno"), "%" + params.getNombre() + "%"),
-                        builder.like(root.get("apellidoMaterno"), "%" + params.getNombre() + "%"))
-                );
-                System.out.println(params.getNombre());
-            }
-            if (params.getFechaNac() != null) {
-                filtros.add(builder.equal(builder.function("year", Integer.class, root.get("fechaNacimiento")), params.getFechaNac()));
-                System.out.println(params.getFechaNac());
-            }
-
-            criteria = criteria.select(root).where(filtros.toArray(new Predicate[0]));
+            criteria = criteria.select(root).where(builder.or(filtros.toArray(new Predicate[0])));
 
             TypedQuery<Persona> query = em.createQuery(criteria);
             List<Persona> personas = query.getResultList();

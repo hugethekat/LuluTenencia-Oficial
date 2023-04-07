@@ -74,20 +74,17 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
 
         tblPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Nombre", "RFC", "Seleccionar"
+                "RFC", "Nombre", "Fecha Nacimiento", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -104,6 +101,12 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblPersonas);
+        if (tblPersonas.getColumnModel().getColumnCount() > 0) {
+            tblPersonas.getColumnModel().getColumn(0).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(1).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(2).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnConsultar.setText("Consultar");
@@ -138,7 +141,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                     .addComponent(txtfAnioNac, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(140, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -149,8 +152,8 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                         .addComponent(btnMenu)
                         .addGap(50, 50, 50))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(108, 108, 108))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +221,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             List<Persona> personasBusqueda = dao.consultarPersonas(parametros);
 
             for (Persona personaEn : personasBusqueda) {
-                Object[] fila = {personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getRfc(), btnSeleccionar};
+                Object[] fila = {personaEn.getRfc(), personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getFechaNacimiento(), btnSeleccionar};
                 modelo.addRow(fila);
             }
 

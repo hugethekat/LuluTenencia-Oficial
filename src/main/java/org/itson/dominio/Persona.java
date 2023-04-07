@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.itson.utils.Encriptador;
@@ -21,6 +22,16 @@ import org.itson.utils.Encriptador;
  *
  * @author xeron
  */
+//Pirata de Culiacán.
+@NamedQuery(
+        name = "Persona.buscarPorFiltros",
+        query = "SELECT p FROM Persona p WHERE (:rfc IS NULL OR p.rfc = :rfc) AND "
+        + "(:nombre IS NULL OR (p.nombres LIKE CONCAT('%', :nombre, '%') OR "
+        + "p.apellidoPaterno LIKE CONCAT('%', :nombre, '%') OR "
+        + "p.apellidoMaterno LIKE CONCAT('%', :nombre, '%'))) AND "
+        + "(:anioNacimiento IS NULL OR FUNCTION('YEAR', p.fechaNacimiento) = :anioNacimiento)"
+)
+
 @Entity
 @Table(name = "Personas")
 public class Persona implements Serializable {
@@ -30,15 +41,15 @@ public class Persona implements Serializable {
     public String rfc;
 
     @Column(name = "Nombres", nullable = false)
-    @Convert(converter = Encriptador.class)
+//    @Convert(converter = Encriptador.class)
     private String nombres;
 
     @Column(name = "Apellido_paterno", nullable = false)
-    @Convert(converter = Encriptador.class)
+//    @Convert(converter = Encriptador.class)
     private String apellidoPaterno;
 
     @Column(name = "Apellido_materno", nullable = false)
-    @Convert(converter = Encriptador.class)
+//    @Convert(converter = Encriptador.class)
     private String apellidoMaterno;
 
     @Column(name = "Telefono", nullable = false)
