@@ -109,6 +109,11 @@ public class Tramite implements Serializable {
         this.persona = persona;
     }
 
+    public Tramite(String nombre, String tipo, Date fechaExpedicion, double costo){
+        this.fechaExpedicion=fechaExpedicion;
+        this.costo=costo;
+    }
+    
     public Tramite() {
     }
 

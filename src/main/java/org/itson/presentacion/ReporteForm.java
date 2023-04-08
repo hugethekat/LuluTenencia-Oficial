@@ -4,6 +4,20 @@
  */
 package org.itson.presentacion;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import org.itson.dominio.Tramite;
+
 /**
  *
  * @author JORGE
@@ -17,6 +31,35 @@ public class ReporteForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void previewJasper(){
+        ArrayList listaReporte = new ArrayList();
+        
+        for(int i =0; i<this.tblReporte.getRowCount(); i++){
+            Tramite tramites = new Tramite(
+                   this.tblReporte.getValueAt(i, 0)+"",
+                   this.tblReporte.getValueAt(i,1)+"",
+                   (Date)this.tblReporte.getValueAt(i, 2),
+                   (double) this.tblReporte.getValueAt(i, 3)
+            );
+            listaReporte.add(tramites);
+        }
+        
+        JasperReport jr = null;
+        try{
+            jr = (JasperReport)JRLoader.loadObjectFromFile("Lulutenencia.jasper");
+            HashMap parametro = new HashMap();
+            parametro.put("logo", "lulu.png");
+            
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametro,new JRBeanCollectionDataSource(listaReporte));
+            
+            JasperViewer jv = new JasperViewer(jp,false);
+             jv.setVisible(true);
+             
+        } catch (JRException ex) {
+            Logger.getLogger(ReporteForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,7 +80,7 @@ public class ReporteForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblReporte = new javax.swing.JTable();
         btnConsultar = new javax.swing.JButton();
         btnReporte = new javax.swing.JToggleButton();
         btnMenu = new javax.swing.JButton();
@@ -67,7 +110,7 @@ public class ReporteForm extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblReporte.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -90,7 +133,7 @@ public class ReporteForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblReporte);
 
         btnConsultar.setBackground(new java.awt.Color(255, 255, 255));
         btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
@@ -223,7 +266,7 @@ public class ReporteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
+        this.previewJasper();
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
@@ -245,7 +288,7 @@ public class ReporteForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblReporte;
     private javax.swing.JTextField txtfNombre;
     private javax.swing.JTextField txtfTipo;
     // End of variables declaration//GEN-END:variables
