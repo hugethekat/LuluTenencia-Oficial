@@ -10,14 +10,14 @@
 		<field name="costo" class="java.lang.Double"/>
 		<field name="tipo" class="java.lang.String"/>
 	</subDataset>
-	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="ds" class="net.sf.jasperreports.engine.data.JRBeanArrayDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="tipo" class="java.lang.String"/>
-	<field name="fechaExpedicion" class="java.util.Date"/>
-	<field name="costo" class="java.lang.Double"/>
+	<field name="fechaExpedicion" class="java.lang.String"/>
+	<field name="costo" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -35,7 +35,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<imageExpression><![CDATA[""]]></imageExpression>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="158" y="17" width="239" height="47" uuid="7cffe1cb-5b8e-443f-98b0-070504848e74"/>

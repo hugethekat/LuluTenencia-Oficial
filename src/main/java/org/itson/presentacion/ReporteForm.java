@@ -4,11 +4,18 @@
  */
 package org.itson.presentacion;
 
+import java.awt.event.ItemEvent;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.NoResultException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -16,7 +23,14 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.itson.daos.TramiteDAO;
+import org.itson.dominio.Licencia;
+import org.itson.dominio.Persona;
+import org.itson.dominio.Placa;
+import org.itson.dominio.ReporteDTO;
 import org.itson.dominio.Tramite;
+import org.itson.interfaces.ITramiteDAO;
+import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
@@ -24,42 +38,91 @@ import org.itson.dominio.Tramite;
  */
 public class ReporteForm extends javax.swing.JFrame {
 
+    LocalDate fechaActual = LocalDate.now();
+    LocalDate minFecha = LocalDate.of(1900, 01, 01);
+    ITramiteDAO dao = new TramiteDAO();
+    private final ConfiguracionPaginado configPaginado;
+
     /**
      * Creates new form ReporteForm
      */
     public ReporteForm() {
         initComponents();
+        calendar1.getSettings().setDateRangeLimits(minFecha, fechaActual);
+        calendar2.getSettings().setDateRangeLimits(minFecha, fechaActual);
+        this.configPaginado = new ConfiguracionPaginado(0, 3);
+        ReporteDTO parametros;
     }
 
-    public void previewJasper(){
+    public void previewJasper() {
         ArrayList listaReporte = new ArrayList();
-        
-        for(int i =0; i<this.tblReporte.getRowCount(); i++){
-            Tramite tramites = new Tramite(
-                   this.tblReporte.getValueAt(i, 0)+"",
-                   this.tblReporte.getValueAt(i,1)+"",
-                   (Date)this.tblReporte.getValueAt(i, 2),
-                   (double) this.tblReporte.getValueAt(i, 3)
+
+        for (int i = 0; i < this.tblPersonas.getRowCount(); i++) {
+            ReporteDTO reporte = new ReporteDTO(
+                    this.tblPersonas.getValueAt(i, 0).toString(),
+                    this.tblPersonas.getValueAt(i, 1).toString(),
+                    this.tblPersonas.getValueAt(i, 2).toString(),
+                    this.tblPersonas.getValueAt(i, 3).toString()
             );
-            listaReporte.add(tramites);
+            listaReporte.add(reporte);
+            System.out.println(this.tblPersonas.getValueAt(i, 1));
         }
-        
+
         JasperReport jr = null;
-        try{
-            jr = (JasperReport)JRLoader.loadObjectFromFile("Lulutenencia.jasper");
+        try {
+            jr = (JasperReport) JRLoader.loadObjectFromFile("Lulutenencia.jasper");
             HashMap parametro = new HashMap();
-            parametro.put("logo", "lulu.png");
-            
-            JasperPrint jp = JasperFillManager.fillReport(jr, parametro,new JRBeanCollectionDataSource(listaReporte));
-            
-            JasperViewer jv = new JasperViewer(jp,false);
-             jv.setVisible(true);
-             
+            parametro.put("logo", "/org.itson.utils/lulu.png");
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(listaReporte));
+
+            JasperViewer jv = new JasperViewer(jp, false);
+            jv.setVisible(true);
+
         } catch (JRException ex) {
             Logger.getLogger(ReporteForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    public void cargarTabla(ReporteDTO parametros) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
+            modelo.setRowCount(0);
+            List<Tramite> TramiteBusqueda = dao.buscarTramites(parametros, configPaginado);
+
+            for (Tramite tramite : TramiteBusqueda) {
+                Persona persona = tramite.getPersona();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaFormateada = dateFormat.format(tramite.getFechaExpedicion());
+                if (tramite instanceof Placa && this.cbxTipo.getSelectedItem().equals("Placa")) {
+                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Placa", fechaFormateada, tramite.getCosto()};
+                    modelo.addRow(fila);
+                } else if (tramite instanceof Licencia && this.cbxTipo.getSelectedItem().equals("Licencia")) {
+                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Licencia", fechaFormateada, tramite.getCosto()};
+                    modelo.addRow(fila);
+                } else {
+                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), tramite.getClass().getSimpleName(), fechaFormateada, tramite.getCosto()};
+                    modelo.addRow(fila);
+                }
+            }
+
+            this.tblPersonas.setModel(modelo);
+        } catch (NoResultException ex) {
+            Logger.getLogger(ConsultaTramites1Form.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void avanzarPagina(ReporteDTO parametros) {
+        this.configPaginado.avanzarPagina();
+        this.cargarTabla(parametros);
+    }
+
+    private void retrocederPagina(ReporteDTO parametros) {
+        this.configPaginado.retrocederPagina();
+        this.cargarTabla(parametros);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,43 +137,41 @@ public class ReporteForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtfNombre = new javax.swing.JTextField();
-        txtfTipo = new javax.swing.JTextField();
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
-        datePicker2 = new com.github.lgooddatepicker.components.DatePicker();
+        calendar1 = new com.github.lgooddatepicker.components.DatePicker();
+        calendar2 = new com.github.lgooddatepicker.components.DatePicker();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblReporte = new javax.swing.JTable();
+        tblPersonas = new javax.swing.JTable();
         btnConsultar = new javax.swing.JButton();
         btnReporte = new javax.swing.JToggleButton();
         btnMenu = new javax.swing.JButton();
+        cbxTipo = new javax.swing.JComboBox<>();
+        btnRetroceder = new javax.swing.JButton();
+        cbxElementosPágina = new javax.swing.JComboBox<>();
+        btnAvanzar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Reporte");
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre");
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Tipo de trámite");
+        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
         jLabel4.setText("Inicio periodo");
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel5.setText("Fin periodo");
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
 
-        tblReporte.setModel(new javax.swing.table.DefaultTableModel(
+        tblPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -133,35 +194,64 @@ public class ReporteForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblReporte);
+        tblPersonas.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tblPersonas);
+        if (tblPersonas.getColumnModel().getColumnCount() > 0) {
+            tblPersonas.getColumnModel().getColumn(0).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(1).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(2).setResizable(false);
+            tblPersonas.getColumnModel().getColumn(3).setResizable(false);
+        }
 
-        btnConsultar.setBackground(new java.awt.Color(255, 255, 255));
-        btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnConsultar.setForeground(new java.awt.Color(0, 0, 0));
         btnConsultar.setText("Consultar");
+        btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
             }
         });
 
-        btnReporte.setBackground(new java.awt.Color(255, 255, 255));
-        btnReporte.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnReporte.setForeground(new java.awt.Color(0, 0, 0));
         btnReporte.setText("Generar reporte");
+        btnReporte.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         btnReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReporteActionPerformed(evt);
             }
         });
 
-        btnMenu.setBackground(new java.awt.Color(255, 255, 255));
-        btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Regresar al menú");
+        btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuActionPerformed(evt);
+            }
+        });
+
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione tipo de trámite", "Licencia", "Placa", "Todo :)" }));
+
+        btnRetroceder.setText("<----");
+        btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetrocederActionPerformed(evt);
+            }
+        });
+
+        cbxElementosPágina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
+        cbxElementosPágina.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxElementosPáginaItemStateChanged(evt);
+            }
+        });
+        cbxElementosPágina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxElementosPáginaActionPerformed(evt);
+            }
+        });
+
+        btnAvanzar.setText("---->");
+        btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvanzarActionPerformed(evt);
             }
         });
 
@@ -169,22 +259,6 @@ public class ReporteForm extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel4)
-                        .addGap(36, 36, 36))
-                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(182, 182, 182)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(48, 48, 48))
-                    .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(122, 122, 122))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(205, 205, 205)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -192,8 +266,8 @@ public class ReporteForm extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtfTipo)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                    .addComponent(cbxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(72, 72, 72)
@@ -204,14 +278,36 @@ public class ReporteForm extends javax.swing.JFrame {
                 .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(83, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel4)
+                                .addGap(36, 36, 36))
+                            .addComponent(calendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(182, 182, 182)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(48, 48, 48))
+                            .addComponent(calendar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(122, 122, 122))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(81, 81, 81))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(323, 323, 323))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(108, 108, 108)
+                .addComponent(btnRetroceder)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxElementosPágina, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(175, 175, 175)
+                .addComponent(btnAvanzar)
+                .addGap(104, 104, 104))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,18 +321,23 @@ public class ReporteForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtfTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(datePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(calendar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(calendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(75, 75, 75)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAvanzar)
+                    .addComponent(btnRetroceder)
+                    .addComponent(cbxElementosPágina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -271,16 +372,168 @@ public class ReporteForm extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
+        String nombre = null, tipo = null;
+
+        nombre = this.txtfNombre.getText();
+
+        LocalDate ca1 = null, ca2 = null;
+        if (!this.calendar1.getDate().equals("")) {
+            ca1 = this.calendar1.getDate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!this.calendar2.getDate().equals("")) {
+            if (this.calendar2.getDate().isAfter(ca1)) {
+                ca2 = this.calendar2.getDate();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (cbxTipo.getSelectedItem().equals("Licencia")) {
+            tipo = "Licencia";
+        } else if (cbxTipo.getSelectedItem().equals("Placa")) {
+            tipo = "Placa";
+        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+            tipo = "Todo";
+        } else {
+            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+
+        this.cargarTabla(parametros);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
+    private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
+        // TODO add your handling code here:
+        String nombre = null, tipo = null;
+
+        nombre = this.txtfNombre.getText();
+
+        LocalDate ca1 = null, ca2 = null;
+        if (!this.calendar1.getDate().equals("")) {
+            ca1 = this.calendar1.getDate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!this.calendar2.getDate().equals("")) {
+            if (this.calendar2.getDate().isAfter(ca1)) {
+                ca2 = this.calendar2.getDate();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (cbxTipo.getSelectedItem().equals("Licencia")) {
+            tipo = "Licencia";
+        } else if (cbxTipo.getSelectedItem().equals("Placa")) {
+            tipo = "Placa";
+        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+            tipo = "Todo";
+        } else {
+            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+        retrocederPagina(parametros);
+    }//GEN-LAST:event_btnRetrocederActionPerformed
+
+    private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
+        String nombre = null, tipo = null;
+        nombre = this.txtfNombre.getText();
+
+        LocalDate ca1 = null, ca2 = null;
+        if (!this.calendar1.getDate().equals("")) {
+            ca1 = this.calendar1.getDate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!this.calendar2.getDate().equals("")) {
+            if (this.calendar2.getDate().isAfter(ca1)) {
+                ca2 = this.calendar2.getDate();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (cbxTipo.getSelectedItem().equals("Licencia")) {
+            tipo = "Licencia";
+        } else if (cbxTipo.getSelectedItem().equals("Placa")) {
+            tipo = "Placa";
+        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+            tipo = "Todo";
+        } else {
+            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            int elementoPorPagina = Integer.parseInt(evt.getItem().toString());
+            this.configPaginado.setElementosPagina(elementoPorPagina);
+            this.cargarTabla(parametros);
+        }
+    }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
+
+    private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxElementosPáginaActionPerformed
+
+    private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
+        String nombre = null, tipo = null;
+        nombre = this.txtfNombre.getText();
+
+        LocalDate ca1 = null, ca2 = null;
+        if (!this.calendar1.getDate().equals("")) {
+            ca1 = this.calendar1.getDate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!this.calendar2.getDate().equals("")) {
+            if (this.calendar2.getDate().isAfter(ca1)) {
+                ca2 = this.calendar2.getDate();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (cbxTipo.getSelectedItem().equals("Licencia")) {
+            tipo = "Licencia";
+        } else if (cbxTipo.getSelectedItem().equals("Placa")) {
+            tipo = "Placa";
+        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+            tipo = "Todo";
+        } else {
+            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+        avanzarPagina(parametros);
+    }//GEN-LAST:event_btnAvanzarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvanzar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnMenu;
     private javax.swing.JToggleButton btnReporte;
-    private com.github.lgooddatepicker.components.DatePicker datePicker1;
-    private com.github.lgooddatepicker.components.DatePicker datePicker2;
+    private javax.swing.JButton btnRetroceder;
+    private com.github.lgooddatepicker.components.DatePicker calendar1;
+    private com.github.lgooddatepicker.components.DatePicker calendar2;
+    private javax.swing.JComboBox<String> cbxElementosPágina;
+    private javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -288,8 +541,7 @@ public class ReporteForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblReporte;
+    private javax.swing.JTable tblPersonas;
     private javax.swing.JTextField txtfNombre;
-    private javax.swing.JTextField txtfTipo;
     // End of variables declaration//GEN-END:variables
 }

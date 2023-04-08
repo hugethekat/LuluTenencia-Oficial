@@ -4,6 +4,7 @@
  */
 package org.itson.presentacion;
 
+import java.awt.HeadlessException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -15,7 +16,6 @@ import org.itson.daos.VehiculoDAO;
 import org.itson.dominio.Automovil;
 import org.itson.dominio.Persona;
 import org.itson.dominio.Placa;
-import org.itson.dominio.Vehiculo;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IAutomovilDAO;
 import org.itson.interfaces.ILicenciaDAO;
@@ -36,11 +36,50 @@ public class PlacaForm extends javax.swing.JFrame {
     IPlacaDAO daoP = new PlacaDAO();
     IVehiculoDAO daoV = new VehiculoDAO();
 
+    private String rfc, noSerie;
+
     /**
      * Creates new form PlacaForm
      */
     public PlacaForm() {
         initComponents();
+
+    }
+
+    public PlacaForm(String rfc, String noSerie) {
+        initComponents();
+        this.rfc = rfc;
+        this.noSerie = noSerie;
+        this.txtfRfc.setText(rfc);
+        this.txtfSerie.setText(noSerie);
+        buscar(rfc);
+        buscarVehiculo(noSerie);
+    }
+
+    public void buscar(String rfc) {
+        Persona persona = new Persona();
+        persona = dao.consultar(rfc);
+        this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+    }
+
+    public void buscarVehiculo(String noSerie) {
+        Costo c = new Costo();
+        Placa placa = daoP.consultarPlacaActiva(noSerie);
+        Automovil automovil = new Automovil();
+        automovil = daoA.buscarAutomovil(noSerie);
+        this.txtfMarca.setText(automovil.getMarca());
+        this.txtfLinea.setText(automovil.getLinea());
+        this.txtfColor.setText(automovil.getColor());
+        this.txtfModelo.setText(automovil.getModelo());
+        this.btnTramitarPlaca.setEnabled(true);
+        if (placa != null) {
+            this.txtfTipo.setText("Usado");
+            this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
+
+        } else {
+            this.txtfTipo.setText("Nuevo");
+            this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
+        }
     }
 
     /**
@@ -285,17 +324,13 @@ public class PlacaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRfcActionPerformed
-        String rfc = this.txtfRfc.getText();
+        rfc = this.txtfRfc.getText();
         Persona persona = new Persona();
-        try {
-            if (daoL.consultarLicencia(rfc)) {
-                persona = dao.consultar(rfc);
-                this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
-            }
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(PlacaForm.class.getName()).log(Level.SEVERE, null, ex);
+        if (daoL.consultarLicencia(rfc)) {
+            persona = dao.consultar(rfc);
+            this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
         }
     }//GEN-LAST:event_btnRfcActionPerformed
 
@@ -307,30 +342,16 @@ public class PlacaForm extends javax.swing.JFrame {
         try {
             Placa placa = daoP.consultarPlacaActiva(no_serie);
             if (daoA.automovilExistencia(no_serie)) {
-                automovil = daoA.buscarAutomovil(no_serie);
-                this.txtfMarca.setText(automovil.getMarca());
-                this.txtfLinea.setText(automovil.getLinea());
-                this.txtfColor.setText(automovil.getColor());
-                this.txtfModelo.setText(automovil.getModelo());
-                this.btnTramitarPlaca.setEnabled(true);
-
-                if (placa != null) {
-                    this.txtfTipo.setText("Usado");
-                    this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
-
-                } else {
-                    this.txtfTipo.setText("Nuevo");
-                    this.txtfCosto.setText(String.valueOf(c.mandarCosto(txtfTipo.getText())));
-                }
+                buscarVehiculo(no_serie);
 
             } else {
-                int opcion = JOptionPane.showOptionDialog(null, "No. Serie erróneo o vehículo inexistente."
-                        + "Deseas Agregarlo?", "Error",
+                int opcion = JOptionPane.showOptionDialog(null, "No. Serie erróneo o vehículo inexistente. \nDeseas Agregarlo?", "Error",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, null);
 
                 if (opcion == JOptionPane.YES_OPTION) {
-                    VehiculoForm vf = new VehiculoForm();
+                    VehiculoForm vf = new VehiculoForm(rfc);
                     vf.setVisible(true);
+                    this.dispose();
                 }
             }
         } catch (Exception ex) {

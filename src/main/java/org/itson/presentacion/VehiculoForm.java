@@ -30,11 +30,28 @@ public class VehiculoForm extends javax.swing.JFrame {
     ILicenciaDAO daoL = new LicenciaDAO();
     IAutomovilDAO daoA = new AutomovilDAO();
 
+    private String rfc;
+
     /**
      * Creates new form VehiculoForm
      */
+    public VehiculoForm(String rfc) {
+        this.rfc = rfc;
+        initComponents();
+        lblLulu.setVisible(false);
+        txtfRfc.setText(rfc);
+        buscar(rfc);
+    }
     public VehiculoForm() {
         initComponents();
+    }
+
+    public void buscar(String rfc) {
+        Persona persona = new Persona();
+        persona = daoP.consultar(rfc);
+        this.lblNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+        this.lblTelefono.setText(persona.getTelefono());
+        lblLulu.setVisible(true);
     }
 
     /**
@@ -124,6 +141,8 @@ public class VehiculoForm extends javax.swing.JFrame {
 
         lblTelefono.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
+        lblLulu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/lulu.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -154,22 +173,23 @@ public class VehiculoForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar))
-                    .addComponent(jLabel1))
-                .addGap(145, 145, 145))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(lblLulu, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscar))
+                            .addComponent(jLabel1))
+                        .addGap(145, 145, 145))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblLulu, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(62, 62, 62))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,18 +249,13 @@ public class VehiculoForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String rfc = txtfRfc.getText();
+        rfc = txtfRfc.getText();
         Persona persona = new Persona();
-        try {
-            if (daoL.consultarLicencia(rfc)) {
-                persona = daoP.consultar(rfc);
-                this.lblNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
-                this.lblTelefono.setText(persona.getTelefono());
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
-            }
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
+        if (daoL.consultarLicencia(rfc)) {
+            buscar(rfc);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
+
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -252,22 +267,23 @@ public class VehiculoForm extends javax.swing.JFrame {
         String color = this.txtfColor.getText();
         String modelo = this.txtfModelo.getText();
 
-        try {
-            if (daoL.consultarLicencia(rfc)) {
-                Persona persona = daoP.consultar(rfc);
-                Automovil automovil = new Automovil();
-                automovil.setNoSerie(no_serie);
-                automovil.setColor(color);
-                automovil.setMarca(marca);
-                automovil.setLinea(linea);
-                automovil.setModelo(modelo);
-                automovil.setPersona(persona);
-                daoA.registrarAutomovil(automovil);
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
-            }
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(VehiculoForm.class.getName()).log(Level.SEVERE, null, ex);
+        if (daoL.consultarLicencia(rfc)) {
+            Persona persona = daoP.consultar(rfc);
+            Automovil automovil = new Automovil();
+            automovil.setNoSerie(no_serie);
+            automovil.setColor(color);
+            automovil.setMarca(marca);
+            automovil.setLinea(linea);
+            automovil.setModelo(modelo);
+            automovil.setPersona(persona);
+            daoA.registrarAutomovil(automovil);
+            PlacaForm pf = new PlacaForm(rfc, no_serie);
+            pf.setVisible(true);
+            System.out.println(rfc);
+            System.out.println(no_serie);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

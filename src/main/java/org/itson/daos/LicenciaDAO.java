@@ -95,11 +95,9 @@ public class LicenciaDAO implements ILicenciaDAO {
      * licencias
      * @return Regresa un boleano, true si encuentra una licencia vigente, false
      * si no hay una vigente
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
-     * en el método
      */
     @Override
-    public boolean consultarLicencia(String RFC) throws PersistenciaException {
+    public boolean consultarLicencia(String RFC){
         List<Licencia> licencias = (List<Licencia>) em.createQuery("SELECT l FROM Licencia l  WHERE l.persona.rfc = :rfc", Licencia.class).setParameter("rfc", RFC).getResultList();
 
         for (Licencia licencia : licencias) {

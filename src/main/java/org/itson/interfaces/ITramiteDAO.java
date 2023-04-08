@@ -5,13 +5,18 @@
 package org.itson.interfaces;
 
 import java.util.List;
+import org.itson.dominio.Persona;
+import org.itson.dominio.ReporteDTO;
 import org.itson.dominio.Tramite;
-import org.itson.excepciones.PersistenciaException;
+import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
  * @author JORGE
  */
 public interface ITramiteDAO {
-    public List<Tramite> consultarTramites (String rfc);
+
+    public List<Tramite> consultarTramites(String rfc, ConfiguracionPaginado configPaginado);
+
+    public List<Tramite> buscarTramites(ReporteDTO params, ConfiguracionPaginado configPaginado);
 }

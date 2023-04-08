@@ -286,16 +286,12 @@ public class LicenciaForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         String rfc = txtfRfc.getText();
         IPersonaDAO dao = new PersonaDAO();
-        try {
             Persona persona = dao.consultar(rfc);
             txtNombre.setText(persona.getNombres());
             txtAPaterno.setText(persona.getApellidoPaterno());
             txtAMaterno.setText(persona.getApellidoMaterno());
             txtFechaNac.setText(persona.getFechaNacimiento().toString());
             txtTelefono.setText(persona.getTelefono());
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed

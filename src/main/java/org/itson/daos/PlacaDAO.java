@@ -7,6 +7,7 @@ package org.itson.daos;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -47,7 +48,7 @@ public class PlacaDAO implements IPlacaDAO {
      * en el método
      */
     @Override
-    public Placa consultarPlacaActiva(String no_serie) throws PersistenciaException {
+    public Placa consultarPlacaActiva(String no_serie){
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Placa> consulta = cb.createQuery(Placa.class);
@@ -102,7 +103,7 @@ public class PlacaDAO implements IPlacaDAO {
                 em.merge(placa);
                 em.getTransaction().commit();
             }
-        }catch (ParseException ex){
+        } catch (ParseException ex) {
             throw new PersistenciaException("Hubo un error al actualizar la placa");
         }
     }
@@ -123,13 +124,19 @@ public class PlacaDAO implements IPlacaDAO {
         String numero = c + "-" + b;
 
         try {
-            Date fechaChila = sdf.parse(formattedDate);
-            em.getTransaction().begin();
-            Placa placa = new Placa(true, numero, fechaChila, vehiculo, fechaChila, costo, persona);
-            em.persist(placa);
 
-            em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "Se insertó correctamente la placa");
+            List<Placa> placas = em.createQuery("SELECT p FROM Placa p WHERE p.numero = :numeroPlaca", Placa.class)
+                    .setParameter("numeroPlaca", numero)
+                    .getResultList();
+            if (!placas.isEmpty()) {
+                Date fechaChila = sdf.parse(formattedDate);
+                em.getTransaction().begin();
+                Placa placa = new Placa(true, numero, fechaChila, vehiculo, fechaChila, costo, persona);
+                em.persist(placa);
+
+                em.getTransaction().commit();
+                JOptionPane.showMessageDialog(null, "Se insertó correctamente la placa");
+            }
         } catch (Exception ex) {
             em.getTransaction().rollback();
             throw new PersistenciaException("Hubo un error al insertar la placa");

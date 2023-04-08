@@ -4,10 +4,6 @@
  */
 package org.itson.interfaces;
 
-import org.itson.dominio.Persona;
-import org.itson.dominio.Vehiculo;
-import org.itson.excepciones.PersistenciaException;
-
 /**
  *
  * @author JORGE

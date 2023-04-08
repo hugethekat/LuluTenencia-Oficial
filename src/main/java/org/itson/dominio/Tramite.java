@@ -17,6 +17,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -66,8 +67,6 @@ public class Tramite implements Serializable {
         this.persona = persona;
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -109,11 +108,9 @@ public class Tramite implements Serializable {
         this.persona = persona;
     }
 
-    public Tramite(String nombre, String tipo, Date fechaExpedicion, double costo){
-        this.fechaExpedicion=fechaExpedicion;
-        this.costo=costo;
+    public Tramite(String nombre, String tipo, String fechaExpedicion, String costo) {
     }
-    
+
     public Tramite() {
     }
 

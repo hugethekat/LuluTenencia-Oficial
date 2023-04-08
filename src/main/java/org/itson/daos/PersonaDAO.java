@@ -24,6 +24,7 @@ import org.itson.dominio.ParametrosBusquedaPersonas;
 import org.itson.dominio.Persona;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
+import org.itson.utils.ConfiguracionPaginado;
 import org.itson.utils.Encriptador;
 
 /**
@@ -165,7 +166,7 @@ public class PersonaDAO implements IPersonaDAO {
      * @throws NoResultException Arroja null por que no hubo resultados.
      */
     @Override
-    public List<Persona> consultarPersonas(ParametrosBusquedaPersonas params) throws NoResultException {
+    public List<Persona> consultarPersonas(ParametrosBusquedaPersonas params, ConfiguracionPaginado configuracionPaginado) throws NoResultException {
 
         CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -193,7 +194,13 @@ public class PersonaDAO implements IPersonaDAO {
         try {
             criteria = criteria.select(root).where(builder.or(filtros.toArray(new Predicate[0])));
 
-            TypedQuery<Persona> query = em.createQuery(criteria);
+            TypedQuery<Persona> query;
+            if (configuracionPaginado != null) {
+                query = em.createQuery(criteria).setFirstResult(configuracionPaginado.getElementosASaltar())
+                        .setMaxResults(configuracionPaginado.getElementosPagina());
+            } else {
+                query = em.createQuery(criteria);
+            }
             List<Persona> personas = query.getResultList();
             return personas;
         } catch (NoResultException ex) {

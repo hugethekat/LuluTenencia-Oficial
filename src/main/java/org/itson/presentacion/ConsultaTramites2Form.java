@@ -4,6 +4,8 @@
  */
 package org.itson.presentacion;
 
+import java.awt.event.ItemEvent;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import org.itson.daos.PersonaDAO;
@@ -15,6 +17,7 @@ import org.itson.dominio.Tramite;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
 import org.itson.interfaces.ITramiteDAO;
+import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
@@ -24,35 +27,56 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
 
     IPersonaDAO daoP = new PersonaDAO();
     ITramiteDAO daoT = new TramiteDAO();
+    private final ConfiguracionPaginado configPaginado;
+
     /**
      * Creates new form ConsultaTramites2Form
+     *
+     * @param rfc
      */
     public ConsultaTramites2Form(String rfc) throws PersistenciaException {
-        initComponents();
         Persona persona = daoP.consultar(rfc);
-        this.txtfRfc.setText(persona.getRfc());
-        this.txtfNombre.setText(persona.getNombres() +" "+persona.getApellidoPaterno() +" "+persona.getApellidoMaterno()); 
-        this.txtfTelefono.setText(persona.getTelefono());
-        Integer anio = persona.getFechaNacimiento().getYear();
-        this.txtfAnioNac.setText(anio.toString());
+        initComponents();
+        this.cargarTextField(persona);
+        setLocationRelativeTo(null);
+        this.configPaginado = new ConfiguracionPaginado(0, 3);
         this.cargarTabla();
     }
 
-    public void cargarTabla(){
-        DefaultTableModel modelo = (DefaultTableModel)this.tblTramites.getModel();
+    public void cargarTextField(Persona persona) {
+        this.txtfRfc.setText(persona.getRfc());
+        this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+        this.txtfTelefono.setText(persona.getTelefono());
+        Integer anio = persona.getFechaNacimiento().getYear();
+        this.txtfAnioNac.setText(anio.toString());
+    }
+
+    public void cargarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) this.tblTramites.getModel();
         modelo.setRowCount(0);
-        List<Tramite> tramitesBusqueda = daoT.consultarTramites(this.txtfRfc.getText());
-        for(Tramite tramite: tramitesBusqueda){
-            if(tramite instanceof Placa){
-                Object[] fila={"Placa",tramite.getFechaExpedicion(),tramite.getCosto()};
+        List<Tramite> tramitesBusqueda = daoT.consultarTramites(this.txtfRfc.getText(), configPaginado);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for (Tramite tramite : tramitesBusqueda) {
+            if (tramite instanceof Placa) {
+                Object[] fila = {"Placa", dateFormat.format(tramite.getFechaExpedicion()), tramite.getCosto()};
                 modelo.addRow(fila);
-            }else if(tramite instanceof Licencia){
-                Object[]fila={"Licencia",tramite.getFechaExpedicion(),tramite.getCosto()};
+            } else if (tramite instanceof Licencia) {
+                Object[] fila = {"Licencia", dateFormat.format(tramite.getFechaExpedicion()), tramite.getCosto()};
                 modelo.addRow(fila);
             }
         }
     }
-    
+
+    private void avanzarPagina() {
+        this.configPaginado.avanzarPagina();
+        this.cargarTabla();
+    }
+
+    private void retrocederPagina() {
+        this.configPaginado.retrocederPagina();
+        this.cargarTabla();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,30 +99,37 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTramites = new javax.swing.JTable();
         btnMenu = new javax.swing.JButton();
+        cbxElementosPágina = new javax.swing.JComboBox<>();
+        btnAvanzar = new javax.swing.JButton();
+        btnRetroceder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
-        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        txtfAnioNac.setEditable(false);
+
         jLabel4.setText("Año de nacimiento");
+        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Nombre");
+        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        txtfNombre.setEditable(false);
+
+        txtfRfc.setEditable(false);
+
         jLabel2.setText("RFC");
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Consultar trámites");
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Teléfono");
+        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+
+        txtfTelefono.setEditable(false);
 
         tblTramites.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,13 +156,37 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblTramites);
 
-        btnMenu.setBackground(new java.awt.Color(255, 255, 255));
-        btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        btnMenu.setForeground(new java.awt.Color(0, 0, 0));
         btnMenu.setText("Regresar al menú");
+        btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuActionPerformed(evt);
+            }
+        });
+
+        cbxElementosPágina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "5", "10" }));
+        cbxElementosPágina.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxElementosPáginaItemStateChanged(evt);
+            }
+        });
+        cbxElementosPágina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxElementosPáginaActionPerformed(evt);
+            }
+        });
+
+        btnAvanzar.setText("---->");
+        btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvanzarActionPerformed(evt);
+            }
+        });
+
+        btnRetroceder.setText("<----");
+        btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetrocederActionPerformed(evt);
             }
         });
 
@@ -162,12 +217,19 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
                                 .addComponent(jLabel1))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(72, 72, 72)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnRetroceder)
+                                .addGap(176, 176, 176)
+                                .addComponent(cbxElementosPágina, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(154, 154, 154)
+                                .addComponent(btnAvanzar))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(74, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(222, 222, 222))
+                .addGap(225, 225, 225))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,9 +254,14 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAvanzar)
+                    .addComponent(btnRetroceder)
+                    .addComponent(cbxElementosPágina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -217,9 +284,33 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            int elementoPorPagina = Integer.parseInt(evt.getItem().toString());
+            this.configPaginado.setElementosPagina(elementoPorPagina);
+            this.cargarTabla();
+        }
+    }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
+
+    private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxElementosPáginaActionPerformed
+
+    private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
+        // TODO add your handling code here:
+        retrocederPagina();
+    }//GEN-LAST:event_btnRetrocederActionPerformed
+
+    private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
+        avanzarPagina();
+    }//GEN-LAST:event_btnAvanzarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvanzar;
     private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnRetroceder;
+    private javax.swing.JComboBox<String> cbxElementosPágina;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

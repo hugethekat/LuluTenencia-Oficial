@@ -16,7 +16,7 @@ import org.itson.excepciones.PersistenciaException;
  */
 public interface IPlacaDAO {
 
-    public Placa consultarPlacaActiva(String no_serie) throws PersistenciaException;
+    public Placa consultarPlacaActiva(String no_serie);
 
     public void actualizarEstadoPlaca(String num) throws PersistenciaException;
 
