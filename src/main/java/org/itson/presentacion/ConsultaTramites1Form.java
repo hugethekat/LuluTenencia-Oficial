@@ -33,6 +33,25 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
 
     }
 
+    public void cargarTabla(ParametrosBusquedaPersonas parametros){
+        JButton btnSeleccionar = new JButton("Seleccionar");
+        btnSeleccionar.setName("select");
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
+            modelo.setRowCount(0);
+            List<Persona> personasBusqueda = dao.consultarPersonas(parametros);
+
+            for (Persona personaEn : personasBusqueda) {
+                Object[] fila = {personaEn.getRfc(), personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getFechaNacimiento(), btnSeleccionar};
+                modelo.addRow(fila);
+            }
+            this.tblPersonas.setModel(modelo);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,24 +230,11 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         } else {
             anioNac = Integer.valueOf(this.txtfAnioNac.getText());
         }
-        JButton btnSeleccionar = new JButton("Seleccionar");
-        btnSeleccionar.setName("select");
 
         ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc, nombre, anioNac);
-        try {
-            DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
-            modelo.setRowCount(0);
-            List<Persona> personasBusqueda = dao.consultarPersonas(parametros);
 
-            for (Persona personaEn : personasBusqueda) {
-                Object[] fila = {personaEn.getRfc(), personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getFechaNacimiento(), btnSeleccionar};
-                modelo.addRow(fila);
-            }
+        this.cargarTabla(parametros);
 
-            this.tblPersonas.setModel(modelo);
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
@@ -242,14 +248,15 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                 ((JButton) value).doClick();
                 JButton boton = (JButton) value;
                 if (boton.getName().equals("select")) {
-                    String rfc = (String) this.tblPersonas.getValueAt(2, column);
-                    try {
-                        ConsultaTramites2Form ctf = new ConsultaTramites2Form(rfc);
-                        ctf.setVisible(true);
-                        this.dispose();
-                    } catch (PersistenciaException ex) {
-                        Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+//                    String rfc = (String) this.tblPersonas.getValueAt(2, column);
+//                    try {
+//                        ConsultaTramites2Form ctf = new ConsultaTramites2Form(rfc);
+//                        ctf.setVisible(true);
+//                        this.dispose();
+//                    } catch (PersistenciaException ex) {
+//                        Logger.getLogger(ConsultaTramites1Form.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+                     System.out.println("Hola soy goku");
                 }
             }
         }
