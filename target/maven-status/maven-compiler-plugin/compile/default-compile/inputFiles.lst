@@ -6,6 +6,7 @@ C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\dom
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\interfaces\IVehiculoDAO.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\com\itson\lulutenencia\LuluTenencia.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\daos\AutomovilDAO.java
+C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\presentacion\ReporteForm.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\presentacion\LicenciaForm.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\daos\PlacaDAO.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\daos\VehiculoDAO.java
@@ -18,6 +19,8 @@ C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\dom
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\utils\Vigencia.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\dominio\ParametrosBusquedaPersonas.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\utils\Encriptador.java
+C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\daos\TramiteDAO.java
+C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\interfaces\ITramiteDAO.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\presentacion\ConsultaTramites1Form.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\interfaces\IPersonaDAO.java
 C:\Users\JORGE\Documents\GitHub\LuluTenencia-Oficial\src\main\java\org\itson\daos\LicenciaDAO.java

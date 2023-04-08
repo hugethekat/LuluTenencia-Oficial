@@ -19,6 +19,7 @@ org\itson\interfaces\IPersonaDAO.class
 org\itson\utils\Costo.class
 com\itson\lulutenencia\LuluTenencia.class
 org\itson\presentacion\ConsultaTramites1Form$3.class
+org\itson\presentacion\ReporteForm.class
 org\itson\presentacion\PlacaForm.class
 org\itson\presentacion\VehiculoForm$3.class
 org\itson\daos\PersonaDAO.class
@@ -26,10 +27,11 @@ org\itson\interfaces\ILicenciaDAO.class
 org\itson\presentacion\LicenciaForm$4.class
 org\itson\dominio\Vehiculo.class
 org\itson\presentacion\PlacaForm$3.class
+org\itson\daos\TramiteDAO.class
 org\itson\presentacion\VehiculoForm.class
 org\itson\daos\LicenciaDAO.class
-org\itson\presentacion\MenuForm$8.class
 org\itson\presentacion\LicenciaForm$1.class
+org\itson\interfaces\ITramiteDAO.class
 org\itson\presentacion\ConsultaTramites1Form.class
 org\itson\utils\Vigencia.class
 org\itson\presentacion\LicenciaForm.class
