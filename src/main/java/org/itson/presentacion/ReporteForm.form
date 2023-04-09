@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="resizable" type="boolean" value="false"/>
@@ -179,6 +179,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtfNombre">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtfNombreKeyTyped"/>
+          </Events>
         </Component>
         <Component class="com.github.lgooddatepicker.components.DatePicker" name="calendar1">
         </Component>
@@ -285,10 +288,10 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
-                <StringItem index="0" value="Seleccione tipo de tr&#xe1;mite"/>
+                <StringItem index="0" value="Selecciona Tr&#xe1;mite"/>
                 <StringItem index="1" value="Licencia"/>
                 <StringItem index="2" value="Placa"/>
-                <StringItem index="3" value="Todo :)"/>
+                <StringItem index="3" value="Ambos"/>
               </StringArray>
             </Property>
           </Properties>

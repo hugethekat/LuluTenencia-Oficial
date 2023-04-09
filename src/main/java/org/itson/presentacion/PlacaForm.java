@@ -5,6 +5,7 @@
 package org.itson.presentacion;
 
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -151,7 +152,19 @@ public class PlacaForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel9.setText("Nombre");
 
+        txtfRfc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfRfcKeyTyped(evt);
+            }
+        });
+
         txtfNombre.setEditable(false);
+
+        txtfSerie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfSerieKeyTyped(evt);
+            }
+        });
 
         txtfMarca.setEditable(false);
 
@@ -325,12 +338,17 @@ public class PlacaForm extends javax.swing.JFrame {
 
     private void btnRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRfcActionPerformed
         rfc = this.txtfRfc.getText();
-        Persona persona = new Persona();
-        if (daoL.consultarLicencia(rfc)) {
-            persona = dao.consultar(rfc);
-            this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+        if (!rfc.equals("")) {
+            Persona persona = new Persona();
+            if (daoL.consultarLicencia(rfc)) {
+                persona = dao.consultar(rfc);
+                this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
+            }
+
         } else {
-            JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
+            JOptionPane.showMessageDialog(null, "Ingresa un rfc válido.", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRfcActionPerformed
 
@@ -345,7 +363,7 @@ public class PlacaForm extends javax.swing.JFrame {
                 buscarVehiculo(no_serie);
 
             } else {
-                int opcion = JOptionPane.showOptionDialog(null, "No. Serie erróneo o vehículo inexistente. \nDeseas Agregarlo?", "Error",
+                int opcion = JOptionPane.showOptionDialog(null, "Numero de Serie erróneo o vehículo inexistente. \nDeseas Agregarlo?", "Error",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, null);
 
                 if (opcion == JOptionPane.YES_OPTION) {
@@ -389,6 +407,32 @@ public class PlacaForm extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnTramitarPlacaActionPerformed
+
+    private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
+        // TODO add your handling code here:
+        if (txtfRfc.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfRfcKeyTyped
+
+    private void txtfSerieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfSerieKeyTyped
+        // TODO add your handling code here:
+        if (txtfSerie.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfSerieKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

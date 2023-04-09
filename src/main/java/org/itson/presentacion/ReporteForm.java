@@ -5,6 +5,7 @@
 package org.itson.presentacion;
 
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -88,21 +89,25 @@ public class ReporteForm extends javax.swing.JFrame {
         try {
             DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
             modelo.setRowCount(0);
-            List<Tramite> TramiteBusqueda = dao.buscarTramites(parametros, configPaginado);
 
-            for (Tramite tramite : TramiteBusqueda) {
-                Persona persona = tramite.getPersona();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaFormateada = dateFormat.format(tramite.getFechaExpedicion());
-                if (tramite instanceof Placa && this.cbxTipo.getSelectedItem().equals("Placa")) {
-                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Placa", fechaFormateada, tramite.getCosto()};
-                    modelo.addRow(fila);
-                } else if (tramite instanceof Licencia && this.cbxTipo.getSelectedItem().equals("Licencia")) {
-                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Licencia", fechaFormateada, tramite.getCosto()};
-                    modelo.addRow(fila);
-                } else {
-                    Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), tramite.getClass().getSimpleName(), fechaFormateada, tramite.getCosto()};
-                    modelo.addRow(fila);
+            if (this.cbxTipo.getSelectedItem().equals("Selecciona Trámite")) {
+                JOptionPane.showMessageDialog(null, "Ingresa un tipo de trámite.", "Alerta", JOptionPane.ERROR_MESSAGE);
+            } else {
+                List<Tramite> TramiteBusqueda = dao.buscarTramites(parametros, configPaginado);
+                for (Tramite tramite : TramiteBusqueda) {
+                    Persona persona = tramite.getPersona();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String fechaFormateada = dateFormat.format(tramite.getFechaExpedicion());
+                    if (tramite instanceof Placa && this.cbxTipo.getSelectedItem().equals("Placa")) {
+                        Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Placa", fechaFormateada, tramite.getCosto()};
+                        modelo.addRow(fila);
+                    } else if (tramite instanceof Licencia && this.cbxTipo.getSelectedItem().equals("Licencia")) {
+                        Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), "Licencia", fechaFormateada, tramite.getCosto()};
+                        modelo.addRow(fila);
+                    } else if (this.cbxTipo.getSelectedItem().equals("Ambos")) {
+                        Object[] fila = {persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno(), tramite.getClass().getSimpleName(), fechaFormateada, tramite.getCosto()};
+                        modelo.addRow(fila);
+                    }
                 }
             }
 
@@ -164,6 +169,12 @@ public class ReporteForm extends javax.swing.JFrame {
 
         jLabel3.setText("Tipo de trámite");
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+
+        txtfNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfNombreKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("Inicio periodo");
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -227,7 +238,7 @@ public class ReporteForm extends javax.swing.JFrame {
             }
         });
 
-        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione tipo de trámite", "Licencia", "Placa", "Todo :)" }));
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Trámite", "Licencia", "Placa", "Ambos" }));
 
         btnRetroceder.setText("<----");
         btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
@@ -377,13 +388,13 @@ public class ReporteForm extends javax.swing.JFrame {
         nombre = this.txtfNombre.getText();
 
         LocalDate ca1 = null, ca2 = null;
-        if (!this.calendar1.getDate().equals("")) {
+        if (this.calendar1.getDate() != null) {
             ca1 = this.calendar1.getDate();
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
-        if (!this.calendar2.getDate().equals("")) {
+        if (this.calendar2.getDate() != null) {
             if (this.calendar2.getDate().isAfter(ca1)) {
                 ca2 = this.calendar2.getDate();
             } else {
@@ -397,10 +408,8 @@ public class ReporteForm extends javax.swing.JFrame {
             tipo = "Licencia";
         } else if (cbxTipo.getSelectedItem().equals("Placa")) {
             tipo = "Placa";
-        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+        } else if (cbxTipo.getSelectedItem().equals("Ambos")) {
             tipo = "Todo";
-        } else {
-            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
@@ -500,6 +509,12 @@ public class ReporteForm extends javax.swing.JFrame {
         }
 
         if (!this.calendar2.getDate().equals("")) {
+            ca1 = this.calendar2.getDate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!this.calendar2.getDate().equals("")) {
             if (this.calendar2.getDate().isAfter(ca1)) {
                 ca2 = this.calendar2.getDate();
             } else {
@@ -522,6 +537,19 @@ public class ReporteForm extends javax.swing.JFrame {
         ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
         avanzarPagina(parametros);
     }//GEN-LAST:event_btnAvanzarActionPerformed
+
+    private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
+        // TODO add your handling code here:
+        if (txtfNombre.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetter(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE || Character.isWhitespace(keyChar))) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar((keyChar));
+        }
+    }//GEN-LAST:event_txtfNombreKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

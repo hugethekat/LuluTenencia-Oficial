@@ -4,10 +4,12 @@
  */
 package org.itson.presentacion;
 
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
 import org.itson.dominio.Licencia;
@@ -87,6 +89,12 @@ public class LicenciaForm extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel2.setText("RFC");
+
+        txtfRfc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfRfcKeyTyped(evt);
+            }
+        });
 
         txtNombre.setEditable(false);
 
@@ -285,13 +293,21 @@ public class LicenciaForm extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         String rfc = txtfRfc.getText();
-        IPersonaDAO dao = new PersonaDAO();
+        if (!rfc.equals("")) {
+            IPersonaDAO dao = new PersonaDAO();
             Persona persona = dao.consultar(rfc);
-            txtNombre.setText(persona.getNombres());
-            txtAPaterno.setText(persona.getApellidoPaterno());
-            txtAMaterno.setText(persona.getApellidoMaterno());
-            txtFechaNac.setText(persona.getFechaNacimiento().toString());
-            txtTelefono.setText(persona.getTelefono());
+            if (persona != null) {
+                txtNombre.setText(persona.getNombres());
+                txtAPaterno.setText(persona.getApellidoPaterno());
+                txtAMaterno.setText(persona.getApellidoMaterno());
+                txtFechaNac.setText(persona.getFechaNacimiento().toString());
+                txtTelefono.setText(persona.getTelefono());
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingresa un rfc válido.", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingresa un rfc.", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
@@ -301,6 +317,7 @@ public class LicenciaForm extends javax.swing.JFrame {
         String AMaterno = txtAMaterno.getText();
         String FechaNac = txtFechaNac.getText();
         String Telefono = txtTelefono.getText();
+        if(!txtNombre.getText().isEmpty()){
         boolean discapacidad;
         if (checkDiscapacidad.isSelected() == true) {
             discapacidad = true;
@@ -315,20 +332,43 @@ public class LicenciaForm extends javax.swing.JFrame {
             vigencia = 2;
         } else if (cbxVigencia.getSelectedItem().toString().equals("3_Anios")) {
             vigencia = 3;
+        } else if (cbxVigencia.getSelectedItem().toString().equals("Seleccione vigencia")){
+            this.txtCosto.setText("Es necesaria una vigencia.");
         }
         ILicenciaDAO dao = new LicenciaDAO();
         try {
+            if(vigencia == 0){
+                JOptionPane.showMessageDialog(null, "Ingresa una vigencia válida.", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }else{
             dao.insertarLicencia(rfc, nombres, APaterno, AMaterno, FechaNac, Telefono, discapacidad, costo, vigencia);
+            }
+            
         } catch (PersistenciaException ex) {
             Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "Ingresa una persona.", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
-       MenuForm mf = new MenuForm();
+        MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
+        // TODO add your handling code here:
+        if (txtfRfc.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfRfcKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,21 +4,17 @@
  */
 package org.itson.presentacion;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import org.itson.daos.AutomovilDAO;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
-import org.itson.daos.VehiculoDAO;
 import org.itson.dominio.Automovil;
 import org.itson.dominio.Persona;
-import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IAutomovilDAO;
 import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
-import org.itson.interfaces.IVehiculoDAO;
 
 /**
  *
@@ -42,6 +38,7 @@ public class VehiculoForm extends javax.swing.JFrame {
         txtfRfc.setText(rfc);
         buscar(rfc);
     }
+
     public VehiculoForm() {
         initComponents();
     }
@@ -112,6 +109,42 @@ public class VehiculoForm extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel8.setText("Modelo");
+
+        txtfRfc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfRfcKeyTyped(evt);
+            }
+        });
+
+        txtfMarca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfMarcaKeyTyped(evt);
+            }
+        });
+
+        txtfSerie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfSerieKeyTyped(evt);
+            }
+        });
+
+        txtfLinea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfLineaKeyTyped(evt);
+            }
+        });
+
+        txtfModelo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfModeloKeyTyped(evt);
+            }
+        });
+
+        txtfColor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfColorKeyTyped(evt);
+            }
+        });
 
         btnBuscar.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btnBuscar.setText("Buscar");
@@ -286,6 +319,82 @@ public class VehiculoForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
+        // TODO add your handling code here:
+        if (txtfRfc.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfRfcKeyTyped
+
+    private void txtfSerieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfSerieKeyTyped
+        // TODO add your handling code here:
+        if (txtfSerie.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfSerieKeyTyped
+
+    private void txtfMarcaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfMarcaKeyTyped
+        // TODO add your handling code here:
+        if (txtfMarca.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfMarcaKeyTyped
+
+    private void txtfLineaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfLineaKeyTyped
+        // TODO add your handling code here:
+        if (txtfLinea.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfLineaKeyTyped
+
+    private void txtfColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfColorKeyTyped
+        // TODO add your handling code here:
+        if (txtfColor.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfColorKeyTyped
+
+    private void txtfModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfModeloKeyTyped
+        // TODO add your handling code here:
+        if (txtfModelo.getText().length() >= 4) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtfModeloKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

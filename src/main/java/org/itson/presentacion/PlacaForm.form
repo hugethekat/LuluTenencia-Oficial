@@ -241,6 +241,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtfRfc">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtfRfcKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtfNombre">
           <Properties>
@@ -248,6 +251,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtfSerie">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtfSerieKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtfMarca">
           <Properties>

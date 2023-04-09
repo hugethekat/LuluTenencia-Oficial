@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
 import org.itson.dominio.Persona;
 import org.itson.dominio.ReporteDTO;
 import org.itson.dominio.Tramite;
@@ -59,32 +60,34 @@ public class TramiteDAO implements ITramiteDAO {
     @Override
     public List<Tramite> buscarTramites(ReporteDTO params, ConfiguracionPaginado configPaginado) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tramite> query = cb.createQuery(Tramite.class
-        );
-        Root<Tramite> root = query.from(Tramite.class
-        );
+        CriteriaQuery<Tramite> query = cb.createQuery(Tramite.class);
+        Root<Tramite> root = query.from(Tramite.class);
         List<Predicate> filtros = new ArrayList<>();
-        if (params.getNombre() != null && !params.getNombre().isEmpty()) {
-            filtros.add(cb.like(cb.lower(root.get("persona").get("nombres")), "%" + params.getNombre() + "%"));
+        try {
+            if (params.getNombre() != null && !params.getNombre().isEmpty()) {
+                filtros.add(cb.like(cb.lower(root.get("persona").get("nombres")), "%" + params.getNombre() + "%"));
+            }
+            if (params.getInicio() != null && params.getFin() != null) {
+                Date inicio = Date.from(params.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date fin = Date.from(params.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                filtros.add(cb.between(root.get("fechaExpedicion"), inicio, fin));
+            }
+            if (filtros.isEmpty()) {
+                query.select(root);
+            } else {
+                query.where(cb.and(filtros.toArray(new Predicate[0])));
+            }
+            TypedQuery<Tramite> typedQuery;
+            if (configPaginado != null) {
+                typedQuery = em.createQuery(query)
+                        .setFirstResult(configPaginado.getElementosASaltar())
+                        .setMaxResults(configPaginado.getElementosPagina());
+            } else {
+                typedQuery = em.createQuery(query);
+            }
+            return typedQuery.getResultList();
+        } catch (NoResultException ex) {
+            return null;
         }
-        if (params.getInicio() != null && params.getFin() != null) {
-            Date inicio = Date.from(params.getInicio().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date fin = Date.from(params.getFin().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            filtros.add(cb.between(root.get("fechaExpedicion"), inicio, fin));
-        }
-        if (filtros.isEmpty()) {
-            query.select(root);
-        } else {
-            query.where(cb.and(filtros.toArray(new Predicate[0])));
-        }
-        TypedQuery<Tramite> typedQuery;
-        if (configPaginado != null) {
-            typedQuery = em.createQuery(query)
-                    .setFirstResult(configPaginado.getElementosASaltar())
-                    .setMaxResults(configPaginado.getElementosPagina());
-        } else {
-            typedQuery = em.createQuery(query);
-        }
-        return typedQuery.getResultList();
     }
 }

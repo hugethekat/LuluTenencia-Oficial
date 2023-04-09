@@ -5,11 +5,13 @@
 package org.itson.presentacion;
 
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import org.itson.utils.Render;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.itson.daos.PersonaDAO;
 import org.itson.dominio.ParametrosBusquedaPersonas;
@@ -41,15 +43,15 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         this.tblPersonas.setDefaultRenderer(Object.class, new Render());
         JButton btnSeleccionar = new JButton("Seleccionar");
         btnSeleccionar.setName("select");
-            DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
-            modelo.setRowCount(0);
-            List<Persona> personasBusqueda = dao.consultarPersonas(parametros, configPaginado);
+        DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
+        modelo.setRowCount(0);
+        List<Persona> personasBusqueda = dao.consultarPersonas(parametros, configPaginado);
 
-            for (Persona personaEn : personasBusqueda) {
-                Object[] fila = {personaEn.getRfc(), personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getFechaNacimiento(), btnSeleccionar};
-                modelo.addRow(fila);
-            }
-            this.tblPersonas.setModel(modelo);
+        for (Persona personaEn : personasBusqueda) {
+            Object[] fila = {personaEn.getRfc(), personaEn.getNombres() + " " + personaEn.getApellidoPaterno() + " " + personaEn.getApellidoMaterno(), personaEn.getFechaNacimiento(), btnSeleccionar};
+            modelo.addRow(fila);
+        }
+        this.tblPersonas.setModel(modelo);
 
     }
 
@@ -93,17 +95,35 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
-        jLabel1.setText("Consultar trámites");
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
+        jLabel1.setText("Consultar trámites");
 
-        jLabel2.setText("RFC");
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel2.setText("RFC");
 
-        jLabel3.setText("Nombre");
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel3.setText("Nombre");
 
-        jLabel4.setText("Año de nacimiento");
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel4.setText("Año de nacimiento");
+
+        txtfRfc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfRfcKeyTyped(evt);
+            }
+        });
+
+        txtfNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfNombreKeyTyped(evt);
+            }
+        });
+
+        txtfAnioNac.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfAnioNacKeyTyped(evt);
+            }
+        });
 
         tblPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,16 +161,16 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             tblPersonas.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        btnConsultar.setText("Consultar");
         btnConsultar.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
             }
         });
 
-        btnMenu.setText("Regresar al menú");
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        btnMenu.setText("Regresar al menú");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuActionPerformed(evt);
@@ -286,7 +306,10 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         } else {
             anioNac = Integer.valueOf(this.txtfAnioNac.getText());
         }
+        if (rfc.equals("") && nombre.equals("") && anioNac == null) {
 
+            JOptionPane.showMessageDialog(null, "Ingresa al menos un campo para consultar.", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
         ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc, nombre, anioNac);
 
         this.cargarTabla(parametros);
@@ -345,7 +368,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             anioNac = Integer.valueOf(this.txtfAnioNac.getText());
         }
         ParametrosBusquedaPersonas parametros = new ParametrosBusquedaPersonas(rfc, nombre, anioNac);
-        
+
         retrocederPagina(parametros);
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
@@ -369,6 +392,42 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
     private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxElementosPáginaActionPerformed
+
+    private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
+        if (txtfRfc.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar(Character.toUpperCase(keyChar));
+        }
+    }//GEN-LAST:event_txtfRfcKeyTyped
+
+    private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
+        // TODO add your handling code here
+        if (txtfNombre.getText().length() >= 50) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isLetter(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE || Character.isWhitespace(keyChar))) {
+            evt.consume();
+        } else if (Character.isLowerCase(keyChar)) {
+            evt.setKeyChar((keyChar));
+        }
+    }//GEN-LAST:event_txtfNombreKeyTyped
+
+    private void txtfAnioNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfAnioNacKeyTyped
+        // TODO add your handling code here:
+        if (txtfAnioNac.getText().length() >= 4) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isDigit(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtfAnioNacKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
