@@ -13,8 +13,8 @@ import org.itson.dominio.Automovil;
 import org.itson.interfaces.IAutomovilDAO;
 
 /**
- *
- * @author xeron
+ *Clase donde implementa los métodos de la interfaz IAutomovilDAO y contiene todo lo que necesita automovil
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class AutomovilDAO implements IAutomovilDAO {
 

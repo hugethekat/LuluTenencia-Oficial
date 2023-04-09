@@ -4,7 +4,6 @@
  */
 package org.itson.presentacion;
 
-import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +25,8 @@ import org.itson.interfaces.IVehiculoDAO;
 import org.itson.utils.Costo;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla donde se registran las placas
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class PlacaForm extends javax.swing.JFrame {
 
@@ -40,13 +39,20 @@ public class PlacaForm extends javax.swing.JFrame {
     private String rfc, noSerie;
 
     /**
-     * Creates new form PlacaForm
+     * Constructor por omisión que se usa para cuando se quiere mover del menú principal 
+     * hacia el registro de placas
      */
     public PlacaForm() {
         initComponents();
 
     }
 
+    /**
+     * Constructo de PlacaForm que recibe un rfc y un número de serie, se utiliza cuando se llena el 
+     * registro de un vehiculo nuevo y se muestran los datos del vehiculo recien registrado
+     * @param rfc identificador a la que le pertenece el automovil al que se le registrará la placa
+     * @param noSerie identificador del automovil al que se le registrará la placa
+     */
     public PlacaForm(String rfc, String noSerie) {
         initComponents();
         this.rfc = rfc;
@@ -57,12 +63,20 @@ public class PlacaForm extends javax.swing.JFrame {
         buscarVehiculo(noSerie);
     }
 
+    /**
+     * Método que busca una persona mediante su rfc y llena el campo de texto del nombre de la persona
+     * @param rfc identificador de la persona que se buscará
+     */
     public void buscar(String rfc) {
         Persona persona = new Persona();
         persona = dao.consultar(rfc);
         this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
     }
 
+    /**
+     * Método que busca un vehículo para mostrar los datos del que se le registrará la placa
+     * @param noSerie identificador del vehículo que se buscará
+     */
     public void buscarVehiculo(String noSerie) {
         Costo c = new Costo();
         Placa placa = daoP.consultarPlacaActiva(noSerie);
@@ -330,12 +344,20 @@ public class PlacaForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que te manda de regreso al menú
+     * @param evt evento que desencadena la acción
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Acción que busca una persona por su rfc para mostrar sus datos
+     * @param evt evento que desencadena la acción
+     */
     private void btnRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRfcActionPerformed
         rfc = this.txtfRfc.getText();
         if (!rfc.equals("")) {
@@ -352,6 +374,10 @@ public class PlacaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRfcActionPerformed
 
+    /**
+     * Acción que busca un vehículo por su rfc para mostrar sus datos
+     * @param evt evento que desencadena la acción
+     */
     private void btnSerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSerieActionPerformed
         String no_serie = this.txtfSerie.getText();
         Automovil automovil = new Automovil();
@@ -377,6 +403,11 @@ public class PlacaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSerieActionPerformed
 
+    /**
+     * Acción que realiza el tramite de la placa conforme los datos obtenidos y reinicia los datos de los text
+     * field por si se requiere tramitar otra placa
+     * @param evt evento que desencadena la acción
+     */
     private void btnTramitarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarPlacaActionPerformed
 
         //Hacer clase costo para las placas. ya existe pa 💪👍
@@ -408,6 +439,11 @@ public class PlacaForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnTramitarPlacaActionPerformed
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de rfc
+     * @param evt evento que desencadena la acción
+     */
     private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
         // TODO add your handling code here:
         if (txtfRfc.getText().length() >= 50) {
@@ -421,6 +457,11 @@ public class PlacaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfRfcKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de numero de serie
+     * @param evt evento que desencadena la acción
+     */
     private void txtfSerieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfSerieKeyTyped
         // TODO add your handling code here:
         if (txtfSerie.getText().length() >= 50) {

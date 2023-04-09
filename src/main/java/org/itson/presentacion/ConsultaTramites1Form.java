@@ -21,8 +21,8 @@ import org.itson.interfaces.IPersonaDAO;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla que consulta las personas para luego consultar sus trámites
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ConsultaTramites1Form extends javax.swing.JFrame {
 
@@ -30,7 +30,8 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
     IPersonaDAO dao = new PersonaDAO();
 
     /**
-     * Creates new form ConsultaTramites1Form
+     * Constructor que crea un ConsultaTramtes1Form, configura la tabla para poder asignarle un boton
+     * y configura el páginado que tendrá la tabla
      */
     public ConsultaTramites1Form() {
         initComponents();
@@ -39,6 +40,10 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         ParametrosBusquedaPersonas parametros;
     }
 
+    /**
+     * Método que carga la tabla de datos dependiendo de los parametros obtenidos para filtrar la busqueda
+     * @param parametros filtros que se aplicaran a la consulta de personas
+     */
     public void cargarTabla(ParametrosBusquedaPersonas parametros) {
         this.tblPersonas.setDefaultRenderer(Object.class, new Render());
         JButton btnSeleccionar = new JButton("Seleccionar");
@@ -55,11 +60,19 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Método que hace que se avance la página de la tabla
+     * @param parametros se necesita para cargar la tabla
+     */
     private void avanzarPagina(ParametrosBusquedaPersonas parametros) {
         this.configPaginado.avanzarPagina();
         this.cargarTabla(parametros);
     }
 
+    /**
+     * Método que hace que se retroceda la página 
+     * @param parametros se necesita para cargar la tabla
+     */
     private void retrocederPagina(ParametrosBusquedaPersonas parametros) {
         this.configPaginado.retrocederPagina();
         this.cargarTabla(parametros);
@@ -197,11 +210,6 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
                 cbxElementosPáginaItemStateChanged(evt);
             }
         });
-        cbxElementosPágina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxElementosPáginaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -291,12 +299,20 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que te manda de regreso al menú principal
+     * @param evt evento que desencadena la acción 
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Acción que consulta las personas
+     * @param evt evento que desencadena la acción 
+     */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String rfc = this.txtfRfc.getText();
         String nombre = this.txtfNombre.getText();
@@ -316,6 +332,11 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnConsultarActionPerformed
 
+    /**
+     * Método que hace que puedas hacer click en el botón generado en la columna final de la tabla
+     * y te manda al siguiente formulario
+     * @param evt evento que desencadena la acción 
+     */
     private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
         int column = this.tblPersonas.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / this.tblPersonas.getRowHeight();
@@ -344,6 +365,10 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblPersonasMouseClicked
 
+    /**
+     * Acción que te hace avanzar el paginado de la tabla
+     * @param evt evento que desencadena la acción 
+     */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
         String rfc = this.txtfRfc.getText();
         String nombre = this.txtfNombre.getText();
@@ -357,6 +382,10 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         avanzarPagina(parametros);
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
+     /**
+     * Acción que hace retroceder el paginado de la tabla
+     * @param evt evento que desencadena la acción
+     */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
         // TODO add your handling code here:
         String rfc = this.txtfRfc.getText();
@@ -372,6 +401,10 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         retrocederPagina(parametros);
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
+   /**
+     * Acción que revisa si cambio un elemento de la combobox y te lleva a esa pagina
+     * @param evt evento que desencadena la acción
+     */
     private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
         String rfc = this.txtfRfc.getText();
         String nombre = this.txtfNombre.getText();
@@ -389,10 +422,11 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
 
-    private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxElementosPáginaActionPerformed
-
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de rfc
+     * @param evt evento que desencadena la acción 
+     */
     private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
         if (txtfRfc.getText().length() >= 50) {
             evt.consume();
@@ -405,6 +439,11 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfRfcKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de nombre
+     * @param evt evento que desencadena la acción 
+     */
     private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
         // TODO add your handling code here
         if (txtfNombre.getText().length() >= 50) {
@@ -418,6 +457,11 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfNombreKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que solamente se puedan ingresar números, 
+     * además de limitarlo a solo 4 digitos
+     * @param evt evento que desencadena la acción 
+     */
     private void txtfAnioNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfAnioNacKeyTyped
         // TODO add your handling code here:
         if (txtfAnioNac.getText().length() >= 4) {

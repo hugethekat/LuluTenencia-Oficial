@@ -17,8 +17,8 @@ import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla donde se registrarán los vehiculos
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class VehiculoForm extends javax.swing.JFrame {
 
@@ -29,7 +29,8 @@ public class VehiculoForm extends javax.swing.JFrame {
     private String rfc;
 
     /**
-     * Creates new form VehiculoForm
+     * Constructor que crea un VehiculoForm y recibe un rfc para llenar los campos de la persona que 
+     * registrará un vehiculo
      */
     public VehiculoForm(String rfc) {
         this.rfc = rfc;
@@ -39,10 +40,17 @@ public class VehiculoForm extends javax.swing.JFrame {
         buscar(rfc);
     }
 
+    /**
+     * Constructor de VehiculoForm por omisión
+     */
     public VehiculoForm() {
         initComponents();
     }
 
+    /**
+     * Método que busca una persona por su rfc para llenar labels con sus datos
+     * @param rfc identificador de persona que se utiliza para buscar a una persona
+     */
     public void buscar(String rfc) {
         Persona persona = new Persona();
         persona = daoP.consultar(rfc);
@@ -275,12 +283,20 @@ public class VehiculoForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que al presionar el botón btnMenu te mande al form del Menu
+     * @param evt evento que desencadena la acción
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Acción que al presionar el botón de buscar te busque una persona con el rfc en el campo de texto
+     * @param evt evento que desencadena la acción
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         rfc = txtfRfc.getText();
         Persona persona = new Persona();
@@ -292,6 +308,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    /**
+     * Acción que al presionar el botón de registrar te registre un vehículo con los datos obtenidos de los 
+     * campos de texto
+     * @param evt evento que desencadena la acción
+     */
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         String rfc = this.txtfRfc.getText();
         String no_serie = this.txtfSerie.getText();
@@ -320,6 +341,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de rfc
+     * @param evt evento que desencadena la acción
+     */
     private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
         // TODO add your handling code here:
         if (txtfRfc.getText().length() >= 50) {
@@ -333,6 +359,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfRfcKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de numero de serie
+     * @param evt evento que desencadena la acción
+     */
     private void txtfSerieKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfSerieKeyTyped
         // TODO add your handling code here:
         if (txtfSerie.getText().length() >= 50) {
@@ -346,6 +377,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfSerieKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de marca
+     * @param evt evento que desencadena la acción
+     */
     private void txtfMarcaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfMarcaKeyTyped
         // TODO add your handling code here:
         if (txtfMarca.getText().length() >= 50) {
@@ -359,6 +395,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfMarcaKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de línea
+     * @param evt evento que desencadena la acción
+     */
     private void txtfLineaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfLineaKeyTyped
         // TODO add your handling code here:
         if (txtfLinea.getText().length() >= 50) {
@@ -372,6 +413,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfLineaKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de color
+     * @param evt evento que desencadena la acción
+     */
     private void txtfColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfColorKeyTyped
         // TODO add your handling code here:
         if (txtfColor.getText().length() >= 50) {
@@ -385,6 +431,11 @@ public class VehiculoForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtfColorKeyTyped
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de modelo
+     * @param evt evento que desencadena la acción
+     */
     private void txtfModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfModeloKeyTyped
         // TODO add your handling code here:
         if (txtfModelo.getText().length() >= 4) {

@@ -5,8 +5,8 @@
 package org.itson.excepciones;
 
 /**
- *
- * @author xeron
+ *Clase que crea una excepción para los errores de los métodos
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class PersistenciaException extends Exception{
 

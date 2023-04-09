@@ -20,7 +20,7 @@ import org.itson.utils.Encriptador;
 
 /**
  *
- * @author xeron
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 //Pirata de Culiacán.
 @NamedQuery(

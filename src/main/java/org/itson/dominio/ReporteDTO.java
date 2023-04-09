@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author xeron
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ReporteDTO {
 

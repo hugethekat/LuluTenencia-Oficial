@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,8 +33,9 @@ import org.itson.interfaces.ITramiteDAO;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla en donde se consultaran los tramites dependiendo de la
+ * busqueda que se haga, también genera un reporte de los seleccionados en la tabla
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ReporteForm extends javax.swing.JFrame {
 
@@ -45,7 +45,8 @@ public class ReporteForm extends javax.swing.JFrame {
     private final ConfiguracionPaginado configPaginado;
 
     /**
-     * Creates new form ReporteForm
+     * Constructor que crea un ReporteForm que asigna un rango limite a los calendarios que no pase de 
+     * la fecha actual y asigna el paginado de la tabla, a parte de crear un objeto de tipo ReporteDTO
      */
     public ReporteForm() {
         initComponents();
@@ -55,6 +56,10 @@ public class ReporteForm extends javax.swing.JFrame {
         ReporteDTO parametros;
     }
 
+    /**
+     * Método que crea un reporte usando JasperReports y lo llena con los elementos que se encuentran en
+     * la tabla
+     */
     public void previewJasper() {
         ArrayList listaReporte = new ArrayList();
 
@@ -85,6 +90,10 @@ public class ReporteForm extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método que carga la tabla de los tramites realizados dependiendo de los parametros obtenidos
+     * @param parametros parametros obtenidos para realizar la consulta con base en ellos
+     */
     public void cargarTabla(ReporteDTO parametros) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) this.tblPersonas.getModel();
@@ -118,11 +127,19 @@ public class ReporteForm extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método que hace que se avance la página de la tabla
+     * @param parametros se necesita para cargar la tabla
+     */
     private void avanzarPagina(ReporteDTO parametros) {
         this.configPaginado.avanzarPagina();
         this.cargarTabla(parametros);
     }
 
+    /**
+     * Método que hace que se retroceda la página 
+     * @param parametros se necesita para cargar la tabla
+     */
     private void retrocederPagina(ReporteDTO parametros) {
         this.configPaginado.retrocederPagina();
         this.cargarTabla(parametros);
@@ -253,11 +270,6 @@ public class ReporteForm extends javax.swing.JFrame {
                 cbxElementosPáginaItemStateChanged(evt);
             }
         });
-        cbxElementosPágina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxElementosPáginaActionPerformed(evt);
-            }
-        });
 
         btnAvanzar.setText("---->");
         btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
@@ -371,16 +383,28 @@ public class ReporteForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método que te lleva al menú
+     * @param evt evento que desencadena la acción 
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm menu = new MenuForm();
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Acción que al pulsar el botón de generar reporte, genera el reporte solicitado
+     * @param evt evento que desencadena la acción
+     */
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         this.previewJasper();
     }//GEN-LAST:event_btnReporteActionPerformed
 
+    /**
+     * Acción que consulta los tramites dependiendo de lo recibido en los textos y los calendarios
+     * @param evt evento que desencadena la acción
+     */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
         String nombre = null, tipo = null;
@@ -417,6 +441,10 @@ public class ReporteForm extends javax.swing.JFrame {
         this.cargarTabla(parametros);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
+    /**
+     * Acción que hace retroceder el paginado de la tabla
+     * @param evt evento que desencadena la acción
+     */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
         // TODO add your handling code here:
         String nombre = null, tipo = null;
@@ -454,6 +482,10 @@ public class ReporteForm extends javax.swing.JFrame {
         retrocederPagina(parametros);
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
+    /**
+     * Acción que revisa si cambio un elemento de la combobox y te lleva a esa pagina
+     * @param evt evento que desencadena la acción
+     */
     private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
         String nombre = null, tipo = null;
         nombre = this.txtfNombre.getText();
@@ -493,10 +525,10 @@ public class ReporteForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
 
-    private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxElementosPáginaActionPerformed
-
+    /**
+     * Acción que hace avanzar el paginado de la tabla
+     * @param evt evento que desencadena la acción 
+     */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
         String nombre = null, tipo = null;
         nombre = this.txtfNombre.getText();
@@ -538,6 +570,11 @@ public class ReporteForm extends javax.swing.JFrame {
         avanzarPagina(parametros);
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de nombre
+     * @param evt evento que desencadena la acción 
+     */
     private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
         // TODO add your handling code here:
         if (txtfNombre.getText().length() >= 50) {

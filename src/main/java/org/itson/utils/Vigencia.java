@@ -5,8 +5,8 @@
 package org.itson.utils;
 
 /**
- *
- * @author xeron
+ *Clase que contiene todos los datos de la vigencia y costos de la licencia
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class Vigencia {
 

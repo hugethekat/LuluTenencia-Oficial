@@ -8,8 +8,8 @@ import org.itson.daos.PersonaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla del menú principal
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class MenuForm extends javax.swing.JFrame {
 
@@ -89,15 +89,10 @@ public class MenuForm extends javax.swing.JFrame {
             }
         });
 
+        btnInsercion.setText("Inserción masiva de personas");
         btnInsercion.setBackground(new java.awt.Color(255, 255, 255));
         btnInsercion.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         btnInsercion.setForeground(new java.awt.Color(0, 0, 0));
-        btnInsercion.setText("Inserción masiva de personas");
-        btnInsercion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnInsercionMouseClicked(evt);
-            }
-        });
         btnInsercion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsercionActionPerformed(evt);
@@ -180,37 +175,57 @@ public class MenuForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que te manda para tramitar licencias
+     * @param evt evento que desencadena la acción
+     */
     private void btnTramiteLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramiteLicenciaActionPerformed
         LicenciaForm lf = new LicenciaForm();
         lf.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnTramiteLicenciaActionPerformed
 
+    /**
+     * Acción que te inserta las 20 personas para la prueba
+     * @param evt evento que desencadena la acción
+     */
     private void btnInsercionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsercionActionPerformed
         IPersonaDAO ip = new PersonaDAO();
         ip.insertarPersonas();
     }//GEN-LAST:event_btnInsercionActionPerformed
 
+    /**
+     *Acción que cierra el programa
+     * @param evt evento que desencadena la acción
+     */
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnInsercionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsercionMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnInsercionMouseClicked
-
+    /**
+     * Acción que te lleva al registro de placas
+     * @param evt evento que desencadena la acción
+     */
     private void btnTramitePlacasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitePlacasActionPerformed
         PlacaForm pf = new PlacaForm();
         pf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTramitePlacasActionPerformed
 
+    /**
+     * Acción que te lleva a la consulta de tramites
+     * @param evt evento que desencadena la acción
+     */
     private void btnConsutaTramitesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsutaTramitesActionPerformed
         ConsultaTramites1Form ct1 = new ConsultaTramites1Form();
         ct1.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnConsutaTramitesActionPerformed
 
+    /**
+     * Acción que te lleva al reporte de los tramites
+     * @param evt evento que desencadena la acción
+     */
     private void btnReporteTramitesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteTramitesActionPerformed
         ReporteForm reporte = new ReporteForm();
         reporte.setVisible(true);

@@ -8,11 +8,9 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
-import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
 import org.itson.utils.Vigencia;
 import org.itson.excepciones.PersistenciaException;
@@ -20,15 +18,15 @@ import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
- *
- * @author JORGE
+ *Clase que contiene la pantalla donde se registran las licencias
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class LicenciaForm extends javax.swing.JFrame {
 
     Vigencia v = new Vigencia();
 
     /**
-     * Creates new form Licencia
+     * Constructor que crea un LicenciaForm y llena la combo box de elección de vigencia
      */
     public LicenciaForm() {
         initComponents();
@@ -279,6 +277,10 @@ public class LicenciaForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que obtiene el elemento seleccionado de la combobox para poder obtener el costo 
+     * @param evt evento que desencadena la acción  
+     */
     private void cbxVigenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVigenciaActionPerformed
         String seleccion = cbxVigencia.getSelectedItem().toString();
         if (checkDiscapacidad.isSelected() == true) {
@@ -290,6 +292,10 @@ public class LicenciaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxVigenciaActionPerformed
 
+    /**
+     * Acción que te busca una persona mediante el rfc obtendio de su campo de texto
+     * @param evt evento que desencadena la acción
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         String rfc = txtfRfc.getText();
@@ -310,6 +316,10 @@ public class LicenciaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    /**
+     * Acción que hace el tramite de la placa con los datos obtenidos en el formulario
+     * @param evt evento que desencadena la acción
+     */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
         String rfc = txtfRfc.getText();
         String nombres = txtNombre.getText();
@@ -351,12 +361,21 @@ public class LicenciaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
 
+    /**
+     * Acción que te manda de regreso al menú principal
+     * @param evt evento que desencadena la acción
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
+     * de texto se hagan mayúsculas en el campo de texto de rfc
+     * @param evt evento que desencadena la acción
+     */
     private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped
         // TODO add your handling code here:
         if (txtfRfc.getText().length() >= 50) {

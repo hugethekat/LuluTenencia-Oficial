@@ -5,7 +5,6 @@
 package org.itson.dominio;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,11 +16,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 /**
- *
- * @author xeron
+ *Clase de tipo entity
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 @Entity
 @Table(name = "Tramites")

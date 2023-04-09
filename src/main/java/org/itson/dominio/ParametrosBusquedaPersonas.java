@@ -7,8 +7,8 @@ package org.itson.dominio;
 import java.time.LocalDate;
 
 /**
- *
- * @author JORGE
+ *Clase que se usa como DTO para usar en las consultas de personas por filtro
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ParametrosBusquedaPersonas {
 

@@ -13,8 +13,8 @@ import org.itson.dominio.Vehiculo;
 import org.itson.interfaces.IVehiculoDAO;
 
 /**
- *
- * @author JORGE
+ *Clase donde implementa los métodos de la interfaz IVehiculoDAO y contiene todo lo que necesita vehiculo
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class VehiculoDAO implements IVehiculoDAO {
 

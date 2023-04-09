@@ -6,7 +6,6 @@ package org.itson.daos;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,20 +16,18 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.JOptionPane;
 import org.itson.dominio.ParametrosBusquedaPersonas;
 import org.itson.dominio.Persona;
-import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.IPersonaDAO;
 import org.itson.utils.ConfiguracionPaginado;
 import org.itson.utils.Encriptador;
 
 /**
- *
- * @author JORGE
+ *Clase que implementa todos los métodos de IPersonaDAO y contiene todo lo necesario para Persona
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class PersonaDAO implements IPersonaDAO {
 
@@ -40,6 +37,11 @@ public class PersonaDAO implements IPersonaDAO {
 
     int i = 0;
 
+    /**
+     * Método que valida si una persona es mayor de edad para poder ser registrada en la base de datos 
+     * @param persona Persona a la que se le hará la validación de edad
+     * @return true si la persona es mayor a 18 años, falso si no
+     */
     public Boolean edad(Persona persona) {
         LocalDate anio = persona.getFechaNacimiento();
         LocalDate hoy = LocalDate.now();
@@ -55,6 +57,9 @@ public class PersonaDAO implements IPersonaDAO {
 
     }
 
+    /**
+     * Método que inserta 20 personas a la base de datos para fines de prueba
+     */
     @Override
     public void insertarPersonas() {
         try {

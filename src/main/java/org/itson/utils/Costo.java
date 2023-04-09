@@ -5,8 +5,8 @@
 package org.itson.utils;
 
 /**
- *
- * @author xeron
+ *Clase que permite obtener los costos de las placas
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class Costo {
 

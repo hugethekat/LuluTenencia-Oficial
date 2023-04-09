@@ -19,8 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- *
- * @author xeron
+ *Clase de tipo entity que mapea los atributos de vehículo
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 @Entity
 @Table(name = "Vehiculos")
@@ -28,6 +28,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "tipo_vehiculo")
 public class Vehiculo implements Serializable {
 
+    
     @Id
     @Column(name = "No_serie", nullable = false)
     private String noSerie;
@@ -51,22 +52,42 @@ public class Vehiculo implements Serializable {
     @OneToMany(mappedBy = "vehiculo")
     private List<Placa> placas;
 
+    /**
+     * Obtiene el número de serie del vehículo
+     * @return el número de serie del vehículo
+     */
     public String getNoSerie() {
         return noSerie;
     }
 
+    /**
+     * Asigna un número de serie al vehículo
+     * @param noSerie número de serie de vehículo
+     */
     public void setNoSerie(String noSerie) {
         this.noSerie = noSerie;
     }
 
+    /**
+     * Obtiene el color representativo del vehículo
+     * @return color del vehículo
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Asigna el color representativo del vehículo
+     * @param color cadena de texto que representa el color
+     */
     public void setColor(String color) {
         this.color = color;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getLinea() {
         return linea;
     }
@@ -107,6 +128,10 @@ public class Vehiculo implements Serializable {
         this.placas = placas;
     } 
     
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;

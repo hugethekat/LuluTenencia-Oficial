@@ -21,7 +21,7 @@ import org.itson.utils.ConfiguracionPaginado;
 
 /**
  *
- * @author JORGE
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ConsultaTramites2Form extends javax.swing.JFrame {
 
@@ -30,9 +30,9 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
     private final ConfiguracionPaginado configPaginado;
 
     /**
-     * Creates new form ConsultaTramites2Form
-     *
-     * @param rfc
+     * Constructor que crea un ConsultaTramites2Form que obtiene el rfc de la persona seleccionada en 
+     * el formulario anterior para poder cargar los campos de texto con sus datos
+     * @param rfc identificador de la persona a buscar
      */
     public ConsultaTramites2Form(String rfc) throws PersistenciaException {
         Persona persona = daoP.consultar(rfc);
@@ -43,6 +43,10 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         this.cargarTabla();
     }
 
+    /**
+     * Método que carga los campos de texto de la persona previamente seleccionada
+     * @param persona persona a la cual se le obtienen los datos
+     */
     public void cargarTextField(Persona persona) {
         this.txtfRfc.setText(persona.getRfc());
         this.txtfNombre.setText(persona.getNombres() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno());
@@ -51,6 +55,9 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         this.txtfAnioNac.setText(anio.toString());
     }
 
+    /**
+     * Método que carga la tabla con los tramites consultados de la obtenida en el constructor
+     */
     public void cargarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) this.tblTramites.getModel();
         modelo.setRowCount(0);
@@ -67,11 +74,17 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método que hace avanza la página actual de la tabla
+     */
     private void avanzarPagina() {
         this.configPaginado.avanzarPagina();
         this.cargarTabla();
     }
 
+    /**
+     * Método que hace retroceder la página actual de la tabla
+     */
     private void retrocederPagina() {
         this.configPaginado.retrocederPagina();
         this.cargarTabla();
@@ -168,11 +181,6 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         cbxElementosPágina.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxElementosPáginaItemStateChanged(evt);
-            }
-        });
-        cbxElementosPágina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxElementosPáginaActionPerformed(evt);
             }
         });
 
@@ -278,12 +286,20 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que te manda de regreso al menú principal
+     * @param evt evento que desencadena la acción
+     */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm mf = new MenuForm();
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    /**
+     * Acción que cambia la manera de paginar la tabla
+     * @param evt evento que desencadena la acción
+     */
     private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementoPorPagina = Integer.parseInt(evt.getItem().toString());
@@ -292,15 +308,18 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
 
-    private void cbxElementosPáginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxElementosPáginaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxElementosPáginaActionPerformed
-
+    /**
+     *Acción que hace retroceder la página de la tabla
+     * @param evt evento que desencadena la acción
+     */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
-        // TODO add your handling code here:
         retrocederPagina();
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
+    /**
+     * Acción que hace avanzar la página de la tabla
+     * @param evt evento que desencadena la acción
+     */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
         avanzarPagina();
     }//GEN-LAST:event_btnAvanzarActionPerformed

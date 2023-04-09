@@ -27,8 +27,8 @@ import org.itson.interfaces.IPlacaDAO;
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
- *
- * @author JORGE
+ *Clase donde implementa los métodos de la interfaz IPlacaDAO y contiene todo lo que necesita placa
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class PlacaDAO implements IPlacaDAO {
 

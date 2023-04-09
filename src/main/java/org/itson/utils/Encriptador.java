@@ -12,8 +12,8 @@ import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
- * @author xeron
+ *Clase que permite encriptar datos 
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 @Converter
 public class Encriptador implements AttributeConverter<String, String> {
@@ -30,6 +30,11 @@ public class Encriptador implements AttributeConverter<String, String> {
         }
     }
 
+    /**
+     * Método que desencripta lo recibido en el parámetro
+     * @param x Cadena de texto que será desencriptado
+     * @return cadena de texto con lo recibido ya desencriptado
+     */
     @Override
     public String convertToDatabaseColumn(String x) {
         try {
@@ -44,9 +49,9 @@ public class Encriptador implements AttributeConverter<String, String> {
     }
 
     /**
-     *
-     * @param y
-     * @return
+     *Método que encripta los datos recibidos en el parámetro
+     * @param y Cadena de texto que será encriptada
+     * @return cadena de texto con lo recibido ya encriptado
      */
     @Override
     public String convertToEntityAttribute(String y) {
@@ -61,6 +66,10 @@ public class Encriptador implements AttributeConverter<String, String> {
         return null;
     }
 
+    /**
+     * Regresa la contraseña con la que se encriptan los datos
+     * @return contraseña que se usa para encriptar
+     */
     public static String getContra() {
         String contra = "contrasenasegura";
         return contra;

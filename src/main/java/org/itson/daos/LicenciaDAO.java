@@ -15,13 +15,12 @@ import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import org.itson.dominio.Licencia;
 import org.itson.dominio.Persona;
-import org.itson.dominio.Tramite;
 import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.ILicenciaDAO;
 
 /**
- *
- * @author xeron
+ *Clase donde implementa los métodos de la interfaz ILicenciaDAO y contiene todo lo que necesita licencia
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class LicenciaDAO implements ILicenciaDAO {
 

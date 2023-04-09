@@ -17,17 +17,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.swing.JOptionPane;
-import org.itson.dominio.Persona;
 import org.itson.dominio.ReporteDTO;
 import org.itson.dominio.Tramite;
-import org.itson.excepciones.PersistenciaException;
 import org.itson.interfaces.ITramiteDAO;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
- *
- * @author JORGE
+ *Clase donde implementa los métodos de la interfaz ITramiteDAO y contiene todo lo que necesita tramite
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class TramiteDAO implements ITramiteDAO {
 
@@ -57,6 +54,15 @@ public class TramiteDAO implements ITramiteDAO {
         }
     }
 
+    /**
+     * Método que busca los trámites dependiendo de ciertos filtros ya sea hechos por una persona con 
+     * un nombre o un periodo de tiempo, tambien configura el paginado de la tabla en donde se 
+     * presentaran los datos
+     * @param params parametros por los cuales se aplicaran los filtros
+     * @param configPaginado configuración que seguirá el paginado de la tabla y tambien 
+     * para establecer cuantos resultados se obtendran en la consulta
+     * @return una lista de tramites con las características dadas
+     */
     @Override
     public List<Tramite> buscarTramites(ReporteDTO params, ConfiguracionPaginado configPaginado) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author xeron
+ * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 @Entity
 @Table(name = "Placa")
