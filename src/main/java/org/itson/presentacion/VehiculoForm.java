@@ -10,11 +10,13 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import org.itson.daos.AutomovilDAO;
 import org.itson.daos.LicenciaDAO;
 import org.itson.daos.PersonaDAO;
+import org.itson.daos.VehiculoDAO;
 import org.itson.dominio.Automovil;
 import org.itson.dominio.Persona;
 import org.itson.interfaces.IAutomovilDAO;
 import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
+import org.itson.interfaces.IVehiculoDAO;
 
 /**
  *Clase que contiene la pantalla donde se registrarán los vehiculos
@@ -25,6 +27,7 @@ public class VehiculoForm extends javax.swing.JFrame {
     IPersonaDAO daoP = new PersonaDAO();
     ILicenciaDAO daoL = new LicenciaDAO();
     IAutomovilDAO daoA = new AutomovilDAO();
+    IVehiculoDAO daoV = new VehiculoDAO();
 
     private String rfc;
 
@@ -325,6 +328,7 @@ public class VehiculoForm extends javax.swing.JFrame {
         if (daoL.consultarLicencia(rfc)) {
             Persona persona = daoP.consultar(rfc);
             Automovil automovil = new Automovil();
+            if(daoV.buscar(no_serie)==null){
             automovil.setNoSerie(no_serie);
             automovil.setColor(color);
             automovil.setMarca(marca);
@@ -337,6 +341,9 @@ public class VehiculoForm extends javax.swing.JFrame {
             System.out.println(rfc);
             System.out.println(no_serie);
             this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "El número de serie ya se encuentra registrado.", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             JOptionPane.showMessageDialog(rootPane, "No se pudo registrar el vehículo ya que la licencia de la persona está vencida", "Licencia no válida", ERROR_MESSAGE);
         }

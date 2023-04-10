@@ -63,6 +63,7 @@ public class ReporteForm extends javax.swing.JFrame {
     public void previewJasper() {
         ArrayList listaReporte = new ArrayList();
 
+        if(this.tblPersonas.getRowCount()!=0){
         for (int i = 0; i < this.tblPersonas.getRowCount(); i++) {
             ReporteDTO reporte = new ReporteDTO(
                     this.tblPersonas.getValueAt(i, 0).toString(),
@@ -73,7 +74,7 @@ public class ReporteForm extends javax.swing.JFrame {
             listaReporte.add(reporte);
             System.out.println(this.tblPersonas.getValueAt(i, 1));
         }
-
+        
         JasperReport jr = null;
         try {
             jr = (JasperReport) JRLoader.loadObjectFromFile("Lulutenencia.jasper");
@@ -87,6 +88,9 @@ public class ReporteForm extends javax.swing.JFrame {
 
         } catch (JRException ex) {
             Logger.getLogger(ReporteForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecciona datos para poder hacer el reporte", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
     }
 

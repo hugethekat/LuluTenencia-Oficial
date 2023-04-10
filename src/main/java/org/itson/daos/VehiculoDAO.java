@@ -13,7 +13,9 @@ import org.itson.dominio.Vehiculo;
 import org.itson.interfaces.IVehiculoDAO;
 
 /**
- *Clase donde implementa los métodos de la interfaz IVehiculoDAO y contiene todo lo que necesita vehiculo
+ * Clase donde implementa los métodos de la interfaz IVehiculoDAO y contiene
+ * todo lo que necesita vehiculo
+ *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class VehiculoDAO implements IVehiculoDAO {
@@ -24,12 +26,13 @@ public class VehiculoDAO implements IVehiculoDAO {
     /**
      * Constructor por omisión de la clase VehiculoDAO
      */
-    public VehiculoDAO(){
-        
+    public VehiculoDAO() {
+
     }
-    
+
     /**
      * Método que regresa el tipo de un vehiculo en específico
+     *
      * @param noSerie identificador del vehiculo al que se le obtendrá el título
      * @return regresa una cadena de texto con el tipo del vehículo buscado
      */
@@ -43,6 +46,22 @@ public class VehiculoDAO implements IVehiculoDAO {
             } else {
                 return null;
             }
+        } catch (NoResultException ex) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Método para buscar un vehículo según su número de serie
+     * @param noSerie identificador del vehiculo que se obtendrá
+     * @return vehículo encontrado.
+     */
+    @Override
+    public Vehiculo buscar(String noSerie) {
+        try {
+            Vehiculo vehiculo = em.find(Vehiculo.class, noSerie);
+            return vehiculo;
         } catch (NoResultException ex) {
             return null;
         }
