@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.itson.lulutenencia"},{"l":"org.itson.daos"},{"l":"org.itson.dominio"},{"l":"org.itson.excepciones"},{"l":"org.itson.interfaces"},{"l":"org.itson.presentacion"},{"l":"org.itson.utils"}];updateSearchResults();

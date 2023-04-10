@@ -14,6 +14,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class Render extends DefaultTableCellRenderer{
+
+    /**
+     * Constructor por omisión de la clase Render
+     */
+    public Render() {
+    }
+    
+    
     
     /**
      * Método que permite crear un botón en una tabla
@@ -23,7 +31,7 @@ public class Render extends DefaultTableCellRenderer{
      * @param hasFocus boleno que permite saber si el botón tiene focus
      * @param row fila en la que se insertará el botón
      * @param column columna en la que se insertará el botón
-     * @return 
+     * @return btn Botón dentro de la tabla
      */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){

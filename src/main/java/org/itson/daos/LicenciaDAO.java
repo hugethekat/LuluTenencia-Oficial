@@ -32,6 +32,14 @@ public class LicenciaDAO implements ILicenciaDAO {
     EntityManager em = emf.createEntityManager();
 
     /**
+     * Construcotr por omisión de la clase LicenciaDAO
+     */
+    public LicenciaDAO() {
+    }
+
+    
+    
+    /**
      * Método que registra una licencia a una persona
      *
      * @param RFC cadena de caracteres identificadores de la persona

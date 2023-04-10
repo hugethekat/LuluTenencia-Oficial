@@ -20,9 +20,7 @@ public interface IPlacaDAO {
      *
      * @param no_serie identificador del vehículo al que se le buscará la placa
      * @return regresa un objeto de tipo Placa que representa la placa con
-     * estado activo
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
-     * en el método
+     * estado activo   
      */
     public Placa consultarPlacaActiva(String no_serie);
 

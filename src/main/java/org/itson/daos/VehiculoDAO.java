@@ -22,6 +22,13 @@ public class VehiculoDAO implements IVehiculoDAO {
     EntityManager em = emf.createEntityManager();
 
     /**
+     * Constructor por omisión de la clase VehiculoDAO
+     */
+    public VehiculoDAO(){
+        
+    }
+    
+    /**
      * Método que regresa el tipo de un vehiculo en específico
      * @param noSerie identificador del vehiculo al que se le obtendrá el título
      * @return regresa una cadena de texto con el tipo del vehículo buscado

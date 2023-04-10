@@ -8,7 +8,9 @@ import java.time.LocalDate;
 
 /**
  *
- * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
+ * clase DTO utilizada para consultar reportes.
+ *
+ * @author Hugo Navarro (233470)/Jorge Sanchez(233012)
  */
 public class ReporteDTO {
 
@@ -19,10 +21,10 @@ public class ReporteDTO {
      * Constructor para los paramatros de busqueda que se utilizaran en los
      * filtros del método consultarReporte de TramitesDAO
      *
-     * @param nombre
-     * @param tipo
-     * @param inicio
-     * @param fin
+     * @param nombre nombre de la persona
+     * @param tipo tipo del trámite
+     * @param inicio inicio periodo ingresado
+     * @param fin fin periodo ingresado
      */
     public ReporteDTO(String nombre, String tipo, LocalDate inicio, LocalDate fin) {
         this.nombre = nombre;
@@ -34,10 +36,10 @@ public class ReporteDTO {
     /**
      * Constructor pa que jalen los reportes ainomas.
      *
-     * @param nombre
-     * @param tipo
-     * @param costo
-     * @param fechaExpeidcion
+     * @param nombre nombre de la persona
+     * @param tipo tipo del trámite
+     * @param costo costo del trámite
+     * @param fechaExpedicion fecha de expedición del trámite
      */
     public ReporteDTO(String nombre, String tipo, String fechaExpedicion, String costo) {
         this.nombre = nombre;
@@ -58,7 +60,7 @@ public class ReporteDTO {
     /**
      * Método que asigna el nombre.
      *
-     * @param nombre
+     * @param nombre nombre de la persona
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -76,7 +78,7 @@ public class ReporteDTO {
     /**
      * Método que asigna el tipo de trámite.
      *
-     * @param tipo
+     * @param tipo tipo de trámite.
      */
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -85,7 +87,7 @@ public class ReporteDTO {
     /**
      * Método que regresa el inicio del periodo.
      *
-     * @return inicio
+     * @return inicio inicio del periodo.
      */
     public LocalDate getInicio() {
         return inicio;
@@ -94,7 +96,7 @@ public class ReporteDTO {
     /**
      * Método que asigna el inicio del periodo.
      *
-     * @param inicio
+     * @param inicio inicio del periodo.
      */
     public void setInicio(LocalDate inicio) {
         this.inicio = inicio;
@@ -103,7 +105,7 @@ public class ReporteDTO {
     /**
      * Método que regresa el fin del periodo.
      *
-     * @return
+     * @return fin del periodo.
      */
     public LocalDate getFin() {
         return fin;
@@ -112,24 +114,48 @@ public class ReporteDTO {
     /**
      * Método que asigna el fin del periodo.
      *
-     * @param fin
+     * @param fin fin del periodo.
      */
     public void setFin(LocalDate fin) {
         this.fin = fin;
     }
 
+    /**
+     *
+     * Devuelve el costo del objeto.
+     *
+     * @return El costo del objeto como un String.
+     */
     public String getCosto() {
         return costo;
     }
 
+    /**
+     *
+     * Establece el costo del objeto.
+     *
+     * @param costo El costo del objeto como un String.
+     */
     public void setCosto(String costo) {
         this.costo = costo;
     }
 
+    /**
+     *
+     * Devuelve la fecha de expedición del objeto.
+     *
+     * @return La fecha de expedición del objeto como un String.
+     */
     public String getFechaExpedicion() {
         return fechaExpedicion;
     }
 
+    /**
+     *
+     * Establece la fecha de expedición del objeto.
+     *
+     * @param fechaExpedicion La fecha de expedición del objeto como un String.
+     */
     public void setFechaExpedicion(String fechaExpedicion) {
         this.fechaExpedicion = fechaExpedicion;
     }

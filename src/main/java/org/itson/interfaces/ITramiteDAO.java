@@ -20,6 +20,7 @@ public interface ITramiteDAO {
      *
      * @param rfc identificador de la persona a la que se le buscaran los
      * trámites
+     * @param configPaginado Configuración del paginado.
      * @return regresa una lista de todos los trámites hechos por la persona
      */
     public List<Tramite> consultarTramites(String rfc, ConfiguracionPaginado configPaginado);

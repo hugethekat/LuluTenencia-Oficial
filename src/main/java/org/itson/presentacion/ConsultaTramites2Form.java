@@ -20,19 +20,32 @@ import org.itson.interfaces.ITramiteDAO;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
+ * 2da parte del form de consutar trámites
  *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ConsultaTramites2Form extends javax.swing.JFrame {
 
+    /**
+     * Se crea un objeto de tipo PersonaDAO
+     */
     IPersonaDAO daoP = new PersonaDAO();
+    /**
+     * Se crea un objeto de tipo TramiteDAO
+     */
     ITramiteDAO daoT = new TramiteDAO();
+    /**
+     * Se crea un objeto de tipo ConfiguracionPaginado
+     */
     private final ConfiguracionPaginado configPaginado;
 
     /**
-     * Constructor que crea un ConsultaTramites2Form que obtiene el rfc de la persona seleccionada en 
-     * el formulario anterior para poder cargar los campos de texto con sus datos
+     * Constructor que crea un ConsultaTramites2Form que obtiene el rfc de la
+     * persona seleccionada en el formulario anterior para poder cargar los
+     * campos de texto con sus datos
+     *
      * @param rfc identificador de la persona a buscar
+     * @throws PersistenciaException si ocurre un error.
      */
     public ConsultaTramites2Form(String rfc) throws PersistenciaException {
         Persona persona = daoP.consultar(rfc);
@@ -44,7 +57,9 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
     }
 
     /**
-     * Método que carga los campos de texto de la persona previamente seleccionada
+     * Método que carga los campos de texto de la persona previamente
+     * seleccionada
+     *
      * @param persona persona a la cual se le obtienen los datos
      */
     public void cargarTextField(Persona persona) {
@@ -56,7 +71,8 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
     }
 
     /**
-     * Método que carga la tabla con los tramites consultados de la obtenida en el constructor
+     * Método que carga la tabla con los tramites consultados de la obtenida en
+     * el constructor
      */
     public void cargarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) this.tblTramites.getModel();
@@ -288,6 +304,7 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
 
     /**
      * Acción que te manda de regreso al menú principal
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
@@ -298,6 +315,7 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
 
     /**
      * Acción que cambia la manera de paginar la tabla
+     *
      * @param evt evento que desencadena la acción
      */
     private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
@@ -309,7 +327,8 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxElementosPáginaItemStateChanged
 
     /**
-     *Acción que hace retroceder la página de la tabla
+     * Acción que hace retroceder la página de la tabla
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
@@ -318,6 +337,7 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
 
     /**
      * Acción que hace avanzar la página de la tabla
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed

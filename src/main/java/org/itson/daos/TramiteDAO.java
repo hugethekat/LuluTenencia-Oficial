@@ -32,6 +32,13 @@ public class TramiteDAO implements ITramiteDAO {
     EntityManager em = emf.createEntityManager();
 
     /**
+     * Constructor por omisión de la clase TramiteDAO
+     */
+    public TramiteDAO(){
+        
+    }
+    
+    /**
      * Método que consulta los trámites hechos por una persona según su rfc
      *
      * @param rfc identificador de la persona a la que se le buscaran los

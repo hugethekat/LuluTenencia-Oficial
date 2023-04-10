@@ -13,6 +13,13 @@ import org.itson.presentacion.MenuForm;
 public class LuluTenencia {
 
     /**
+     * Constructor por omisión de la clase LuluTenencia
+     */
+    public LuluTenencia() {
+    }
+
+    
+    /**
      * Método que ejecuta la ventana de menu
      * @param args Lineas que se ejecutarán
      */

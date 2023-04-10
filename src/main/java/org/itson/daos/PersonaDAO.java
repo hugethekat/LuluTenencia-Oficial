@@ -37,6 +37,15 @@ public class PersonaDAO implements IPersonaDAO {
 
     int i = 0;
 
+    
+    /**
+     * Constructor por omisión de la clase PersonaDAO
+     */
+    public PersonaDAO() {
+    }
+
+    
+    
     /**
      * Método que valida si una persona es mayor de edad para poder ser registrada en la base de datos 
      * @param persona Persona a la que se le hará la validación de edad

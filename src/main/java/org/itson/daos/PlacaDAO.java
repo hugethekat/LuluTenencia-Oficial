@@ -38,14 +38,21 @@ public class PlacaDAO implements IPlacaDAO {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.itson_LuluTenencia_jar_1.0-SNAPSHOTPU");
     EntityManager em = emf.createEntityManager();
 
+    
+    /**
+     * Constructor por omisión de PlacaDAO
+     */
+    public PlacaDAO() {
+    }
+
+    
+    
     /**
      * Método que consulta la placa activa actual del vehículo
      *
      * @param no_serie identificador del vehículo al que se le buscará la placa
      * @return regresa un objeto de tipo Placa que representa la placa con
      * estado activo
-     * @throws PersistenciaException Arroja una excepción cuando ocurre un error
-     * en el método
      */
     @Override
     public Placa consultarPlacaActiva(String no_serie){

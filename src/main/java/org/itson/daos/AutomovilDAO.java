@@ -13,7 +13,9 @@ import org.itson.dominio.Automovil;
 import org.itson.interfaces.IAutomovilDAO;
 
 /**
- *Clase donde implementa los métodos de la interfaz IAutomovilDAO y contiene todo lo que necesita automovil
+ * Clase donde implementa los métodos de la interfaz IAutomovilDAO y contiene
+ * todo lo que necesita automovil.
+ *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class AutomovilDAO implements IAutomovilDAO {
@@ -22,7 +24,15 @@ public class AutomovilDAO implements IAutomovilDAO {
     EntityManager em = emf.createEntityManager();
 
     /**
+     * Constructor por defecto para la clase AutomovilDAO.
+     */
+    public AutomovilDAO(){
+        
+    }
+    
+    /**
      * Método que registra un automovil
+     *
      * @param automovil automovil que será registrado
      */
     @Override
@@ -41,6 +51,7 @@ public class AutomovilDAO implements IAutomovilDAO {
 
     /**
      * Método que busca un automovil por su número de serie
+     *
      * @param noSerie identificador del automovil a ser buscado
      * @return regresa un objeto de tipo automovil si lo encuentra, nulo si no
      */
@@ -55,6 +66,7 @@ public class AutomovilDAO implements IAutomovilDAO {
 
     /**
      * Método para saber si un automovil existe
+     *
      * @param noSerie identificador del automovil a ser buscado en existencia
      * @return regresa un booleano, true si existe, false si no
      */

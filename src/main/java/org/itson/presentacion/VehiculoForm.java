@@ -31,6 +31,7 @@ public class VehiculoForm extends javax.swing.JFrame {
     /**
      * Constructor que crea un VehiculoForm y recibe un rfc para llenar los campos de la persona que 
      * registrará un vehiculo
+     * @param rfc rfc de la persona
      */
     public VehiculoForm(String rfc) {
         this.rfc = rfc;

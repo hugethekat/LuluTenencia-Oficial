@@ -12,7 +12,8 @@ import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *Clase que permite encriptar datos 
+ * Clase que permite encriptar datos
+ *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 @Converter
@@ -21,6 +22,13 @@ public class Encriptador implements AttributeConverter<String, String> {
     private static final String aes = "AES";
 
     private static Key clave;
+
+    /**
+     *Constructor por omisión de la clase Encriptador
+     */
+    public Encriptador() {
+
+    }
 
     static {
         try {
@@ -32,6 +40,7 @@ public class Encriptador implements AttributeConverter<String, String> {
 
     /**
      * Método que desencripta lo recibido en el parámetro
+     *
      * @param x Cadena de texto que será desencriptado
      * @return cadena de texto con lo recibido ya desencriptado
      */
@@ -49,7 +58,8 @@ public class Encriptador implements AttributeConverter<String, String> {
     }
 
     /**
-     *Método que encripta los datos recibidos en el parámetro
+     * Método que encripta los datos recibidos en el parámetro
+     *
      * @param y Cadena de texto que será encriptada
      * @return cadena de texto con lo recibido ya encriptado
      */
@@ -68,6 +78,7 @@ public class Encriptador implements AttributeConverter<String, String> {
 
     /**
      * Regresa la contraseña con la que se encriptan los datos
+     *
      * @return contraseña que se usa para encriptar
      */
     public static String getContra() {
