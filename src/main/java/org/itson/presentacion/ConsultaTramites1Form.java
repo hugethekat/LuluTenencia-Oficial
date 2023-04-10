@@ -362,7 +362,7 @@ public class ConsultaTramites1Form extends javax.swing.JFrame {
             if (value instanceof JButton) {
                 ((JButton) value).doClick();
                 JButton boton = (JButton) value;
-                String rfc = this.tblPersonas.getValueAt(0, 0).toString();
+                String rfc = this.tblPersonas.getValueAt(row, 0).toString();
                 try {
                     System.out.println("Hola soy goku");
                     System.out.println(rfc);

@@ -86,7 +86,6 @@ public class VehiculoForm extends javax.swing.JFrame {
         txtfLinea = new javax.swing.JTextField();
         txtfModelo = new javax.swing.JTextField();
         txtfColor = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
         btnMenu = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
@@ -122,6 +121,7 @@ public class VehiculoForm extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel8.setText("Modelo");
 
+        txtfRfc.setEditable(false);
         txtfRfc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtfRfcKeyTyped(evt);
@@ -155,14 +155,6 @@ public class VehiculoForm extends javax.swing.JFrame {
         txtfColor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtfColorKeyTyped(evt);
-            }
-        });
-
-        btnBuscar.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -223,11 +215,9 @@ public class VehiculoForm extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar))
+                                .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1))
-                        .addGap(145, 145, 145))
+                        .addGap(164, 164, 164))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblLulu, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -244,9 +234,7 @@ public class VehiculoForm extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnBuscar)))
+                    .addComponent(txtfRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -296,21 +284,6 @@ public class VehiculoForm extends javax.swing.JFrame {
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
-
-    /**
-     * Acción que al presionar el botón de buscar te busque una persona con el rfc en el campo de texto
-     * @param evt evento que desencadena la acción
-     */
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        rfc = txtfRfc.getText();
-        Persona persona = new Persona();
-        if (daoL.consultarLicencia(rfc)) {
-            buscar(rfc);
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "El RFC de la persona no existe o no tiene una licencia válida", rfc, HEIGHT);
-
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * Acción que al presionar el botón de registrar te registre un vehículo con los datos obtenidos de los 
@@ -457,7 +430,6 @@ public class VehiculoForm extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;

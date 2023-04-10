@@ -18,7 +18,8 @@ import org.itson.interfaces.ILicenciaDAO;
 import org.itson.interfaces.IPersonaDAO;
 
 /**
- *Clase que contiene la pantalla donde se registran las licencias
+ * Clase que contiene la pantalla donde se registran las licencias
+ *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class LicenciaForm extends javax.swing.JFrame {
@@ -26,7 +27,8 @@ public class LicenciaForm extends javax.swing.JFrame {
     Vigencia v = new Vigencia();
 
     /**
-     * Constructor que crea un LicenciaForm y llena la combo box de elección de vigencia
+     * Constructor que crea un LicenciaForm y llena la combo box de elección de
+     * vigencia
      */
     public LicenciaForm() {
         initComponents();
@@ -278,8 +280,10 @@ public class LicenciaForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Acción que obtiene el elemento seleccionado de la combobox para poder obtener el costo 
-     * @param evt evento que desencadena la acción  
+     * Acción que obtiene el elemento seleccionado de la combobox para poder
+     * obtener el costo
+     *
+     * @param evt evento que desencadena la acción
      */
     private void cbxVigenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxVigenciaActionPerformed
         String seleccion = cbxVigencia.getSelectedItem().toString();
@@ -293,7 +297,9 @@ public class LicenciaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxVigenciaActionPerformed
 
     /**
-     * Acción que te busca una persona mediante el rfc obtendio de su campo de texto
+     * Acción que te busca una persona mediante el rfc obtendio de su campo de
+     * texto
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -317,7 +323,9 @@ public class LicenciaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
-     * Acción que hace el tramite de la placa con los datos obtenidos en el formulario
+     * Acción que hace el tramite de la placa con los datos obtenidos en el
+     * formulario
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnTramitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTramitarActionPerformed
@@ -327,42 +335,46 @@ public class LicenciaForm extends javax.swing.JFrame {
         String AMaterno = txtAMaterno.getText();
         String FechaNac = txtFechaNac.getText();
         String Telefono = txtTelefono.getText();
-        if(!txtNombre.getText().isEmpty()){
-        boolean discapacidad;
-        if (checkDiscapacidad.isSelected() == true) {
-            discapacidad = true;
-        } else {
-            discapacidad = false;
-        }
-        double costo = Double.parseDouble(txtCosto.getText());
-        int vigencia = 0;
-        if (cbxVigencia.getSelectedItem().toString().equals("1_Anio")) {
-            vigencia = 1;
-        } else if (cbxVigencia.getSelectedItem().toString().equals("2_Anios")) {
-            vigencia = 2;
-        } else if (cbxVigencia.getSelectedItem().toString().equals("3_Anios")) {
-            vigencia = 3;
-        } else if (cbxVigencia.getSelectedItem().toString().equals("Seleccione vigencia")){
-            this.txtCosto.setText("Es necesaria una vigencia.");
-        }
-        ILicenciaDAO dao = new LicenciaDAO();
-        try {
-            if(vigencia == 0){
-                JOptionPane.showMessageDialog(null, "Ingresa una vigencia válida.", "Alerta", JOptionPane.ERROR_MESSAGE);
-            }else{
-            dao.insertarLicencia(rfc, nombres, APaterno, AMaterno, FechaNac, Telefono, discapacidad, costo, vigencia);
+        if (!txtNombre.getText().isEmpty()) {
+            boolean discapacidad;
+            if (checkDiscapacidad.isSelected() == true) {
+                discapacidad = true;
+            } else {
+                discapacidad = false;
             }
-            
-        } catch (PersistenciaException ex) {
-            Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }else{
+            double costo = Double.parseDouble(txtCosto.getText());
+            int vigencia = 0;
+            if (cbxVigencia.getSelectedItem().toString().equals("1_Anio")) {
+                vigencia = 1;
+            } else if (cbxVigencia.getSelectedItem().toString().equals("2_Anios")) {
+                vigencia = 2;
+            } else if (cbxVigencia.getSelectedItem().toString().equals("3_Anios")) {
+                vigencia = 3;
+            } else if (cbxVigencia.getSelectedItem().toString().equals("Seleccione vigencia")) {
+                this.txtCosto.setText("Es necesaria una vigencia.");
+            }
+            ILicenciaDAO dao = new LicenciaDAO();
+            try {
+                if (vigencia == 0) {
+                    JOptionPane.showMessageDialog(null, "Ingresa una vigencia válida.", "Alerta", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    dao.insertarLicencia(rfc, nombres, APaterno, AMaterno, FechaNac, Telefono, discapacidad, costo, vigencia);
+                    MenuForm mf = new MenuForm();
+                    mf.setVisible(true);
+                    this.dispose();
+                }
+
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(LicenciaForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "Ingresa una persona.", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnTramitarActionPerformed
 
     /**
      * Acción que te manda de regreso al menú principal
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
@@ -372,8 +384,10 @@ public class LicenciaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     /**
-     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
-     * de texto se hagan mayúsculas en el campo de texto de rfc
+     * Evento que hace que no se puedan ingresar espacios y que las letras que
+     * se ingrenen en el campo de texto se hagan mayúsculas en el campo de texto
+     * de rfc
+     *
      * @param evt evento que desencadena la acción
      */
     private void txtfRfcKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfRfcKeyTyped

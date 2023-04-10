@@ -33,8 +33,10 @@ import org.itson.interfaces.ITramiteDAO;
 import org.itson.utils.ConfiguracionPaginado;
 
 /**
- *Clase que contiene la pantalla en donde se consultaran los tramites dependiendo de la
- * busqueda que se haga, también genera un reporte de los seleccionados en la tabla
+ * Clase que contiene la pantalla en donde se consultaran los tramites
+ * dependiendo de la busqueda que se haga, también genera un reporte de los
+ * seleccionados en la tabla
+ *
  * @author Hugo Navarro (233470)/Jorge Sánchez(233012)
  */
 public class ReporteForm extends javax.swing.JFrame {
@@ -45,8 +47,9 @@ public class ReporteForm extends javax.swing.JFrame {
     private final ConfiguracionPaginado configPaginado;
 
     /**
-     * Constructor que crea un ReporteForm que asigna un rango limite a los calendarios que no pase de 
-     * la fecha actual y asigna el paginado de la tabla, a parte de crear un objeto de tipo ReporteDTO
+     * Constructor que crea un ReporteForm que asigna un rango limite a los
+     * calendarios que no pase de la fecha actual y asigna el paginado de la
+     * tabla, a parte de crear un objeto de tipo ReporteDTO
      */
     public ReporteForm() {
         initComponents();
@@ -57,46 +60,49 @@ public class ReporteForm extends javax.swing.JFrame {
     }
 
     /**
-     * Método que crea un reporte usando JasperReports y lo llena con los elementos que se encuentran en
-     * la tabla
+     * Método que crea un reporte usando JasperReports y lo llena con los
+     * elementos que se encuentran en la tabla
      */
     public void previewJasper() {
         ArrayList listaReporte = new ArrayList();
 
-        if(this.tblPersonas.getRowCount()!=0){
-        for (int i = 0; i < this.tblPersonas.getRowCount(); i++) {
-            ReporteDTO reporte = new ReporteDTO(
-                    this.tblPersonas.getValueAt(i, 0).toString(),
-                    this.tblPersonas.getValueAt(i, 1).toString(),
-                    this.tblPersonas.getValueAt(i, 2).toString(),
-                    this.tblPersonas.getValueAt(i, 3).toString()
-            );
-            listaReporte.add(reporte);
-            System.out.println(this.tblPersonas.getValueAt(i, 1));
-        }
-        
-        JasperReport jr = null;
-        try {
-            jr = (JasperReport) JRLoader.loadObjectFromFile("Lulutenencia.jasper");
-            HashMap parametro = new HashMap();
-            parametro.put("logo", "/org.itson.utils/lulu.png");
+        if (this.tblPersonas.getRowCount() != 0) {
+            for (int i = 0; i < this.tblPersonas.getRowCount(); i++) {
+                ReporteDTO reporte = new ReporteDTO(
+                        this.tblPersonas.getValueAt(i, 0).toString(),
+                        this.tblPersonas.getValueAt(i, 1).toString(),
+                        this.tblPersonas.getValueAt(i, 2).toString(),
+                        this.tblPersonas.getValueAt(i, 3).toString()
+                );
+                listaReporte.add(reporte);
+                System.out.println(this.tblPersonas.getValueAt(i, 1));
+            }
 
-            JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(listaReporte));
+            JasperReport jr = null;
+            try {
+                jr = (JasperReport) JRLoader.loadObjectFromFile("Lulutenencia.jasper");
+                HashMap parametro = new HashMap();
+                parametro.put("logo", "/org.itson.utils/lulu.png");
 
-            JasperViewer jv = new JasperViewer(jp, false);
-            jv.setVisible(true);
+                JasperPrint jp = JasperFillManager.fillReport(jr, parametro, new JRBeanCollectionDataSource(listaReporte));
 
-        } catch (JRException ex) {
-            Logger.getLogger(ReporteForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }else{
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setVisible(true);
+
+            } catch (JRException ex) {
+                Logger.getLogger(ReporteForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "Selecciona datos para poder hacer el reporte", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Método que carga la tabla de los tramites realizados dependiendo de los parametros obtenidos
-     * @param parametros parametros obtenidos para realizar la consulta con base en ellos
+     * Método que carga la tabla de los tramites realizados dependiendo de los
+     * parametros obtenidos
+     *
+     * @param parametros parametros obtenidos para realizar la consulta con base
+     * en ellos
      */
     public void cargarTabla(ReporteDTO parametros) {
         try {
@@ -133,6 +139,7 @@ public class ReporteForm extends javax.swing.JFrame {
 
     /**
      * Método que hace que se avance la página de la tabla
+     *
      * @param parametros se necesita para cargar la tabla
      */
     private void avanzarPagina(ReporteDTO parametros) {
@@ -141,7 +148,8 @@ public class ReporteForm extends javax.swing.JFrame {
     }
 
     /**
-     * Método que hace que se retroceda la página 
+     * Método que hace que se retroceda la página
+     *
      * @param parametros se necesita para cargar la tabla
      */
     private void retrocederPagina(ReporteDTO parametros) {
@@ -389,7 +397,8 @@ public class ReporteForm extends javax.swing.JFrame {
 
     /**
      * Método que te lleva al menú
-     * @param evt evento que desencadena la acción 
+     *
+     * @param evt evento que desencadena la acción
      */
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         MenuForm menu = new MenuForm();
@@ -398,7 +407,9 @@ public class ReporteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     /**
-     * Acción que al pulsar el botón de generar reporte, genera el reporte solicitado
+     * Acción que al pulsar el botón de generar reporte, genera el reporte
+     * solicitado
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
@@ -406,7 +417,9 @@ public class ReporteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
-     * Acción que consulta los tramites dependiendo de lo recibido en los textos y los calendarios
+     * Acción que consulta los tramites dependiendo de lo recibido en los textos
+     * y los calendarios
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
@@ -418,18 +431,13 @@ public class ReporteForm extends javax.swing.JFrame {
         LocalDate ca1 = null, ca2 = null;
         if (this.calendar1.getDate() != null) {
             ca1 = this.calendar1.getDate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (this.calendar2.getDate() != null) {
-            if (this.calendar2.getDate().isAfter(ca1)) {
-                ca2 = this.calendar2.getDate();
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if (this.calendar2.getDate() != null) {
+                if (this.calendar2.getDate().isAfter(ca1)) {
+                    ca2 = this.calendar2.getDate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         if (cbxTipo.getSelectedItem().equals("Licencia")) {
@@ -447,6 +455,7 @@ public class ReporteForm extends javax.swing.JFrame {
 
     /**
      * Acción que hace retroceder el paginado de la tabla
+     *
      * @param evt evento que desencadena la acción
      */
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
@@ -456,72 +465,63 @@ public class ReporteForm extends javax.swing.JFrame {
         nombre = this.txtfNombre.getText();
 
         LocalDate ca1 = null, ca2 = null;
-        if (!this.calendar1.getDate().equals("")) {
+        if (this.calendar1.getDate() != null) {
             ca1 = this.calendar1.getDate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (!this.calendar2.getDate().equals("")) {
-            if (this.calendar2.getDate().isAfter(ca1)) {
-                ca2 = this.calendar2.getDate();
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if (this.calendar2.getDate() != null) {
+                if (this.calendar2.getDate().isAfter(ca1)) {
+                    ca2 = this.calendar2.getDate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         if (cbxTipo.getSelectedItem().equals("Licencia")) {
             tipo = "Licencia";
         } else if (cbxTipo.getSelectedItem().equals("Placa")) {
             tipo = "Placa";
-        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+        } else if (cbxTipo.getSelectedItem().equals("Ambos")) {
             tipo = "Todo";
-        } else {
-            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+
         retrocederPagina(parametros);
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
     /**
-     * Acción que revisa si cambio un elemento de la combobox y te lleva a esa pagina
+     * Acción que revisa si cambio un elemento de la combobox y te lleva a esa
+     * pagina
+     *
      * @param evt evento que desencadena la acción
      */
     private void cbxElementosPáginaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxElementosPáginaItemStateChanged
         String nombre = null, tipo = null;
+
         nombre = this.txtfNombre.getText();
 
         LocalDate ca1 = null, ca2 = null;
-        if (!this.calendar1.getDate().equals("")) {
+        if (this.calendar1.getDate() != null) {
             ca1 = this.calendar1.getDate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (!this.calendar2.getDate().equals("")) {
-            if (this.calendar2.getDate().isAfter(ca1)) {
-                ca2 = this.calendar2.getDate();
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if (this.calendar2.getDate() != null) {
+                if (this.calendar2.getDate().isAfter(ca1)) {
+                    ca2 = this.calendar2.getDate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         if (cbxTipo.getSelectedItem().equals("Licencia")) {
             tipo = "Licencia";
         } else if (cbxTipo.getSelectedItem().equals("Placa")) {
             tipo = "Placa";
-        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+        } else if (cbxTipo.getSelectedItem().equals("Ambos")) {
             tipo = "Todo";
-        } else {
-            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             int elementoPorPagina = Integer.parseInt(evt.getItem().toString());
             this.configPaginado.setElementosPagina(elementoPorPagina);
@@ -531,53 +531,45 @@ public class ReporteForm extends javax.swing.JFrame {
 
     /**
      * Acción que hace avanzar el paginado de la tabla
-     * @param evt evento que desencadena la acción 
+     *
+     * @param evt evento que desencadena la acción
      */
     private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
         String nombre = null, tipo = null;
+
         nombre = this.txtfNombre.getText();
 
         LocalDate ca1 = null, ca2 = null;
-        if (!this.calendar1.getDate().equals("")) {
+        if (this.calendar1.getDate() != null) {
             ca1 = this.calendar1.getDate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (!this.calendar2.getDate().equals("")) {
-            ca1 = this.calendar2.getDate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de inicio de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-
-        if (!this.calendar2.getDate().equals("")) {
-            if (this.calendar2.getDate().isAfter(ca1)) {
-                ca2 = this.calendar2.getDate();
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese fecha de fin de periodo", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if (this.calendar2.getDate() != null) {
+                if (this.calendar2.getDate().isAfter(ca1)) {
+                    ca2 = this.calendar2.getDate();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese una fehca después de la inicial", "Alerta", JOptionPane.ERROR_MESSAGE);
+                }
+            } 
         }
 
         if (cbxTipo.getSelectedItem().equals("Licencia")) {
             tipo = "Licencia";
         } else if (cbxTipo.getSelectedItem().equals("Placa")) {
             tipo = "Placa";
-        } else if (cbxTipo.getSelectedItem().equals("Todo :)")) {
+        } else if (cbxTipo.getSelectedItem().equals("Ambos")) {
             tipo = "Todo";
-        } else {
-            JOptionPane.showMessageDialog(null, "Elija un tipo de trámite", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         ReporteDTO parametros = new ReporteDTO(nombre, tipo, ca1, ca2);
+
         avanzarPagina(parametros);
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
     /**
-     * Evento que hace que no se puedan ingresar espacios y que las letras que se ingrenen en el campo
-     * de texto se hagan mayúsculas en el campo de texto de nombre
-     * @param evt evento que desencadena la acción 
+     * Evento que hace que no se puedan ingresar espacios y que las letras que
+     * se ingrenen en el campo de texto se hagan mayúsculas en el campo de texto
+     * de nombre
+     *
+     * @param evt evento que desencadena la acción
      */
     private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
         // TODO add your handling code here:

@@ -131,6 +131,7 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         cbxElementosPágina = new javax.swing.JComboBox<>();
         btnAvanzar = new javax.swing.JButton();
         btnRetroceder = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -139,24 +140,24 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
 
         txtfAnioNac.setEditable(false);
 
-        jLabel4.setText("Año de nacimiento");
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel4.setText("Año de nacimiento");
 
-        jLabel3.setText("Nombre");
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel3.setText("Nombre");
 
         txtfNombre.setEditable(false);
 
         txtfRfc.setEditable(false);
 
-        jLabel2.setText("RFC");
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel2.setText("RFC");
 
-        jLabel1.setText("Consultar trámites");
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
+        jLabel1.setText("Consultar trámites");
 
-        jLabel5.setText("Teléfono");
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        jLabel5.setText("Teléfono");
 
         txtfTelefono.setEditable(false);
 
@@ -185,8 +186,8 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblTramites);
 
-        btnMenu.setText("Regresar al menú");
         btnMenu.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnMenu.setText("Regresar al menú");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuActionPerformed(evt);
@@ -211,6 +212,14 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRetrocederActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        btnSalir.setText("Regresar a la Consulta");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -249,11 +258,13 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
                                 .addGap(154, 154, 154)
                                 .addComponent(btnAvanzar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(74, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(225, 225, 225))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(252, 252, 252)
+                .addComponent(btnSalir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(btnMenu)
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,9 +294,11 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
                     .addComponent(btnAvanzar)
                     .addComponent(btnRetroceder)
                     .addComponent(cbxElementosPágina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -344,11 +357,19 @@ public class ConsultaTramites2Form extends javax.swing.JFrame {
         avanzarPagina();
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        ConsultaTramites1Form cf = new ConsultaTramites1Form();
+        cf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvanzar;
     private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnRetroceder;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbxElementosPágina;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

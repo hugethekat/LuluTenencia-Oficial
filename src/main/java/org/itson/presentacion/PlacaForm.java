@@ -59,6 +59,7 @@ public class PlacaForm extends javax.swing.JFrame {
         this.noSerie = noSerie;
         this.txtfRfc.setText(rfc);
         this.txtfSerie.setText(noSerie);
+        this.txtfSerie.setEditable(false);
         buscar(rfc);
         buscarVehiculo(noSerie);
     }

@@ -135,7 +135,7 @@ public class PlacaDAO implements IPlacaDAO {
             List<Placa> placas = em.createQuery("SELECT p FROM Placa p WHERE p.numero = :numeroPlaca", Placa.class)
                     .setParameter("numeroPlaca", numero)
                     .getResultList();
-            if (!placas.isEmpty()) {
+            if (placas.isEmpty()) {
                 Date fechaChila = sdf.parse(formattedDate);
                 em.getTransaction().begin();
                 Placa placa = new Placa(true, numero, fechaChila, vehiculo, fechaChila, costo, persona);

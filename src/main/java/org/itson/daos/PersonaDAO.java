@@ -57,11 +57,11 @@ public class PersonaDAO implements IPersonaDAO {
 
         int edad = Period.between(anio, hoy).getYears();
 
-        if (edad <= 17) {
-            return false;
+        if (edad >= 18) {
+            return true;
         } else {
             JOptionPane.showMessageDialog(null, "La persona de RFC: " + persona.getRfc() + " Tiene una edad inválida", "Alerta", JOptionPane.ERROR_MESSAGE);
-            return true;
+            return false;
         }
 
     }
